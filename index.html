@@ -34,7 +34,6 @@
       margin: 0 auto;
     }
 
-    /* Üst Buton Çubuğu */
     .top-nav {
       display: flex;
       justify-content: space-between;
@@ -64,11 +63,8 @@
       transition: background 0.15s;
     }
 
-    .toggle-btn:hover {
-      background: #ffffff;
-    }
+    .toggle-btn:hover { background: #ffffff; }
 
-    /* Gizlenebilir Paneller */
     .collapsible-panel {
       display: none;
       background: var(--panel-bg);
@@ -120,18 +116,10 @@
       transition: transform 0.15s;
     }
 
-    .color-btn:hover {
-      transform: scale(1.08);
-    }
+    .color-btn:hover { transform: scale(1.08); }
+    .color-btn.selected { border-color: #000; box-shadow: 0 0 0 2px #fff; }
 
-    .color-btn.selected {
-      border-color: #000;
-      box-shadow: 0 0 0 2px #fff;
-    }
-
-    .themed-text {
-      color: var(--active-text) !important;
-    }
+    .themed-text { color: var(--active-text) !important; }
 
     .btn-action {
       background-color: var(--active-accent) !important;
@@ -145,11 +133,8 @@
       transition: opacity 0.2s;
     }
 
-    .btn-action:hover {
-      opacity: 0.9;
-    }
+    .btn-action:hover { opacity: 0.9; }
 
-    /* Form Paneli */
     .form-card {
       background: var(--card-bg);
       backdrop-filter: blur(8px);
@@ -179,9 +164,7 @@
       color: var(--active-text);
     }
 
-    .form-group.full-width {
-      grid-column: 1 / -1;
-    }
+    .form-group.full-width { grid-column: 1 / -1; }
 
     input, textarea, select {
       width: 100%;
@@ -199,19 +182,21 @@
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 70px;
-    }
+    textarea { resize: vertical; min-height: 70px; }
 
-    /* Filtre Barı */
     .filter-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 0.75rem;
     }
 
-    /* Metin Kartları */
+    .count-bar {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.85rem;
+      padding-left: 0.25rem;
+    }
+
     .item-card {
       background: var(--card-bg);
       backdrop-filter: blur(8px);
@@ -225,6 +210,28 @@
       gap: 1rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
+
+    .item-main {
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+      flex: 1;
+    }
+
+    .entry-number {
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: var(--badge-bg);
+      color: var(--active-text);
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      min-width: 38px;
+      text-align: center;
+      margin-top: 0.15rem;
+    }
+
+    .item-info { flex: 1; }
 
     .item-info h3 {
       font-size: 1.15rem;
@@ -306,18 +313,46 @@
 
 <div class="container">
 
-  <!-- Üst Menü / Kontrol Düğmeleri -->
+  <!-- Üst Menü -->
   <div class="top-nav">
     <h2 class="themed-text" style="font-size: 1.25rem;">📚 ReaderTracker</h2>
     <div class="nav-btn-group">
-      <button class="toggle-btn" onclick="togglePanel('filter-panel')">🔍 Filtrele</button>
+      <button class="toggle-btn" onclick="togglePanel('filter-panel')">🔍 Filtrele & Ara</button>
       <button class="toggle-btn" onclick="togglePanel('settings-panel')">⚙️ Ayarlar</button>
     </div>
   </div>
 
-  <!-- Ayarlar Paneli (Açılır / Gizlenir) -->
+  <!-- Ayarlar Paneli -->
   <div class="collapsible-panel" id="settings-panel">
     <h3 class="themed-text" style="margin-bottom: 1rem; font-size: 1.05rem;">⚙️ Uygulama & Görünüm Ayarları</h3>
+
+    <!-- Tarih Giriş Şekli -->
+    <div class="settings-row">
+      <div>
+        <div style="font-weight: 600;" class="themed-text">Tarih Giriş Şekli:</div>
+        <small style="color: #64748b;">Klavye ile yazabilir veya takvimden seçebilirsiniz.</small>
+      </div>
+      <div>
+        <select id="setting-date-mode" onchange="changeDateInputMode(this.value)" style="width: auto;">
+          <option value="text">Klavye ile Serbest Giriş (Varsayılan)</option>
+          <option value="date">Takvim Seçici</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tarih Formatı Tercihi -->
+    <div class="settings-row">
+      <div>
+        <div style="font-weight: 600;" class="themed-text">Tarih Formatı (Default):</div>
+        <small style="color: #64748b;">Kayıtlarda ve takvim seçiminde esas alınacak biçim.</small>
+      </div>
+      <div>
+        <select id="setting-date-format" onchange="changeDateFormat(this.value)" style="width: auto;">
+          <option value="dd-mm-yyyy">GG.AA.YYYY (Örn: 01.01.2001) - Varsayılan</option>
+          <option value="yyyy-mm-dd">YYYY-AA-GG (Örn: 2001-01-01)</option>
+        </select>
+      </div>
+    </div>
     
     <!-- Duvar Kağıdı -->
     <div class="settings-row">
@@ -329,11 +364,11 @@
       </div>
     </div>
 
-    <!-- Excel (CSV) İçe / Dışa Aktarma -->
+    <!-- Excel İçe / Dışa Aktarma -->
     <div class="settings-row">
       <div>
         <div style="font-weight: 600;" class="themed-text">Veri Yönetimi (Excel / CSV):</div>
-        <small style="color: #64748b;">Kayıtlarını Excel tablosu olarak yedekle ya da geri yükle.</small>
+        <small style="color: #64748b;">Kayıtlarını Excel tablosu olarak yedekle ya da yükle.</small>
       </div>
       <div style="display: flex; gap: 0.5rem;">
         <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="exportToCSV()">Excel Olarak İndir</button>
@@ -349,10 +384,14 @@
     </div>
   </div>
 
-  <!-- Filtre Paneli (Açılır / Gizlenir) -->
+  <!-- Filtre & Arama Paneli -->
   <div class="collapsible-panel" id="filter-panel">
-    <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">🔍 Kayıtları Sınıflandır & Filtrele</h3>
+    <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">🔍 Kayıtları Filtrele & Ara</h3>
     <div class="filter-grid">
+      <div class="form-group full-width">
+        <label>Kelime Bazlı Canlı Arama:</label>
+        <input type="text" id="search-input" placeholder="Başlık, tür, etiket veya notlarda ara..." oninput="renderItems()">
+      </div>
       <div class="form-group">
         <label>Okuma Durumu:</label>
         <select id="filter-status" onchange="renderItems()">
@@ -370,7 +409,7 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Tarih (Yıl-Ay):</label>
+        <label>Tarih:</label>
         <select id="filter-date" onchange="renderItems()">
           <option value="all">Tüm Tarihler</option>
         </select>
@@ -392,7 +431,7 @@
 
         <div class="form-group">
           <label>Metin Türü</label>
-          <input type="text" id="type" placeholder="Kitap, Makale, İçtihat vb.">
+          <input type="text" id="type" placeholder="Kitap, Makale, Karar vb.">
         </div>
 
         <div class="form-group">
@@ -408,17 +447,17 @@
 
         <div class="form-group">
           <label>Etiketler</label>
-          <input type="text" id="tags" placeholder="Virgülle ayırın (örn: roma, borçlar, tez)">
+          <input type="text" id="tags" placeholder="Virgülle ayırın (örn: ceza, anayasa, makale)">
         </div>
 
         <div class="form-group">
           <label>Başlama Tarihi</label>
-          <input type="date" id="start-date">
+          <input type="text" id="start-date" placeholder="Örn: 01.01.2001 veya 01/01/2001">
         </div>
 
         <div class="form-group">
           <label>Bitiş Tarihi</label>
-          <input type="date" id="end-date">
+          <input type="text" id="end-date" placeholder="Örn: 01.01.2001 veya 01/01/2001">
         </div>
 
         <div class="form-group full-width">
@@ -434,13 +473,12 @@
     </form>
   </div>
 
-  <!-- Kayıtlar Listesi -->
+  <div class="count-bar themed-text" id="count-display">0 kadar başlık sıralanıyor</div>
   <div id="records-list"></div>
 
 </div>
 
 <script>
-  // 10 Renk x Açık ve Koyu (20 Ton) ve yumuşak arka plan karşılıkları
   const colorPalette = [
     { name: "Açık Sarı", hex: "#eab308", bg: "#fefce8" },
     { name: "Koyu Sarı", hex: "#a16207", bg: "#fef9c3" },
@@ -464,17 +502,53 @@
     { name: "Siyah", hex: "#0f172a", bg: "#cbd5e1" }
   ];
 
-  let records = JSON.parse(localStorage.getItem("reader_records_v3")) || [];
+  let records = JSON.parse(localStorage.getItem("reader_records_v4")) || [];
   let currentColorHex = localStorage.getItem("reader_custom_color") || "#1d4ed8";
-  let hasWallpaper = !!localStorage.getItem("reader_custom_bg");
+  let dateInputMode = localStorage.getItem("reader_date_mode") || "text";
+  let dateFormat = localStorage.getItem("reader_date_format") || "dd-mm-yyyy";
 
-  // Panel Açma/Kapama
   function togglePanel(panelId) {
     const p = document.getElementById(panelId);
     p.style.display = p.style.display === "block" ? "none" : "block";
   }
 
-  // Renk Paleti Butonları
+  // Tarih Formatı Ayarı
+  function changeDateFormat(format) {
+    dateFormat = format;
+    localStorage.setItem("reader_date_format", format);
+    updateDatePlaceholders();
+  }
+
+  // Tarih Giriş Şekli Değiştirme
+  function changeDateInputMode(mode) {
+    dateInputMode = mode;
+    localStorage.setItem("reader_date_mode", mode);
+    const startInp = document.getElementById("start-date");
+    const endInp = document.getElementById("end-date");
+    
+    startInp.type = mode;
+    endInp.type = mode;
+    updateDatePlaceholders();
+  }
+
+  function updateDatePlaceholders() {
+    const startInp = document.getElementById("start-date");
+    const endInp = document.getElementById("end-date");
+    if (dateInputMode === "text") {
+      const ph = dateFormat === "dd-mm-yyyy" ? "Örn: 01.01.2001 veya 01/01/2001" : "Örn: 2001-01-01";
+      startInp.placeholder = ph;
+      endInp.placeholder = ph;
+    } else {
+      startInp.placeholder = "";
+      endInp.placeholder = "";
+    }
+  }
+
+  document.getElementById("setting-date-mode").value = dateInputMode;
+  document.getElementById("setting-date-format").value = dateFormat;
+  changeDateInputMode(dateInputMode);
+
+  // Renk Paleti
   const paletteContainer = document.getElementById("palette-container");
   colorPalette.forEach(col => {
     const btn = document.createElement("button");
@@ -504,11 +578,10 @@
   const initialTheme = colorPalette.find(c => c.hex === currentColorHex) || colorPalette[11];
   applyThemeColor(initialTheme);
 
-  // Duvar Kağıdı Yönetimi
+  // Duvar Kağıdı
   function handleBgUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = function(evt) {
       const base64 = evt.target.result;
@@ -516,7 +589,7 @@
         localStorage.setItem("reader_custom_bg", base64);
         loadBg(base64);
       } catch (err) {
-        alert("Görsel boyutu tarayıcı depolamasını aştı. Lütfen daha küçük boyutlu bir görsel seçin.");
+        alert("Görsel boyutu tarayıcı depolamasını aştı. Lütfen daha küçük bir görsel yükleyin.");
       }
     };
     reader.readAsDataURL(file);
@@ -539,6 +612,27 @@
 
   loadBg(localStorage.getItem("reader_custom_bg"));
 
+  // Takvimden YYYY-MM-DD gelirse DD.MM.YYYY formatına çevir
+  function normalizeDateInput(val) {
+    if (!val) return "";
+    val = val.trim();
+    if (dateFormat === "dd-mm-yyyy" && /^\d{4}-\d{2}-\d{2}$/.test(val)) {
+      const [y, m, d] = val.split("-");
+      return `${d}.${m}.${y}`;
+    }
+    return val;
+  }
+
+  // Tarih Doğrulama Fonksiyonu
+  function isValidDate(dateStr) {
+    if (!dateStr) return true;
+    if (dateFormat === "dd-mm-yyyy") {
+      return /^(\d{1,2})[\.\/](\d{1,2})[\.\/](\d{4})$/.test(dateStr) || /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
+    } else {
+      return /^\d{4}[\.\/-](\d{1,2})[\.\/-](\d{1,2})$/.test(dateStr);
+    }
+  }
+
   // Form İşlemleri
   const form = document.getElementById("record-form");
   const editIdInput = document.getElementById("edit-id");
@@ -550,6 +644,18 @@
 
     const title = document.getElementById("title").value.trim();
     if (!title) return;
+    
+    let startDateVal = document.getElementById("start-date").value.trim();
+    let endDateVal = document.getElementById("end-date").value.trim();
+
+    if (!isValidDate(startDateVal) || !isValidDate(endDateVal)) {
+      const example = dateFormat === "dd-mm-yyyy" ? "01.01.2001 veya 01/01/2001" : "2001-01-01";
+      alert(`Lütfen tarihi istenilen formatta girin (Örn: ${example}).`);
+      return;
+    }
+
+    startDateVal = normalizeDateInput(startDateVal);
+    endDateVal = normalizeDateInput(endDateVal);
 
     const rawTags = document.getElementById("tags").value;
     const tagsArray = rawTags
@@ -562,8 +668,8 @@
       type: document.getElementById("type").value.trim(),
       status: document.getElementById("status").value,
       tags: tagsArray,
-      startDate: document.getElementById("start-date").value,
-      endDate: document.getElementById("end-date").value,
+      startDate: startDateVal,
+      endDate: endDateVal,
       notes: document.getElementById("notes").value.trim()
     };
 
@@ -613,27 +719,27 @@
   }
 
   function saveAndRender() {
-    localStorage.setItem("reader_records_v3", JSON.stringify(records));
+    localStorage.setItem("reader_records_v4", JSON.stringify(records));
     populateFilterDropdowns();
     renderItems();
   }
 
-  // Filtre Seçenekleri
+  const searchInput = document.getElementById("search-input");
   const filterStatus = document.getElementById("filter-status");
   const filterTag = document.getElementById("filter-tag");
   const filterDate = document.getElementById("filter-date");
+  const countDisplay = document.getElementById("count-display");
 
   function populateFilterDropdowns() {
     const curTag = filterTag.value;
     const curDate = filterDate.value;
-
     const tagsSet = new Set();
     const datesSet = new Set();
 
     records.forEach(r => {
       (r.tags || []).forEach(t => tagsSet.add(t));
       [r.startDate, r.endDate].forEach(d => {
-        if (d) datesSet.add(d.substring(0, 7));
+        if (d) datesSet.add(d);
       });
     });
 
@@ -647,48 +753,50 @@
     });
 
     filterDate.innerHTML = `<option value="all">Tüm Tarihler</option>`;
-    Array.from(datesSet).sort().reverse().forEach(ym => {
+    Array.from(datesSet).sort().reverse().forEach(d => {
       const opt = document.createElement("option");
-      opt.value = ym;
-      opt.textContent = ym;
-      if (ym === curDate) opt.selected = true;
+      opt.value = d;
+      opt.textContent = d;
+      if (d === curDate) opt.selected = true;
       filterDate.appendChild(opt);
     });
   }
 
-  // Listeyi Ekrana Çizme
   function renderItems() {
     const listContainer = document.getElementById("records-list");
     listContainer.innerHTML = "";
 
+    const query = searchInput.value.toLowerCase().trim();
     const selStatus = filterStatus.value;
     const selTag = filterTag.value;
     const selDate = filterDate.value;
 
     const filtered = records.filter(item => {
+      if (query) {
+        const fullContent = `${item.title} ${item.type || ''} ${(item.tags || []).join(' ')} ${item.notes || ''}`.toLowerCase();
+        if (!fullContent.includes(query)) return false;
+      }
       if (selStatus !== "all" && item.status !== selStatus) return false;
       if (selTag !== "all" && (!item.tags || !item.tags.includes(selTag))) return false;
-      if (selDate !== "all") {
-        const startYM = item.startDate ? item.startDate.substring(0, 7) : null;
-        const endYM = item.endDate ? item.endDate.substring(0, 7) : null;
-        if (startYM !== selDate && endYM !== selDate) return false;
-      }
+      if (selDate !== "all" && item.startDate !== selDate && item.endDate !== selDate) return false;
       return true;
     });
+
+    countDisplay.textContent = `${filtered.length} kadar başlık sıralanıyor`;
 
     if (filtered.length === 0) {
       listContainer.innerHTML = `<div style="text-align: center; padding: 2rem; color: #64748b; background: var(--panel-bg); border-radius: 10px; border: 1px solid var(--border-color);">Kayıt bulunamadı.</div>`;
       return;
     }
 
-    filtered.forEach(item => {
+    filtered.forEach((item, index) => {
       const card = document.createElement("div");
       card.className = "item-card";
 
       let metaDetails = [];
       if (item.type) metaDetails.push(`<span><strong>Tür:</strong> ${escapeHtml(item.type)}</span>`);
-      if (item.startDate) metaDetails.push(`<span><strong>Başlangıç:</strong> ${item.startDate}</span>`);
-      if (item.endDate) metaDetails.push(`<span><strong>Bitiş:</strong> ${item.endDate}</span>`);
+      if (item.startDate) metaDetails.push(`<span><strong>Başlangıç:</strong> ${escapeHtml(item.startDate)}</span>`);
+      if (item.endDate) metaDetails.push(`<span><strong>Bitiş:</strong> ${escapeHtml(item.endDate)}</span>`);
 
       let statusBadgeHtml = "";
       if (item.status) {
@@ -704,11 +812,14 @@
       }
 
       card.innerHTML = `
-        <div class="item-info">
-          <h3>${statusBadgeHtml}${escapeHtml(item.title)}</h3>
-          ${metaDetails.length > 0 ? `<div class="item-meta">${metaDetails.join(" • ")}</div>` : ""}
-          ${tagsHtml}
-          ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ""}
+        <div class="item-main">
+          <div class="entry-number">#${index + 1}</div>
+          <div class="item-info">
+            <h3>${statusBadgeHtml}${escapeHtml(item.title)}</h3>
+            ${metaDetails.length > 0 ? `<div class="item-meta">${metaDetails.join(" • ")}</div>` : ""}
+            ${tagsHtml}
+            ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ""}
+          </div>
         </div>
         <div class="card-actions">
           <button class="icon-btn" title="Düzenle" onclick="startEdit(${item.id})">✏️</button>
@@ -720,25 +831,23 @@
     });
   }
 
-  // Excel (CSV) Dışa Aktar
   function exportToCSV() {
     if (records.length === 0) {
       alert("Dışa aktarılacak kayıt bulunmuyor.");
       return;
     }
-
-    const headers = ["Metin Adı", "Tür", "Durum", "Etiketler", "Başlangıç Tarihi", "Bitiş Tarihi", "Notlar"];
-    const rows = records.map(r => [
+    const headers = ["Sıra No", "Metin Adı", "Tür", "Durum", "Etiketler", "Başlangıç Tarihi", "Bitiş Tarihi", "Notlar"];
+    const rows = records.map((r, i) => [
+      `"${i + 1}"`,
       `"${(r.title || '').replace(/"/g, '""')}"`,
       `"${(r.type || '').replace(/"/g, '""')}"`,
       `"${(r.status || '').replace(/"/g, '""')}"`,
       `"${(r.tags ? r.tags.join(', ') : '').replace(/"/g, '""')}"`,
-      `"${(r.startDate || '')}"`,
-      `"${(r.endDate || '')}"`,
+      `"${(r.startDate || '').replace(/"/g, '""')}"`,
+      `"${(r.endDate || '').replace(/"/g, '""')}"`,
       `"${(r.notes || '').replace(/"/g, '""')}"`
     ]);
 
-    // UTF-8 BOM ile Excel uyumlu CSV oluştur
     const csvContent = "\uFEFF" + [headers.join(";"), ...rows.map(e => e.join(";"))].join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
@@ -750,11 +859,9 @@
     document.body.removeChild(link);
   }
 
-  // Excel (CSV) İçe Aktar
   function importFromCSV(e) {
     const file = e.target.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = function(evt) {
       const text = evt.target.result;
@@ -763,27 +870,26 @@
         alert("Dosyada geçerli veri bulunamadı.");
         return;
       }
-
       let importedCount = 0;
-      // Başlık satırını atla
       for (let i = 1; i < lines.length; i++) {
         const cols = lines[i].split(";").map(c => c.replace(/^"|"$/g, '').trim());
-        if (cols[0]) {
+        const hasIndexCol = !isNaN(cols[0]) && cols[1] !== undefined;
+        const offset = hasIndexCol ? 1 : 0;
+        if (cols[offset]) {
           const newRec = {
             id: Date.now() + i,
-            title: cols[0],
-            type: cols[1] || "",
-            status: cols[2] || "",
-            tags: cols[3] ? cols[3].split(",").map(t => t.trim()).filter(Boolean) : [],
-            startDate: cols[4] || "",
-            endDate: cols[5] || "",
-            notes: cols[6] || ""
+            title: cols[offset],
+            type: cols[offset + 1] || "",
+            status: cols[offset + 2] || "",
+            tags: cols[offset + 3] ? cols[offset + 3].split(",").map(t => t.trim()).filter(Boolean) : [],
+            startDate: cols[offset + 4] || "",
+            endDate: cols[offset + 5] || "",
+            notes: cols[offset + 6] || ""
           };
           records.unshift(newRec);
           importedCount++;
         }
       }
-
       saveAndRender();
       alert(`${importedCount} adet kayıt başarıyla içe aktarıldı.`);
       e.target.value = "";
@@ -798,7 +904,6 @@
     );
   }
 
-  // İlk Kurulum
   populateFilterDropdowns();
   renderItems();
 </script>
