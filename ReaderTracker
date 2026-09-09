@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kişisel Metin & Okuma Takipçisi</title>
+  <style>
+    :root {
+      --active-accent: #2563eb;
+      --active-text: #2563eb;
+      --panel-bg: rgba(255, 255, 255, 0.92);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --border-color: rgba(0, 0, 0, 0.12);
+      --badge-bg: rgba(0, 0, 0, 0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+    body {
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      background-color: #f1f5f9;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      color: #1e293b;
+      transition: background 0.3s ease;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Üst Ayar Paneli (Duvar Kağıdı + Renk Paleti) */
+    .settings-panel {
+      background: var(--panel-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+
+    .settings-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .settings-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .color-btn {
+      width: 100%;
+      height: 32px;
+      border-radius: 6px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .color-btn:hover {
+      transform: scale(1.08);
+    }
+
+    .color-btn.selected {
+      border-color: #000;
+      box-shadow: 0 0 0 2px #fff;
+    }
+
+    /* Dinamik Renk Alanları */
+    .themed-text {
+      color: var(--active-text) !important;
+    }
+
+    .btn-action {
+      background-color: var(--active-accent) !important;
+      color: #ffffff;
+      border: none;
+      padding: 0.65rem 1.4rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn-action:hover {
+      opacity: 0.9;
+    }
+
+    .btn-action:active {
+      transform: scale(0.98);
+    }
+
+    /* Form Paneli */
+    .form-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.08);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--active-text);
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      background: #ffffff;
+      color: #1e293b;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--active-accent);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    /* Filtre ve Arama Alanı */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      background: var(--panel-bg);
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .filters-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    /* Metin Kartları */
+    .item-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .item-info h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.35rem;
+      color: var(--active-text);
+    }
+
+    .item-meta {
+      font-size: 0.85rem;
+      color: #475569;
+      margin-bottom: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.5rem;
+    }
+
+    .tag-badge {
+      background: var(--badge-bg);
+      color: var(--active-text);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+    }
+
+    .item-notes {
+      margin-top: 0.65rem;
+      padding: 0.65rem;
+      background: rgba(0,0,0,0.03);
+      border-radius: 6px;
+      font-size: 0.88rem;
+      white-space: pre-wrap;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .icon-btn {
+      background: none;
+      border: 1px solid var(--border-color);
+      padding: 0.4rem 0.6rem;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #ffffff;
+      transition: background 0.15s;
+    }
+
+    .icon-btn:hover {
+      background: #f1f5f9;
+    }
+
+    .file-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .palette-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Görünüm & Renk Ayarları -->
+  <div class="settings-panel">
+    <div class="settings-row">
+      <span style="font-weight: 600;" class="themed-text">Arka Plan (Wallpaper):</span>
+      <div class="file-input-wrapper">
+        <input type="file" id="bg-upload" accept="image/*" style="display: none;" onchange="handleBgUpload(event)">
+        <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="document.getElementById('bg-upload').click()">Görsel Yükle</button>
+        <button class="icon-btn" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;" onclick="clearBg()">Sıfırla</button>
+      </div>
+    </div>
+
+    <div>
+      <span style="font-weight: 600;" class="themed-text">Yazı & Buton Renk Paleti:</span>
+      <div class="palette-grid" id="palette-container"></div>
+    </div>
+  </div>
+
+  <!-- Yeni Kayıt / Düzenleme Formu -->
+  <div class="form-card">
+    <h2 id="form-heading" style="margin-bottom: 1rem; font-size: 1.3rem;" class="themed-text">Yeni Metin Ekle</h2>
+    <form id="record-form">
+      <input type="hidden" id="edit-id">
+
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label>Metin Adı *</label>
+          <input type="text" id="title" placeholder="Metnin adı (Zorunlu)" required>
+        </div>
+
+        <div class="form-group">
+          <label>Metin Türü</label>
+          <input type="text" id="type" placeholder="Örn: Makale, Kitap, Monografi...">
+        </div>
+
+        <div class="form-group">
+          <label>Etiketler</label>
+          <input type="text" id="tags" placeholder="Virgülle ayırın (örn: ceza, felsefe, tez)">
+        </div>
+
+        <div class="form-group">
+          <label>Başlama Tarihi</label>
+          <input type="date" id="start-date">
+        </div>
+
+        <div class="form-group">
+          <label>Bitiş Tarihi</label>
+          <input type="date" id="end-date">
+        </div>
+
+        <div class="form-group full-width">
+          <label>Notlar / Alıntılar</label>
+          <textarea id="notes" placeholder="Önemli sayfalar, fikirler, alıntılar ya da bağlantılar..."></textarea>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem;">
+        <button type="submit" class="btn-action" id="save-button">Kaydet</button>
+        <button type="button" class="icon-btn" id="cancel-edit-btn" style="display: none; padding: 0.65rem 1rem; font-size: 0.9rem;" onclick="resetForm()">Vazgeç</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Sınıflandırma ve Filtreler -->
+  <div class="filter-bar">
+    <div class="filters-group">
+      <label style="font-size: 0.85rem; font-weight: 600;" class="themed-text">Etikete Göre:</label>
+      <select id="filter-tag" onchange="renderItems()" style="width: auto;">
+        <option value="all">Tümü</option>
+      </select>
+    </div>
+
+    <div class="filters-group">
+      <label style="font-size: 0.85rem; font-weight: 600;" class="themed-text">Tarihe Göre:</label>
+      <select id="filter-date" onchange="renderItems()" style="width: auto;">
+        <option value="all">Tüm Tarihler</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Kayıtlar Listesi -->
+  <div id="records-list"></div>
+
+</div>
+
+<script>
+  // 10 Renk x Açık ve Koyu Tonları (20 Seçenek)
+  const colorPalette = [
+    { name: "Açık Sarı", hex: "#eab308" },
+    { name: "Koyu Sarı", hex: "#ca8a04" },
+    { name: "Açık Turuncu", hex: "#fb923c" },
+    { name: "Koyu Turuncu", hex: "#ea580c" },
+    { name: "Açık Pembe", hex: "#f472b6" },
+    { name: "Koyu Pembe", hex: "#db2777" },
+    { name: "Açık Kırmızı", hex: "#f87171" },
+    { name: "Koyu Kırmızı", hex: "#dc2626" },
+    { name: "Açık Mor", hex: "#c084fc" },
+    { name: "Koyu Mor", hex: "#7e22ce" },
+    { name: "Açık Mavi", hex: "#60a5fa" },
+    { name: "Koyu Mavi", hex: "#1d4ed8" },
+    { name: "Açık Yeşil", hex: "#4ade80" },
+    { name: "Koyu Yeşil", hex: "#15803d" },
+    { name: "Açık Gri", hex: "#94a3b8" },
+    { name: "Koyu Gri", hex: "#475569" },
+    { name: "Beyaz / Kemik", hex: "#e2e8f0" },
+    { name: "Koyu Beyaz / Taş", hex: "#cbd5e1" },
+    { name: "Açık Siyah / Füme", hex: "#334155" },
+    { name: "Siyah", hex: "#0f172a" }
+  ];
+
+  let records = JSON.parse(localStorage.getItem("reading_records_v2")) || [];
+  let currentColor = localStorage.getItem("app_custom_color") || "#1d4ed8";
+
+  // Renk Paleti Butonlarını Oluştur
+  const paletteContainer = document.getElementById("palette-container");
+  colorPalette.forEach(col => {
+    const btn = document.createElement("button");
+    btn.className = "color-btn" + (col.hex === currentColor ? " selected" : "");
+    btn.style.backgroundColor = col.hex;
+    btn.title = col.name;
+    btn.onclick = () => applyColor(col.hex);
+    paletteContainer.appendChild(btn);
+  });
+
+  function applyColor(hex) {
+    currentColor = hex;
+    localStorage.setItem("app_custom_color", hex);
+    document.documentElement.style.setProperty("--active-accent", hex);
+    document.documentElement.style.setProperty("--active-text", hex);
+
+    document.querySelectorAll(".color-btn").forEach(b => {
+      b.classList.toggle("selected", b.style.backgroundColor === hex || b.getAttribute("title") === hex);
+    });
+  }
+
+  // Başlangıç Rengini Yükle
+  applyColor(currentColor);
+
+  // Duvar Kağıdı Yönetimi
+  function handleBgUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const base64 = evt.target.result;
+      try {
+        localStorage.setItem("app_custom_bg", base64);
+        loadBg(base64);
+      } catch (err) {
+        alert("Görsel boyutu tarayıcı depolama alanını aştı. Lütfen daha küçük bir görsel yükleyin.");
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function loadBg(url) {
+    if (url) {
+      document.body.style.backgroundImage = `url('${url}')`;
+    } else {
+      document.body.style.backgroundImage = "none";
+    }
+  }
+
+  function clearBg() {
+    localStorage.removeItem("app_custom_bg");
+    loadBg(null);
+  }
+
+  loadBg(localStorage.getItem("app_custom_bg"));
+
+  // Form İşlemleri (Ekleme / Düzenleme)
+  const form = document.getElementById("record-form");
+  const editIdInput = document.getElementById("edit-id");
+  const formHeading = document.getElementById("form-heading");
+  const cancelEditBtn = document.getElementById("cancel-edit-btn");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const title = document.getElementById("title").value.trim();
+    if (!title) return;
+
+    const rawTags = document.getElementById("tags").value;
+    const tagsArray = rawTags
+      .split(",")
+      .map(t => t.trim())
+      .filter(t => t.length > 0);
+
+    const recordData = {
+      title: title,
+      type: document.getElementById("type").value.trim(),
+      tags: tagsArray,
+      startDate: document.getElementById("start-date").value,
+      endDate: document.getElementById("end-date").value,
+      notes: document.getElementById("notes").value.trim()
+    };
+
+    const editId = editIdInput.value;
+    if (editId) {
+      // Düzenleme
+      records = records.map(item => item.id == editId ? { ...item, ...recordData } : item);
+    } else {
+      // Yeni Kayıt
+      recordData.id = Date.now();
+      records.unshift(recordData);
+    }
+
+    saveAndRender();
+    resetForm();
+  });
+
+  function resetForm() {
+    form.reset();
+    editIdInput.value = "";
+    formHeading.textContent = "Yeni Metin Ekle";
+    cancelEditBtn.style.display = "none";
+  }
+
+  function startEdit(id) {
+    const item = records.find(r => r.id == id);
+    if (!item) return;
+
+    editIdInput.value = item.id;
+    document.getElementById("title").value = item.title;
+    document.getElementById("type").value = item.type || "";
+    document.getElementById("tags").value = (item.tags || []).join(", ");
+    document.getElementById("start-date").value = item.startDate || "";
+    document.getElementById("end-date").value = item.endDate || "";
+    document.getElementById("notes").value = item.notes || "";
+
+    formHeading.textContent = "Metni Düzenle: " + item.title;
+    cancelEditBtn.style.display = "inline-block";
+    form.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function deleteRecord(id) {
+    if (confirm("Bu metin kaydını silmek istediğinize emin misiniz?")) {
+      records = records.filter(r => r.id != id);
+      saveAndRender();
+      if (editIdInput.value == id) resetForm();
+    }
+  }
+
+  function saveAndRender() {
+    localStorage.setItem("reading_records_v2", JSON.stringify(records));
+    populateFilterDropdowns();
+    renderItems();
+  }
+
+  // Dinamik Filtre Seçeneklerini Güncelleme
+  const filterTag = document.getElementById("filter-tag");
+  const filterDate = document.getElementById("filter-date");
+
+  function populateFilterDropdowns() {
+    const currentSelectedTag = filterTag.value;
+    const currentSelectedDate = filterDate.value;
+
+    // Etiketleri Topla
+    const tagsSet = new Set();
+    // Tarihleri (Yıl-Ay bazında sınıflandırma için) Topla
+    const datesSet = new Set();
+
+    records.forEach(r => {
+      (r.tags || []).forEach(t => tagsSet.add(t));
+      
+      [r.startDate, r.endDate].forEach(d => {
+        if (d) {
+          const yearMonth = d.substring(0, 7); // Örn: "2026-09"
+          datesSet.add(yearMonth);
+        }
+      });
+    });
+
+    // Etiket Dropdown
+    filterTag.innerHTML = `<option value="all">Tüm Etiketler</option>`;
+    Array.from(tagsSet).sort().forEach(tag => {
+      const opt = document.createElement("option");
+      opt.value = tag;
+      opt.textContent = tag;
+      if (tag === currentSelectedTag) opt.selected = true;
+      filterTag.appendChild(opt);
+    });
+
+    // Tarih Dropdown
+    filterDate.innerHTML = `<option value="all">Tüm Tarihler</option>`;
+    Array.from(datesSet).sort().reverse().forEach(ym => {
+      const opt = document.createElement("option");
+      opt.value = ym;
+      opt.textContent = ym;
+      if (ym === currentSelectedDate) opt.selected = true;
+      filterDate.appendChild(opt);
+    });
+  }
+
+  // Listeyi Ekrana Basma
+  function renderItems() {
+    const listContainer = document.getElementById("records-list");
+    listContainer.innerHTML = "";
+
+    const selectedTag = filterTag.value;
+    const selectedDate = filterDate.value;
+
+    const filtered = records.filter(item => {
+      // Etiket kontrolü
+      if (selectedTag !== "all") {
+        if (!item.tags || !item.tags.includes(selectedTag)) return false;
+      }
+      // Tarih kontrolü (başlama veya bitiş tarihi seçilen döneme denk geliyor mu)
+      if (selectedDate !== "all") {
+        const startYM = item.startDate ? item.startDate.substring(0, 7) : null;
+        const endYM = item.endDate ? item.endDate.substring(0, 7) : null;
+        if (startYM !== selectedDate && endYM !== selectedDate) return false;
+      }
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      listContainer.innerHTML = `<div style="text-align: center; padding: 2rem; color: #64748b; background: var(--panel-bg); border-radius: 10px; border: 1px solid var(--border-color);">Kayıt bulunamadı.</div>`;
+      return;
+    }
+
+    filtered.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "item-card";
+
+      // Meta bilgileri
+      let metaDetails = [];
+      if (item.type) metaDetails.push(`<span><strong>Tür:</strong> ${escapeHtml(item.type)}</span>`);
+      if (item.startDate) metaDetails.push(`<span><strong>Başlangıç:</strong> ${item.startDate}</span>`);
+      if (item.endDate) metaDetails.push(`<span><strong>Bitiş:</strong> ${item.endDate}</span>`);
+
+      // Etiket rozetleri
+      let tagsHtml = "";
+      if (item.tags && item.tags.length > 0) {
+        tagsHtml = `<div class="tags-container">` + 
+          item.tags.map(t => `<span class="tag-badge">#${escapeHtml(t)}</span>`).join("") + 
+          `</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="item-info">
+          <h3>${escapeHtml(item.title)}</h3>
+          ${metaDetails.length > 0 ? `<div class="item-meta">${metaDetails.join(" • ")}</div>` : ""}
+          ${tagsHtml}
+          ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ""}
+        </div>
+        <div class="card-actions">
+          <button class="icon-btn" title="Düzenle" onclick="startEdit(${item.id})">✏️</button>
+          <button class="icon-btn" title="Sil" onclick="deleteRecord(${item.id})">🗑️</button>
+        </div>
+      `;
+
+      listContainer.appendChild(card);
+    });
+  }
+
+  function escapeHtml(str) {
+    if (!str) return "";
+    return str.replace(/[&<>'"]/g, 
+      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+    );
+  }
+
+  // İlk Yükleme
+  populateFilterDropdowns();
+  renderItems();
+</script>
+
+</body>
+</html>
