@@ -6,10 +6,11 @@
   <title>Kişisel Metin & Okuma Takipçisi</title>
   <style>
     :root {
-      --active-accent: #2563eb;
-      --active-text: #2563eb;
-      --panel-bg: rgba(255, 255, 255, 0.92);
-      --card-bg: rgba(255, 255, 255, 0.95);
+      --active-accent: #1d4ed8;
+      --active-text: #1d4ed8;
+      --active-bg-tint: #eff6ff;
+      --panel-bg: rgba(255, 255, 255, 0.95);
+      --card-bg: rgba(255, 255, 255, 0.96);
       --border-color: rgba(0, 0, 0, 0.12);
       --badge-bg: rgba(0, 0, 0, 0.06);
     }
@@ -18,14 +19,14 @@
 
     body {
       min-height: 100vh;
-      padding: 2rem 1rem;
-      background-color: #f1f5f9;
+      padding: 1.5rem 1rem;
+      background-color: var(--active-bg-tint);
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
       background-repeat: no-repeat;
       color: #1e293b;
-      transition: background 0.3s ease;
+      transition: background-color 0.3s ease;
     }
 
     .container {
@@ -33,15 +34,56 @@
       margin: 0 auto;
     }
 
-    /* Üst Ayar Paneli (Duvar Kağıdı + Renk Paleti) */
-    .settings-panel {
+    /* Üst Buton Çubuğu */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      gap: 0.5rem;
+    }
+
+    .nav-btn-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .toggle-btn {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      color: var(--active-text);
+      padding: 0.5rem 0.9rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: background 0.15s;
+    }
+
+    .toggle-btn:hover {
+      background: #ffffff;
+    }
+
+    /* Gizlenebilir Paneller */
+    .collapsible-panel {
+      display: none;
       background: var(--panel-bg);
       backdrop-filter: blur(8px);
       border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 1.25rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.08);
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .settings-row {
@@ -51,10 +93,14 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
     }
 
     .settings-row:last-child {
       margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
     }
 
     .palette-grid {
@@ -71,7 +117,7 @@
       border-radius: 6px;
       border: 2px solid transparent;
       cursor: pointer;
-      transition: transform 0.15s, border-color 0.15s;
+      transition: transform 0.15s;
     }
 
     .color-btn:hover {
@@ -83,7 +129,6 @@
       box-shadow: 0 0 0 2px #fff;
     }
 
-    /* Dinamik Renk Alanları */
     .themed-text {
       color: var(--active-text) !important;
     }
@@ -97,15 +142,11 @@
       cursor: pointer;
       font-weight: 600;
       font-size: 0.95rem;
-      transition: opacity 0.2s, transform 0.1s;
+      transition: opacity 0.2s;
     }
 
     .btn-action:hover {
       opacity: 0.9;
-    }
-
-    .btn-action:active {
-      transform: scale(0.98);
     }
 
     /* Form Paneli */
@@ -121,7 +162,7 @@
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
       margin-bottom: 1rem;
     }
@@ -163,25 +204,11 @@
       min-height: 70px;
     }
 
-    /* Filtre ve Arama Alanı */
-    .filter-bar {
-      display: flex;
-      flex-wrap: wrap;
+    /* Filtre Barı */
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 0.75rem;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.25rem;
-      background: var(--panel-bg);
-      padding: 1rem;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
-    }
-
-    .filters-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      align-items: center;
     }
 
     /* Metin Kartları */
@@ -200,7 +227,7 @@
     }
 
     .item-info h3 {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       margin-bottom: 0.35rem;
       color: var(--active-text);
     }
@@ -231,6 +258,19 @@
       border: 1px solid var(--border-color);
     }
 
+    .status-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      margin-right: 0.4rem;
+    }
+    .status-Bitti { background: #dcfce7; color: #15803d; }
+    .status-Yarım-Kaldı { background: #fef9c3; color: #854d0e; }
+    .status-Yarıda-Bırakıldı { background: #fee2e2; color: #991b1b; }
+    .status-Okumak-İstenilenlerde { background: #e0e7ff; color: #3730a3; }
+
     .item-notes {
       margin-top: 0.65rem;
       padding: 0.65rem;
@@ -246,30 +286,19 @@
     }
 
     .icon-btn {
-      background: none;
+      background: #ffffff;
       border: 1px solid var(--border-color);
-      padding: 0.4rem 0.6rem;
-      font-size: 1.1rem;
+      padding: 0.4rem 0.65rem;
+      font-size: 1rem;
       border-radius: 6px;
       cursor: pointer;
-      background: #ffffff;
       transition: background 0.15s;
     }
 
-    .icon-btn:hover {
-      background: #f1f5f9;
-    }
-
-    .file-input-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+    .icon-btn:hover { background: #f1f5f9; }
 
     @media (max-width: 600px) {
-      .palette-grid {
-        grid-template-columns: repeat(5, 1fr);
-      }
+      .palette-grid { grid-template-columns: repeat(5, 1fr); }
     }
   </style>
 </head>
@@ -277,43 +306,109 @@
 
 <div class="container">
 
-  <!-- Görünüm & Renk Ayarları -->
-  <div class="settings-panel">
+  <!-- Üst Menü / Kontrol Düğmeleri -->
+  <div class="top-nav">
+    <h2 class="themed-text" style="font-size: 1.25rem;">📚 ReaderTracker</h2>
+    <div class="nav-btn-group">
+      <button class="toggle-btn" onclick="togglePanel('filter-panel')">🔍 Filtrele</button>
+      <button class="toggle-btn" onclick="togglePanel('settings-panel')">⚙️ Ayarlar</button>
+    </div>
+  </div>
+
+  <!-- Ayarlar Paneli (Açılır / Gizlenir) -->
+  <div class="collapsible-panel" id="settings-panel">
+    <h3 class="themed-text" style="margin-bottom: 1rem; font-size: 1.05rem;">⚙️ Uygulama & Görünüm Ayarları</h3>
+    
+    <!-- Duvar Kağıdı -->
     <div class="settings-row">
-      <span style="font-weight: 600;" class="themed-text">Arka Plan (Wallpaper):</span>
-      <div class="file-input-wrapper">
+      <span style="font-weight: 600;" class="themed-text">Duvar Kağıdı (Wallpaper):</span>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
         <input type="file" id="bg-upload" accept="image/*" style="display: none;" onchange="handleBgUpload(event)">
-        <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="document.getElementById('bg-upload').click()">Görsel Yükle</button>
-        <button class="icon-btn" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;" onclick="clearBg()">Sıfırla</button>
+        <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="document.getElementById('bg-upload').click()">Görsel Seç</button>
+        <button class="icon-btn" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;" onclick="clearBg()">Kaldır</button>
       </div>
     </div>
 
-    <div>
-      <span style="font-weight: 600;" class="themed-text">Yazı & Buton Renk Paleti:</span>
+    <!-- Excel (CSV) İçe / Dışa Aktarma -->
+    <div class="settings-row">
+      <div>
+        <div style="font-weight: 600;" class="themed-text">Veri Yönetimi (Excel / CSV):</div>
+        <small style="color: #64748b;">Kayıtlarını Excel tablosu olarak yedekle ya da geri yükle.</small>
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="exportToCSV()">Excel Olarak İndir</button>
+        <input type="file" id="csv-upload" accept=".csv" style="display: none;" onchange="importFromCSV(event)">
+        <button class="icon-btn" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;" onclick="document.getElementById('csv-upload').click()">Excel Yükle</button>
+      </div>
+    </div>
+
+    <!-- Renk Paleti -->
+    <div style="margin-top: 0.75rem;">
+      <span style="font-weight: 600;" class="themed-text">Yazı, Buton & Arka Plan Rengi:</span>
       <div class="palette-grid" id="palette-container"></div>
     </div>
   </div>
 
-  <!-- Yeni Kayıt / Düzenleme Formu -->
+  <!-- Filtre Paneli (Açılır / Gizlenir) -->
+  <div class="collapsible-panel" id="filter-panel">
+    <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">🔍 Kayıtları Sınıflandır & Filtrele</h3>
+    <div class="filter-grid">
+      <div class="form-group">
+        <label>Okuma Durumu:</label>
+        <select id="filter-status" onchange="renderItems()">
+          <option value="all">Tüm Durumlar</option>
+          <option value="Bitti">Bitti</option>
+          <option value="Yarım Kaldı">Yarım Kaldı</option>
+          <option value="Yarıda Bırakıldı">Yarıda Bırakıldı</option>
+          <option value="Okumak İstenilenlerde">Okumak İstenilenlerde</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Etiket:</label>
+        <select id="filter-tag" onchange="renderItems()">
+          <option value="all">Tüm Etiketler</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tarih (Yıl-Ay):</label>
+        <select id="filter-date" onchange="renderItems()">
+          <option value="all">Tüm Tarihler</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kayıt Formu -->
   <div class="form-card">
-    <h2 id="form-heading" style="margin-bottom: 1rem; font-size: 1.3rem;" class="themed-text">Yeni Metin Ekle</h2>
+    <h2 id="form-heading" style="margin-bottom: 1rem; font-size: 1.25rem;" class="themed-text">Yeni Metin Ekle</h2>
     <form id="record-form">
       <input type="hidden" id="edit-id">
 
       <div class="form-grid">
         <div class="form-group full-width">
           <label>Metin Adı *</label>
-          <input type="text" id="title" placeholder="Metnin adı (Zorunlu)" required>
+          <input type="text" id="title" placeholder="Metnin adı (Zorunlu tek alan)" required>
         </div>
 
         <div class="form-group">
           <label>Metin Türü</label>
-          <input type="text" id="type" placeholder="Örn: Makale, Kitap, Monografi...">
+          <input type="text" id="type" placeholder="Kitap, Makale, İçtihat vb.">
+        </div>
+
+        <div class="form-group">
+          <label>Okuma Durumu</label>
+          <select id="status">
+            <option value="">Belirtilmedi</option>
+            <option value="Bitti">Bitti</option>
+            <option value="Yarım Kaldı">Yarım Kaldı</option>
+            <option value="Yarıda Bırakıldı">Yarıda Bırakıldı</option>
+            <option value="Okumak İstenilenlerde">Okumak İstenilenlerde</option>
+          </select>
         </div>
 
         <div class="form-group">
           <label>Etiketler</label>
-          <input type="text" id="tags" placeholder="Virgülle ayırın (örn: ceza, felsefe, tez)">
+          <input type="text" id="tags" placeholder="Virgülle ayırın (örn: roma, borçlar, tez)">
         </div>
 
         <div class="form-group">
@@ -328,7 +423,7 @@
 
         <div class="form-group full-width">
           <label>Notlar / Alıntılar</label>
-          <textarea id="notes" placeholder="Önemli sayfalar, fikirler, alıntılar ya da bağlantılar..."></textarea>
+          <textarea id="notes" placeholder="Önemli sayfalar, alıntılar ya da bağlantılar..."></textarea>
         </div>
       </div>
 
@@ -339,80 +434,75 @@
     </form>
   </div>
 
-  <!-- Sınıflandırma ve Filtreler -->
-  <div class="filter-bar">
-    <div class="filters-group">
-      <label style="font-size: 0.85rem; font-weight: 600;" class="themed-text">Etikete Göre:</label>
-      <select id="filter-tag" onchange="renderItems()" style="width: auto;">
-        <option value="all">Tümü</option>
-      </select>
-    </div>
-
-    <div class="filters-group">
-      <label style="font-size: 0.85rem; font-weight: 600;" class="themed-text">Tarihe Göre:</label>
-      <select id="filter-date" onchange="renderItems()" style="width: auto;">
-        <option value="all">Tüm Tarihler</option>
-      </select>
-    </div>
-  </div>
-
   <!-- Kayıtlar Listesi -->
   <div id="records-list"></div>
 
 </div>
 
 <script>
-  // 10 Renk x Açık ve Koyu Tonları (20 Seçenek)
+  // 10 Renk x Açık ve Koyu (20 Ton) ve yumuşak arka plan karşılıkları
   const colorPalette = [
-    { name: "Açık Sarı", hex: "#eab308" },
-    { name: "Koyu Sarı", hex: "#ca8a04" },
-    { name: "Açık Turuncu", hex: "#fb923c" },
-    { name: "Koyu Turuncu", hex: "#ea580c" },
-    { name: "Açık Pembe", hex: "#f472b6" },
-    { name: "Koyu Pembe", hex: "#db2777" },
-    { name: "Açık Kırmızı", hex: "#f87171" },
-    { name: "Koyu Kırmızı", hex: "#dc2626" },
-    { name: "Açık Mor", hex: "#c084fc" },
-    { name: "Koyu Mor", hex: "#7e22ce" },
-    { name: "Açık Mavi", hex: "#60a5fa" },
-    { name: "Koyu Mavi", hex: "#1d4ed8" },
-    { name: "Açık Yeşil", hex: "#4ade80" },
-    { name: "Koyu Yeşil", hex: "#15803d" },
-    { name: "Açık Gri", hex: "#94a3b8" },
-    { name: "Koyu Gri", hex: "#475569" },
-    { name: "Beyaz / Kemik", hex: "#e2e8f0" },
-    { name: "Koyu Beyaz / Taş", hex: "#cbd5e1" },
-    { name: "Açık Siyah / Füme", hex: "#334155" },
-    { name: "Siyah", hex: "#0f172a" }
+    { name: "Açık Sarı", hex: "#eab308", bg: "#fefce8" },
+    { name: "Koyu Sarı", hex: "#a16207", bg: "#fef9c3" },
+    { name: "Açık Turuncu", hex: "#fb923c", bg: "#fff7ed" },
+    { name: "Koyu Turuncu", hex: "#c2410c", bg: "#ffedd5" },
+    { name: "Açık Pembe", hex: "#f472b6", bg: "#fdf2f8" },
+    { name: "Koyu Pembe", hex: "#be185d", bg: "#fce7f3" },
+    { name: "Açık Kırmızı", hex: "#f87171", bg: "#fef2f2" },
+    { name: "Koyu Kırmızı", hex: "#b91c1c", bg: "#fee2e2" },
+    { name: "Açık Mor", hex: "#c084fc", bg: "#faf5ff" },
+    { name: "Koyu Mor", hex: "#6b21a8", bg: "#f3e8ff" },
+    { name: "Açık Mavi", hex: "#60a5fa", bg: "#eff6ff" },
+    { name: "Koyu Mavi", hex: "#1d4ed8", bg: "#dbeafe" },
+    { name: "Açık Yeşil", hex: "#4ade80", bg: "#f0fdf4" },
+    { name: "Koyu Yeşil", hex: "#15803d", bg: "#dcfce7" },
+    { name: "Açık Gri", hex: "#94a3b8", bg: "#f8fafc" },
+    { name: "Koyu Gri", hex: "#475569", bg: "#f1f5f9" },
+    { name: "Kemik / Beyaz", hex: "#64748b", bg: "#ffffff" },
+    { name: "Taş / Açık", hex: "#475569", bg: "#f8fafc" },
+    { name: "Füme / Açık Siyah", hex: "#334155", bg: "#e2e8f0" },
+    { name: "Siyah", hex: "#0f172a", bg: "#cbd5e1" }
   ];
 
-  let records = JSON.parse(localStorage.getItem("reading_records_v2")) || [];
-  let currentColor = localStorage.getItem("app_custom_color") || "#1d4ed8";
+  let records = JSON.parse(localStorage.getItem("reader_records_v3")) || [];
+  let currentColorHex = localStorage.getItem("reader_custom_color") || "#1d4ed8";
+  let hasWallpaper = !!localStorage.getItem("reader_custom_bg");
 
-  // Renk Paleti Butonlarını Oluştur
+  // Panel Açma/Kapama
+  function togglePanel(panelId) {
+    const p = document.getElementById(panelId);
+    p.style.display = p.style.display === "block" ? "none" : "block";
+  }
+
+  // Renk Paleti Butonları
   const paletteContainer = document.getElementById("palette-container");
   colorPalette.forEach(col => {
     const btn = document.createElement("button");
-    btn.className = "color-btn" + (col.hex === currentColor ? " selected" : "");
+    btn.className = "color-btn" + (col.hex === currentColorHex ? " selected" : "");
     btn.style.backgroundColor = col.hex;
     btn.title = col.name;
-    btn.onclick = () => applyColor(col.hex);
+    btn.onclick = () => applyThemeColor(col);
     paletteContainer.appendChild(btn);
   });
 
-  function applyColor(hex) {
-    currentColor = hex;
-    localStorage.setItem("app_custom_color", hex);
-    document.documentElement.style.setProperty("--active-accent", hex);
-    document.documentElement.style.setProperty("--active-text", hex);
+  function applyThemeColor(colObj) {
+    currentColorHex = colObj.hex;
+    localStorage.setItem("reader_custom_color", colObj.hex);
+    document.documentElement.style.setProperty("--active-accent", colObj.hex);
+    document.documentElement.style.setProperty("--active-text", colObj.hex);
+
+    if (!localStorage.getItem("reader_custom_bg")) {
+      document.documentElement.style.setProperty("--active-bg-tint", colObj.bg);
+      document.body.style.backgroundColor = colObj.bg;
+    }
 
     document.querySelectorAll(".color-btn").forEach(b => {
-      b.classList.toggle("selected", b.style.backgroundColor === hex || b.getAttribute("title") === hex);
+      b.classList.toggle("selected", b.style.backgroundColor === colObj.hex || b.getAttribute("title") === colObj.name);
     });
   }
 
-  // Başlangıç Rengini Yükle
-  applyColor(currentColor);
+  const initialTheme = colorPalette.find(c => c.hex === currentColorHex) || colorPalette[11];
+  applyThemeColor(initialTheme);
 
   // Duvar Kağıdı Yönetimi
   function handleBgUpload(e) {
@@ -423,10 +513,10 @@
     reader.onload = function(evt) {
       const base64 = evt.target.result;
       try {
-        localStorage.setItem("app_custom_bg", base64);
+        localStorage.setItem("reader_custom_bg", base64);
         loadBg(base64);
       } catch (err) {
-        alert("Görsel boyutu tarayıcı depolama alanını aştı. Lütfen daha küçük bir görsel yükleyin.");
+        alert("Görsel boyutu tarayıcı depolamasını aştı. Lütfen daha küçük boyutlu bir görsel seçin.");
       }
     };
     reader.readAsDataURL(file);
@@ -437,17 +527,19 @@
       document.body.style.backgroundImage = `url('${url}')`;
     } else {
       document.body.style.backgroundImage = "none";
+      const currentThemeObj = colorPalette.find(c => c.hex === currentColorHex) || colorPalette[11];
+      document.body.style.backgroundColor = currentThemeObj.bg;
     }
   }
 
   function clearBg() {
-    localStorage.removeItem("app_custom_bg");
+    localStorage.removeItem("reader_custom_bg");
     loadBg(null);
   }
 
-  loadBg(localStorage.getItem("app_custom_bg"));
+  loadBg(localStorage.getItem("reader_custom_bg"));
 
-  // Form İşlemleri (Ekleme / Düzenleme)
+  // Form İşlemleri
   const form = document.getElementById("record-form");
   const editIdInput = document.getElementById("edit-id");
   const formHeading = document.getElementById("form-heading");
@@ -468,6 +560,7 @@
     const recordData = {
       title: title,
       type: document.getElementById("type").value.trim(),
+      status: document.getElementById("status").value,
       tags: tagsArray,
       startDate: document.getElementById("start-date").value,
       endDate: document.getElementById("end-date").value,
@@ -476,10 +569,8 @@
 
     const editId = editIdInput.value;
     if (editId) {
-      // Düzenleme
       records = records.map(item => item.id == editId ? { ...item, ...recordData } : item);
     } else {
-      // Yeni Kayıt
       recordData.id = Date.now();
       records.unshift(recordData);
     }
@@ -502,6 +593,7 @@
     editIdInput.value = item.id;
     document.getElementById("title").value = item.title;
     document.getElementById("type").value = item.type || "";
+    document.getElementById("status").value = item.status || "";
     document.getElementById("tags").value = (item.tags || []).join(", ");
     document.getElementById("start-date").value = item.startDate || "";
     document.getElementById("end-date").value = item.endDate || "";
@@ -521,74 +613,65 @@
   }
 
   function saveAndRender() {
-    localStorage.setItem("reading_records_v2", JSON.stringify(records));
+    localStorage.setItem("reader_records_v3", JSON.stringify(records));
     populateFilterDropdowns();
     renderItems();
   }
 
-  // Dinamik Filtre Seçeneklerini Güncelleme
+  // Filtre Seçenekleri
+  const filterStatus = document.getElementById("filter-status");
   const filterTag = document.getElementById("filter-tag");
   const filterDate = document.getElementById("filter-date");
 
   function populateFilterDropdowns() {
-    const currentSelectedTag = filterTag.value;
-    const currentSelectedDate = filterDate.value;
+    const curTag = filterTag.value;
+    const curDate = filterDate.value;
 
-    // Etiketleri Topla
     const tagsSet = new Set();
-    // Tarihleri (Yıl-Ay bazında sınıflandırma için) Topla
     const datesSet = new Set();
 
     records.forEach(r => {
       (r.tags || []).forEach(t => tagsSet.add(t));
-      
       [r.startDate, r.endDate].forEach(d => {
-        if (d) {
-          const yearMonth = d.substring(0, 7); // Örn: "2026-09"
-          datesSet.add(yearMonth);
-        }
+        if (d) datesSet.add(d.substring(0, 7));
       });
     });
 
-    // Etiket Dropdown
     filterTag.innerHTML = `<option value="all">Tüm Etiketler</option>`;
     Array.from(tagsSet).sort().forEach(tag => {
       const opt = document.createElement("option");
       opt.value = tag;
       opt.textContent = tag;
-      if (tag === currentSelectedTag) opt.selected = true;
+      if (tag === curTag) opt.selected = true;
       filterTag.appendChild(opt);
     });
 
-    // Tarih Dropdown
     filterDate.innerHTML = `<option value="all">Tüm Tarihler</option>`;
     Array.from(datesSet).sort().reverse().forEach(ym => {
       const opt = document.createElement("option");
       opt.value = ym;
       opt.textContent = ym;
-      if (ym === currentSelectedDate) opt.selected = true;
+      if (ym === curDate) opt.selected = true;
       filterDate.appendChild(opt);
     });
   }
 
-  // Listeyi Ekrana Basma
+  // Listeyi Ekrana Çizme
   function renderItems() {
     const listContainer = document.getElementById("records-list");
     listContainer.innerHTML = "";
 
-    const selectedTag = filterTag.value;
-    const selectedDate = filterDate.value;
+    const selStatus = filterStatus.value;
+    const selTag = filterTag.value;
+    const selDate = filterDate.value;
 
     const filtered = records.filter(item => {
-      // Etiket kontrolü
-      if (selectedTag !== "all") {
-        if (!item.tags || !item.tags.includes(selectedTag)) return false;
-      }
-      // Tarih kontrolü (başlama veya bitiş tarihi seçilen döneme denk geliyor mu)
-      if (selectedDate !== "all") {
+      if (selStatus !== "all" && item.status !== selStatus) return false;
+      if (selTag !== "all" && (!item.tags || !item.tags.includes(selTag))) return false;
+      if (selDate !== "all") {
         const startYM = item.startDate ? item.startDate.substring(0, 7) : null;
         const endYM = item.endDate ? item.endDate.substring(0, 7) : null;
-        if (startYM !== selectedDate && endYM !== selectedDate) return false;
+        if (startYM !== selDate && endYM !== selDate) return false;
       }
       return true;
     });
@@ -602,13 +685,17 @@
       const card = document.createElement("div");
       card.className = "item-card";
 
-      // Meta bilgileri
       let metaDetails = [];
       if (item.type) metaDetails.push(`<span><strong>Tür:</strong> ${escapeHtml(item.type)}</span>`);
       if (item.startDate) metaDetails.push(`<span><strong>Başlangıç:</strong> ${item.startDate}</span>`);
       if (item.endDate) metaDetails.push(`<span><strong>Bitiş:</strong> ${item.endDate}</span>`);
 
-      // Etiket rozetleri
+      let statusBadgeHtml = "";
+      if (item.status) {
+        const statusClass = "status-" + item.status.replace(/\s+/g, "-");
+        statusBadgeHtml = `<span class="status-badge ${statusClass}">${escapeHtml(item.status)}</span>`;
+      }
+
       let tagsHtml = "";
       if (item.tags && item.tags.length > 0) {
         tagsHtml = `<div class="tags-container">` + 
@@ -618,7 +705,7 @@
 
       card.innerHTML = `
         <div class="item-info">
-          <h3>${escapeHtml(item.title)}</h3>
+          <h3>${statusBadgeHtml}${escapeHtml(item.title)}</h3>
           ${metaDetails.length > 0 ? `<div class="item-meta">${metaDetails.join(" • ")}</div>` : ""}
           ${tagsHtml}
           ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ""}
@@ -633,6 +720,77 @@
     });
   }
 
+  // Excel (CSV) Dışa Aktar
+  function exportToCSV() {
+    if (records.length === 0) {
+      alert("Dışa aktarılacak kayıt bulunmuyor.");
+      return;
+    }
+
+    const headers = ["Metin Adı", "Tür", "Durum", "Etiketler", "Başlangıç Tarihi", "Bitiş Tarihi", "Notlar"];
+    const rows = records.map(r => [
+      `"${(r.title || '').replace(/"/g, '""')}"`,
+      `"${(r.type || '').replace(/"/g, '""')}"`,
+      `"${(r.status || '').replace(/"/g, '""')}"`,
+      `"${(r.tags ? r.tags.join(', ') : '').replace(/"/g, '""')}"`,
+      `"${(r.startDate || '')}"`,
+      `"${(r.endDate || '')}"`,
+      `"${(r.notes || '').replace(/"/g, '""')}"`
+    ]);
+
+    // UTF-8 BOM ile Excel uyumlu CSV oluştur
+    const csvContent = "\uFEFF" + [headers.join(";"), ...rows.map(e => e.join(";"))].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `okuma_kayitlari_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // Excel (CSV) İçe Aktar
+  function importFromCSV(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const text = evt.target.result;
+      const lines = text.split(/\r?\n/).filter(line => line.trim().length > 0);
+      if (lines.length <= 1) {
+        alert("Dosyada geçerli veri bulunamadı.");
+        return;
+      }
+
+      let importedCount = 0;
+      // Başlık satırını atla
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(";").map(c => c.replace(/^"|"$/g, '').trim());
+        if (cols[0]) {
+          const newRec = {
+            id: Date.now() + i,
+            title: cols[0],
+            type: cols[1] || "",
+            status: cols[2] || "",
+            tags: cols[3] ? cols[3].split(",").map(t => t.trim()).filter(Boolean) : [],
+            startDate: cols[4] || "",
+            endDate: cols[5] || "",
+            notes: cols[6] || ""
+          };
+          records.unshift(newRec);
+          importedCount++;
+        }
+      }
+
+      saveAndRender();
+      alert(`${importedCount} adet kayıt başarıyla içe aktarıldı.`);
+      e.target.value = "";
+    };
+    reader.readAsText(file, "UTF-8");
+  }
+
   function escapeHtml(str) {
     if (!str) return "";
     return str.replace(/[&<>'"]/g, 
@@ -640,7 +798,7 @@
     );
   }
 
-  // İlk Yükleme
+  // İlk Kurulum
   populateFilterDropdowns();
   renderItems();
 </script>
