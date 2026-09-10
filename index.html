@@ -69,21 +69,38 @@
       opacity: 0.9;
     }
 
+    /* Daire Animasyonu: 2 saniye */
     .anim-circle-out {
-      animation: circleShrink 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+      animation: circleShrink 2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
     }
     @keyframes circleShrink {
       0% { clip-path: circle(150% at 50% 50%); opacity: 1; }
       100% { clip-path: circle(0% at 50% 50%); opacity: 0; visibility: hidden; }
     }
 
+    /* Su Dalgası Animasyonu: 4 saniye */
     .anim-water-out {
-      animation: waterDrain 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+      animation: waterDrain 4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
     @keyframes waterDrain {
-      0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
-      50% { clip-path: polygon(0 40%, 100% 30%, 100% 100%, 0 100%); }
-      100% { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); opacity: 0; visibility: hidden; }
+      0% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        opacity: 1;
+      }
+      25% {
+        clip-path: polygon(0 25%, 100% 18%, 100% 100%, 0 100%);
+      }
+      50% {
+        clip-path: polygon(0 50%, 100% 58%, 100% 100%, 0 100%);
+      }
+      75% {
+        clip-path: polygon(0 80%, 100% 72%, 100% 100%, 0 100%);
+      }
+      100% {
+        clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+        opacity: 0;
+        visibility: hidden;
+      }
     }
 
     .container {
@@ -146,7 +163,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      white-space: nowrap; /* Metnin veya emojinin alt satıra taşmasını önler */
+      white-space: nowrap;
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
       transition: background 0.15s, transform 0.1s;
     }
@@ -174,7 +191,7 @@
 
     .settings-row {
       display: flex;
-      flex-wrap: wrap; /* Kutuların alta taşmasını sağlar */
+      flex-wrap: wrap;
       gap: 0.75rem;
       align-items: center;
       justify-content: space-between;
@@ -191,14 +208,9 @@
 
     .settings-controls-group {
       display: flex;
-      flex-wrap: wrap; /* Seçim kutuları sığmadığında otomatik alt satıra geçer */
+      flex-wrap: wrap;
       gap: 0.5rem;
       align-items: center;
-      max-width: 100%;
-    }
-
-    .settings-controls-group select,
-    .settings-controls-group input {
       max-width: 100%;
     }
 
@@ -465,13 +477,13 @@
 
 <div class="container">
 
-  <!-- 1. Satır: Sadece Başlık ve En Sağda Ayarlar Emojisi -->
+  <!-- 1. Satır: Başlık ve Sağ Üstte Ayarlar Emojisi -->
   <div class="header-row">
     <h2 class="app-title themed-text">ReaderTracker 📚</h2>
     <button class="settings-corner-btn" title="Ayarlar" onclick="togglePanel('settings-panel')">⚙️</button>
   </div>
 
-  <!-- 2. Satır: Başlığın Altında Metin Ekle & Filtrele Butonları -->
+  <!-- 2. Satır: Metin Ekle & Filtrele Butonları -->
   <div class="actions-row">
     <button class="action-btn" onclick="toggleFormPanel()">➕ Metin Ekle</button>
     <button class="action-btn" onclick="togglePanel('filter-panel')">🔍 Filtrele</button>
@@ -501,7 +513,7 @@
       </div>
     </div>
 
-    <!-- Taşmayan, Otomatik Alta Kayan Seçim Alanı -->
+    <!-- Karşılama Ekranı Tercihi -->
     <div class="settings-row">
       <div>
         <div style="font-weight: 600;" class="themed-text">Açılış Karşılama Ekranı:</div>
@@ -513,8 +525,8 @@
           <option value="false">Kapalı</option>
         </select>
         <select id="setting-splash-anim" onchange="updateSplashSettings()" style="width: auto;">
-          <option value="circle">Daire Animasyonu (Varsayılan)</option>
-          <option value="water">Su Dalgası Animasyonu</option>
+          <option value="circle">Daire Animasyonu (2 sn)</option>
+          <option value="water">Su Dalgası Animasyonu (4 sn)</option>
         </select>
       </div>
     </div>
@@ -572,14 +584,32 @@
     </div>
   </div>
 
-  <!-- Filtre & Arama Paneli -->
+  <!-- Filtre & Sıralama Paneli -->
   <div class="collapsible-panel" id="filter-panel">
-    <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">🔍 Kayıtları Filtrele & Ara</h3>
+    <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">🔍 Kayıtları Filtrele & Sırala</h3>
     <div class="filter-grid">
       <div class="form-group full-width">
         <label>Kelime Bazlı Canlı Arama:</label>
         <input type="text" id="search-input" placeholder="Başlık, yazar, tür, etiket, raf veya notlarda ara..." oninput="renderItems()">
       </div>
+
+      <!-- Kapsamlı Sıralama Ölçütü Menüsü -->
+      <div class="form-group">
+        <label>Sıralama Ölçütü:</label>
+        <select id="sort-order" onchange="renderItems()">
+          <option value="newest">Son Eklenenler (Varsayılan)</option>
+          <option value="oldest">İlk Eklenenler</option>
+          <option value="title-asc">Başlık (A → Z)</option>
+          <option value="author-asc">Yazar (A → Z)</option>
+          <option value="prog-desc">İlerleme: En Yüksek → En Düşük</option>
+          <option value="prog-asc">İlerleme: En Düşük → En Yüksek</option>
+          <option value="pages-desc">Sayfa Sayısı: En Çok → En Az</option>
+          <option value="pages-asc">Sayfa Sayısı: En Az → En Çok</option>
+          <option value="end-desc">Bitiş Tarihi: En Yeni → En Eski</option>
+          <option value="end-asc">Bitiş Tarihi: En Eski → En Yeni</option>
+        </select>
+      </div>
+
       <div class="form-group">
         <label>Okuma Durumu:</label>
         <select id="filter-status" onchange="renderItems()">
@@ -590,36 +620,42 @@
           <option value="Okumak İstenilenlerde">Okumak İstenilenlerde</option>
         </select>
       </div>
+
       <div class="form-group">
         <label>Yazar:</label>
         <select id="filter-author" onchange="renderItems()">
           <option value="all">Tüm Yazarlar</option>
         </select>
       </div>
+
       <div class="form-group">
         <label>Metin Türü:</label>
         <select id="filter-type" onchange="renderItems()">
           <option value="all">Tüm Türler</option>
         </select>
       </div>
+
       <div class="form-group">
         <label>Seri / Raf:</label>
         <select id="filter-shelf" onchange="renderItems()">
           <option value="all">Tüm Seri ve Raflar</option>
         </select>
       </div>
+
       <div class="form-group">
         <label>Etiket:</label>
         <select id="filter-tag" onchange="renderItems()">
           <option value="all">Tüm Etiketler</option>
         </select>
       </div>
+
       <div class="form-group">
         <label>Yıla Göre:</label>
         <select id="filter-year" onchange="renderItems()">
           <option value="all">Tüm Yıllar</option>
         </select>
       </div>
+
       <div class="form-group">
         <label>Aya Göre:</label>
         <select id="filter-month" onchange="renderItems()">
@@ -639,6 +675,7 @@
         </select>
       </div>
     </div>
+
     <div id="active-tag-filter-display" class="active-filter-alert" style="display: none;">
       <span id="active-filter-text"></span>
       <button class="icon-btn" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;" onclick="clearBadgeFilters()">Filtreyi Temizle</button>
@@ -769,6 +806,7 @@
 
   let activeClickFilters = { author: null, type: null, shelf: null, tag: null };
 
+  // Karşılama Ekranı Süreleri: Daire 2 sn, Su 4 sn
   window.addEventListener("DOMContentLoaded", () => {
     const splash = document.getElementById("splash-screen");
     const splashTitle = document.getElementById("splash-title");
@@ -782,12 +820,11 @@
     setTimeout(() => {
       if (splashAnim === "water") {
         splash.classList.add("anim-water-out");
+        setTimeout(() => { splash.style.display = "none"; }, 4000);
       } else {
         splash.classList.add("anim-circle-out");
+        setTimeout(() => { splash.style.display = "none"; }, 2000);
       }
-      setTimeout(() => {
-        splash.style.display = "none";
-      }, 900);
     }, 1000);
   });
 
@@ -989,6 +1026,12 @@
     return null;
   }
 
+  function dateToComparableNumber(dateStr) {
+    const comp = parseDateComponents(dateStr);
+    if (!comp) return 0;
+    return parseInt(`${comp.year}${comp.month}${comp.day}`, 10);
+  }
+
   const form = document.getElementById("record-form");
   const editIdInput = document.getElementById("edit-id");
   const formHeading = document.getElementById("form-heading");
@@ -1130,6 +1173,7 @@
   }
 
   const searchInput = document.getElementById("search-input");
+  const sortOrder = document.getElementById("sort-order");
   const filterStatus = document.getElementById("filter-status");
   const filterAuthor = document.getElementById("filter-author");
   const filterType = document.getElementById("filter-type");
@@ -1204,7 +1248,7 @@
     const selYear = filterYear.value;
     const selMonth = filterMonth.value;
 
-    const filtered = records.filter(item => {
+    let filtered = records.filter(item => {
       if (query) {
         const fullContent = `${item.title} ${(item.authors || []).join(' ')} ${item.type || ''} ${item.shelf || ''} ${(item.tags || []).join(' ')} ${item.notes || ''}`.toLowerCase();
         if (!fullContent.includes(query)) return false;
@@ -1229,6 +1273,29 @@
       }
 
       return true;
+    });
+
+    // Sıralama Mantığı
+    const order = sortOrder.value;
+    filtered.sort((a, b) => {
+      if (order === "newest") return b.id - a.id;
+      if (order === "oldest") return a.id - b.id;
+      if (order === "title-asc") return (a.title || "").localeCompare(b.title || "", "tr");
+      if (order === "author-asc") return ((a.authors && a.authors[0]) || "").localeCompare(((b.authors && b.authors[0]) || ""), "tr");
+      
+      if (order === "prog-desc") return (b.progress ?? -1) - (a.progress ?? -1);
+      if (order === "prog-asc") return (a.progress ?? 999) - (b.progress ?? 999);
+      
+      if (order === "pages-desc") return (b.totalPages ?? -1) - (a.totalPages ?? -1);
+      if (order === "pages-asc") return (a.totalPages ?? 999999) - (b.totalPages ?? 999999);
+      
+      if (order === "end-desc") return dateToComparableNumber(b.endDate) - dateToComparableNumber(a.endDate);
+      if (order === "end-asc") {
+        const dateA = dateToComparableNumber(a.endDate) || 99999999;
+        const dateB = dateToComparableNumber(b.endDate) || 99999999;
+        return dateA - dateB;
+      }
+      return 0;
     });
 
     countDisplay.textContent = `${filtered.length} kadar başlık sıralanıyor`;
