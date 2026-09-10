@@ -33,7 +33,7 @@
 
     body {
       min-height: 100vh;
-      padding: 1.5rem 1rem;
+      padding: 1.25rem 1rem;
       background-color: var(--active-bg-tint);
       background-size: cover;
       background-position: center;
@@ -44,7 +44,7 @@
       overflow-x: hidden;
     }
 
-    /* Karşılama Ekranı (Splash Screen) */
+    /* Karşılama Ekranı (Splash) */
     #splash-screen {
       position: fixed;
       inset: 0;
@@ -69,7 +69,6 @@
       opacity: 0.9;
     }
 
-    /* Daire Animasyonu: Merkezden küçülerek yok olma */
     .anim-circle-out {
       animation: circleShrink 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
     }
@@ -78,7 +77,6 @@
       100% { clip-path: circle(0% at 50% 50%); opacity: 0; visibility: hidden; }
     }
 
-    /* Su Dalgası Animasyonu: Yukarıdan aşağıya boşalarak akma */
     .anim-water-out {
       animation: waterDrain 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
     }
@@ -93,40 +91,70 @@
       margin: 0 auto;
     }
 
-    /* Üst Menü */
-    .top-nav {
+    /* Üst Başlık Satırı */
+    .header-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
-      gap: 0.5rem;
+      margin-bottom: 0.85rem;
     }
 
-    .nav-btn-group {
+    .app-title {
+      font-size: 1.45rem;
+      font-weight: 800;
       display: flex;
-      gap: 0.4rem;
       align-items: center;
+      gap: 0.4rem;
     }
 
-    .toggle-btn {
+    .settings-corner-btn {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
       color: var(--active-text);
-      padding: 0.5rem 0.85rem;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.88rem;
+      font-size: 1.25rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .settings-corner-btn:hover { background: var(--card-bg); }
+    .settings-corner-btn:active { transform: scale(0.95); }
+
+    /* Başlığın Altındaki İşlem Butonları */
+    .actions-row {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      color: var(--active-text);
+      padding: 0.55rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      white-space: nowrap; /* Metnin veya emojinin alt satıra taşmasını önler */
       box-shadow: 0 1px 3px rgba(0,0,0,0.05);
       transition: background 0.15s, transform 0.1s;
     }
 
-    .toggle-btn:hover { background: var(--card-bg); }
-    .toggle-btn:active { transform: scale(0.97); }
+    .action-btn:hover { background: var(--card-bg); }
+    .action-btn:active { transform: scale(0.97); }
 
+    /* Açılır Paneller */
     .collapsible-panel {
       display: none;
       background: var(--panel-bg);
@@ -146,8 +174,8 @@
 
     .settings-row {
       display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
+      flex-wrap: wrap; /* Kutuların alta taşmasını sağlar */
+      gap: 0.75rem;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 1rem;
@@ -159,6 +187,19 @@
       margin-bottom: 0;
       padding-bottom: 0;
       border-bottom: none;
+    }
+
+    .settings-controls-group {
+      display: flex;
+      flex-wrap: wrap; /* Seçim kutuları sığmadığında otomatik alt satıra geçer */
+      gap: 0.5rem;
+      align-items: center;
+      max-width: 100%;
+    }
+
+    .settings-controls-group select,
+    .settings-controls-group input {
+      max-width: 100%;
     }
 
     .palette-grid {
@@ -326,7 +367,6 @@
       gap: 0.6rem;
     }
 
-    /* Tıklanabilir Filtre Rozetleri */
     .clickable-badge {
       cursor: pointer;
       display: inline-block;
@@ -370,7 +410,6 @@
     .status-Yarıda-Bırakıldı { background: #fee2e2; color: #991b1b; }
     .status-Okumak-İstenilenlerde { background: #e0e7ff; color: #3730a3; }
 
-    /* İlerleme & Pil Rozeti */
     .progress-badge {
       display: inline-flex;
       align-items: center;
@@ -419,7 +458,6 @@
 </head>
 <body>
 
-<!-- Tam Ekran Karşılama (Splash) -->
 <div id="splash-screen">
   <h1 id="splash-title">Hoş geldin!</h1>
   <p>Okuma listen ve metin arşivin yükleniyor...</p>
@@ -427,21 +465,22 @@
 
 <div class="container">
 
-  <!-- Üst Menü -->
-  <div class="top-nav">
-    <h2 class="themed-text" style="font-size: 1.25rem;">📚 ReaderTracker</h2>
-    <div class="nav-btn-group">
-      <button class="toggle-btn" onclick="toggleFormPanel()">➕ Metin Ekle</button>
-      <button class="toggle-btn" onclick="togglePanel('filter-panel')">🔍 Filtrele</button>
-      <button class="toggle-btn" onclick="togglePanel('settings-panel')">⚙️ Ayarlar</button>
-    </div>
+  <!-- 1. Satır: Sadece Başlık ve En Sağda Ayarlar Emojisi -->
+  <div class="header-row">
+    <h2 class="app-title themed-text">ReaderTracker 📚</h2>
+    <button class="settings-corner-btn" title="Ayarlar" onclick="togglePanel('settings-panel')">⚙️</button>
+  </div>
+
+  <!-- 2. Satır: Başlığın Altında Metin Ekle & Filtrele Butonları -->
+  <div class="actions-row">
+    <button class="action-btn" onclick="toggleFormPanel()">➕ Metin Ekle</button>
+    <button class="action-btn" onclick="togglePanel('filter-panel')">🔍 Filtrele</button>
   </div>
 
   <!-- Ayarlar Paneli -->
   <div class="collapsible-panel" id="settings-panel">
     <h3 class="themed-text" style="margin-bottom: 1rem; font-size: 1.05rem;">⚙️ Uygulama & Görünüm Ayarları</h3>
 
-    <!-- Gece / Gündüz Butonu (Sadece Güneş / Ay emojisi) -->
     <div class="settings-row">
       <div>
         <div style="font-weight: 600;" class="themed-text">Tema Modu:</div>
@@ -452,7 +491,6 @@
       </div>
     </div>
 
-    <!-- Kullanıcı Adı Ayarı -->
     <div class="settings-row">
       <div>
         <div style="font-weight: 600;" class="themed-text">Kullanıcı Adı:</div>
@@ -463,13 +501,13 @@
       </div>
     </div>
 
-    <!-- Karşılama Ekranı Ayarları -->
+    <!-- Taşmayan, Otomatik Alta Kayan Seçim Alanı -->
     <div class="settings-row">
       <div>
         <div style="font-weight: 600;" class="themed-text">Açılış Karşılama Ekranı:</div>
         <small style="color: var(--text-muted);">Sayfa yüklendiğinde görünen animasyonlu geçiş.</small>
       </div>
-      <div style="display: flex; gap: 0.5rem; align-items: center;">
+      <div class="settings-controls-group">
         <select id="setting-splash-enabled" onchange="updateSplashSettings()" style="width: auto;">
           <option value="true">Açık (Varsayılan)</option>
           <option value="false">Kapalı</option>
@@ -481,7 +519,6 @@
       </div>
     </div>
 
-    <!-- Tarih Giriş Şekli -->
     <div class="settings-row">
       <div>
         <div style="font-weight: 600;" class="themed-text">Tarih Giriş Şekli:</div>
@@ -495,7 +532,6 @@
       </div>
     </div>
 
-    <!-- Tarih Formatı -->
     <div class="settings-row">
       <div>
         <div style="font-weight: 600;" class="themed-text">Tarih Formatı (Default):</div>
@@ -509,30 +545,27 @@
       </div>
     </div>
     
-    <!-- Duvar Kağıdı -->
     <div class="settings-row">
       <span style="font-weight: 600;" class="themed-text">Duvar Kağıdı (Wallpaper):</span>
-      <div style="display: flex; gap: 0.5rem; align-items: center;">
+      <div class="settings-controls-group">
         <input type="file" id="bg-upload" accept="image/*" style="display: none;" onchange="handleBgUpload(event)">
         <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="document.getElementById('bg-upload').click()">Görsel Seç</button>
         <button class="icon-btn" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;" onclick="clearBg()">Kaldır</button>
       </div>
     </div>
 
-    <!-- Excel İçe / Dışa Aktarma -->
     <div class="settings-row">
       <div>
         <div style="font-weight: 600;" class="themed-text">Veri Yönetimi (Excel / CSV):</div>
         <small style="color: var(--text-muted);">Kayıtlarını Excel tablosu olarak yedekle ya da yükle.</small>
       </div>
-      <div style="display: flex; gap: 0.5rem;">
+      <div class="settings-controls-group">
         <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="exportToCSV()">Excel Olarak İndir</button>
         <input type="file" id="csv-upload" accept=".csv" style="display: none;" onchange="importFromCSV(event)">
         <button class="icon-btn" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;" onclick="document.getElementById('csv-upload').click()">Excel Yükle</button>
       </div>
     </div>
 
-    <!-- Renk Paleti -->
     <div style="margin-top: 0.75rem;">
       <span style="font-weight: 600;" class="themed-text">Yazı, Buton & Arka Plan Rengi:</span>
       <div class="palette-grid" id="palette-container"></div>
@@ -612,7 +645,7 @@
     </div>
   </div>
 
-  <!-- Kayıt Formu (Varsayılan olarak gizli) -->
+  <!-- Kayıt Formu -->
   <div class="form-card" id="form-panel">
     <h2 id="form-heading" style="margin-bottom: 1rem; font-size: 1.25rem;" class="themed-text">Yeni Metin Ekle</h2>
     <form id="record-form">
@@ -693,7 +726,10 @@
     </form>
   </div>
 
+  <!-- 3. Satır: Başlık Sayacı -->
   <div class="count-bar themed-text" id="count-display">0 kadar başlık sıralanıyor</div>
+
+  <!-- Kayıtlar Listesi -->
   <div id="records-list"></div>
 
 </div>
@@ -728,13 +764,11 @@
   let dateFormat = localStorage.getItem("reader_date_format") || "dd-mm-yyyy";
   let isDarkMode = localStorage.getItem("reader_dark_mode") === "true";
   let currentUsername = localStorage.getItem("reader_username") || "";
-  let splashEnabled = localStorage.getItem("reader_splash_enabled") !== "false"; // default true
-  let splashAnim = localStorage.getItem("reader_splash_anim") || "circle"; // default circle
+  let splashEnabled = localStorage.getItem("reader_splash_enabled") !== "false";
+  let splashAnim = localStorage.getItem("reader_splash_anim") || "circle";
 
-  // Aktif Tıklama Filtreleri
   let activeClickFilters = { author: null, type: null, shelf: null, tag: null };
 
-  // Karşılama Ekranı (Splash)
   window.addEventListener("DOMContentLoaded", () => {
     const splash = document.getElementById("splash-screen");
     const splashTitle = document.getElementById("splash-title");
@@ -767,7 +801,6 @@
   document.getElementById("setting-splash-enabled").value = splashEnabled ? "true" : "false";
   document.getElementById("setting-splash-anim").value = splashAnim;
 
-  // Kullanıcı Adı
   function updateUsername(name) {
     currentUsername = name.trim();
     localStorage.setItem("reader_username", currentUsername);
@@ -776,7 +809,6 @@
   }
   document.getElementById("setting-username").value = currentUsername;
 
-  // Tema Modu
   function applyThemeMode() {
     const btn = document.getElementById("theme-icon-btn");
     if (isDarkMode) {
@@ -798,7 +830,6 @@
     applyThemeMode();
   }
 
-  // Panel Kontrolleri
   function togglePanel(panelId) {
     const p = document.getElementById(panelId);
     p.style.display = p.style.display === "block" ? "none" : "block";
@@ -845,7 +876,6 @@
   document.getElementById("setting-date-format").value = dateFormat;
   changeDateInputMode(dateInputMode);
 
-  // Renk Paleti
   const paletteContainer = document.getElementById("palette-container");
   colorPalette.forEach(col => {
     const btn = document.createElement("button");
@@ -910,7 +940,6 @@
   loadBg(localStorage.getItem("reader_custom_bg"));
   applyThemeMode();
 
-  // Sayfa Sayısı & İlerleme Hesaplaması
   function calculateProgressFromPages() {
     const total = parseFloat(document.getElementById("total-pages").value);
     const read = parseFloat(document.getElementById("read-pages").value);
@@ -931,7 +960,6 @@
     }
   }
 
-  // Tarih Çözümleme
   function normalizeDateInput(val) {
     if (!val) return "";
     val = val.trim();
@@ -961,7 +989,6 @@
     return null;
   }
 
-  // Form İşlemleri
   const form = document.getElementById("record-form");
   const editIdInput = document.getElementById("edit-id");
   const formHeading = document.getElementById("form-heading");
@@ -985,15 +1012,12 @@
     startDateVal = normalizeDateInput(startDateVal);
     endDateVal = normalizeDateInput(endDateVal);
 
-    // Çoklu Yazarlar
     const rawAuthors = document.getElementById("author").value;
     const authorsArray = rawAuthors.split(",").map(a => a.trim()).filter(Boolean);
 
-    // Etiketler
     const rawTags = document.getElementById("tags").value;
     const tagsArray = rawTags.split(",").map(t => t.trim()).filter(Boolean);
 
-    // Sayfa & Yüzde
     const totalPages = document.getElementById("total-pages").value ? parseInt(document.getElementById("total-pages").value, 10) : null;
     const readPages = document.getElementById("read-pages").value ? parseInt(document.getElementById("read-pages").value, 10) : null;
     let progress = document.getElementById("progress-percent").value ? Math.round(parseFloat(document.getElementById("progress-percent").value)) : null;
@@ -1072,10 +1096,9 @@
     renderItems();
   }
 
-  // Tıklanabilir Filtreleme Tetikleyicisi
   function toggleClickFilter(type, value) {
     if (activeClickFilters[type] === value) {
-      activeClickFilters[type] = null; // Zaten seçiliyse filtreyi kaldır
+      activeClickFilters[type] = null;
     } else {
       activeClickFilters[type] = value;
     }
@@ -1106,7 +1129,6 @@
     }
   }
 
-  // Filtreler & Arama
   const searchInput = document.getElementById("search-input");
   const filterStatus = document.getElementById("filter-status");
   const filterAuthor = document.getElementById("filter-author");
@@ -1183,25 +1205,21 @@
     const selMonth = filterMonth.value;
 
     const filtered = records.filter(item => {
-      // Canlı Arama
       if (query) {
         const fullContent = `${item.title} ${(item.authors || []).join(' ')} ${item.type || ''} ${item.shelf || ''} ${(item.tags || []).join(' ')} ${item.notes || ''}`.toLowerCase();
         if (!fullContent.includes(query)) return false;
       }
-      // Dropdown Filtreler
       if (selStatus !== "all" && item.status !== selStatus) return false;
       if (selAuthor !== "all" && (!item.authors || !item.authors.includes(selAuthor))) return false;
       if (selType !== "all" && item.type !== selType) return false;
       if (selShelf !== "all" && item.shelf !== selShelf) return false;
       if (selTag !== "all" && (!item.tags || !item.tags.includes(selTag))) return false;
 
-      // Tıklanabilir Rozet Filtreleri
       if (activeClickFilters.author && (!item.authors || !item.authors.includes(activeClickFilters.author))) return false;
       if (activeClickFilters.type && item.type !== activeClickFilters.type) return false;
       if (activeClickFilters.shelf && item.shelf !== activeClickFilters.shelf) return false;
       if (activeClickFilters.tag && (!item.tags || !item.tags.includes(activeClickFilters.tag))) return false;
 
-      // Yıl ve Ay
       if (selYear !== "all" || selMonth !== "all") {
         const sComp = parseDateComponents(item.startDate);
         const eComp = parseDateComponents(item.endDate);
@@ -1226,7 +1244,6 @@
 
       let metaDetails = [];
 
-      // Yazarlar (Tıklanabilir)
       if (item.authors && item.authors.length > 0) {
         const authorsHtml = item.authors.map(a => {
           const isAct = activeClickFilters.author === a ? "active-filter" : "";
@@ -1235,43 +1252,36 @@
         metaDetails.push(authorsHtml);
       }
 
-      // Tür (Tıklanabilir)
       if (item.type) {
         const isAct = activeClickFilters.type === item.type ? "active-filter" : "";
         metaDetails.push(`<span class="clickable-badge ${isAct}" onclick="toggleClickFilter('type', '${escapeHtml(item.type)}')" title="Türe göre filtrele/kaldır">🏷️ ${escapeHtml(item.type)}</span>`);
       }
 
-      // Seri / Raf (Tıklanabilir)
       if (item.shelf) {
         const isAct = activeClickFilters.shelf === item.shelf ? "active-filter" : "";
         metaDetails.push(`<span class="clickable-badge ${isAct}" onclick="toggleClickFilter('shelf', '${escapeHtml(item.shelf)}')" title="Seri/Rafa göre filtrele/kaldır">📁 <em>${escapeHtml(item.shelf)}</em></span>`);
       }
 
-      // Sayfa Sayısı
       if (item.totalPages) {
         const pageText = item.readPages !== null && item.readPages !== undefined ? `${item.readPages}/${item.totalPages} s.` : `${item.totalPages} s.`;
         metaDetails.push(`<span>📖 ${pageText}</span>`);
       }
 
-      // Tarihler
       if (item.startDate) metaDetails.push(`<span>🗓️ Başlangıç: ${escapeHtml(item.startDate)}</span>`);
       if (item.endDate) metaDetails.push(`<span>🏁 Bitiş: ${escapeHtml(item.endDate)}</span>`);
 
-      // İlerleme Oranı & Pil Emojisi
       let progressBadgeHtml = "";
       if (item.progress !== null && item.progress !== undefined) {
         const batteryIcon = item.progress >= 50 ? "🔋" : "🪫";
         progressBadgeHtml = `<span class="progress-badge">%${item.progress} ${batteryIcon}</span>`;
       }
 
-      // Durum Rozeti
       let statusBadgeHtml = "";
       if (item.status) {
         const statusClass = "status-" + item.status.replace(/\s+/g, "-");
         statusBadgeHtml = `<span class="status-badge ${statusClass}">${escapeHtml(item.status)}</span>`;
       }
 
-      // Etiketler (Tıklanabilir)
       let tagsHtml = "";
       if (item.tags && item.tags.length > 0) {
         tagsHtml = `<div class="tags-container">` + 
@@ -1306,7 +1316,6 @@
     });
   }
 
-  // Excel CSV Dışa Aktarma
   function exportToCSV() {
     if (records.length === 0) {
       alert("Dışa aktarılacak kayıt bulunmuyor.");
@@ -1340,7 +1349,6 @@
     document.body.removeChild(link);
   }
 
-  // Excel CSV İçe Aktarma
   function importFromCSV(e) {
     const file = e.target.files[0];
     if (!file) return;
