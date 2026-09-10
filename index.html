@@ -93,7 +93,7 @@
       margin: 0 auto;
     }
 
-    /* Üst Başlık Satırı */
+    /* 1. Satır: Başlık & Sağ Üst Ayarlar Emojisi */
     .header-row {
       display: flex;
       justify-content: space-between;
@@ -128,7 +128,7 @@
     .settings-corner-btn:hover { background: var(--card-bg); }
     .settings-corner-btn:active { transform: scale(0.95); }
 
-    /* Başlığın Altındaki Eylem Butonları */
+    /* 2. Satır: Eylem Butonları */
     .actions-row {
       display: flex;
       gap: 0.6rem;
@@ -259,6 +259,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.35rem;
+      position: relative;
     }
 
     .form-group label {
@@ -286,6 +287,34 @@
     }
 
     textarea { resize: vertical; min-height: 70px; }
+
+    /* Mobil Uyumlu Hızlı Seçim Rozetleri */
+    .suggestions-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.35rem;
+      max-height: 85px;
+      overflow-y: auto;
+      padding: 0.2rem 0;
+    }
+
+    .suggestion-pill {
+      background: var(--badge-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .suggestion-pill:hover, .suggestion-pill:active {
+      background: var(--active-accent);
+      color: #ffffff;
+      border-color: var(--active-accent);
+    }
 
     .filter-grid {
       display: grid;
@@ -394,7 +423,6 @@
       border: 1px solid var(--border-color);
     }
 
-    /* Durum Rozetleri */
     .status-badge {
       display: inline-block;
       font-size: 0.75rem;
@@ -464,7 +492,7 @@
 
 <div class="container">
 
-  <!-- 1. Satır: Başlık ve Sağ Üstte Ayarlar Emojisi -->
+  <!-- 1. Satır: Başlık & Sağ Üstte Ayarlar Emojisi -->
   <div class="header-row">
     <h2 class="app-title themed-text">ReaderTracker 📚</h2>
     <button class="settings-corner-btn" title="Ayarlar" onclick="togglePanel('settings-panel')">⚙️</button>
@@ -672,7 +700,7 @@
     </div>
   </div>
 
-  <!-- Kayıt Formu (Dinamik Öneri Listeleri ile) -->
+  <!-- Kayıt Formu (Dokunmatik Hızlı Seçim Rozetleri ile) -->
   <div class="form-card" id="form-panel">
     <h2 id="form-heading" style="margin-bottom: 1rem; font-size: 1.25rem;" class="themed-text">Yeni Metin Ekle</h2>
     <form id="record-form">
@@ -686,20 +714,20 @@
 
         <div class="form-group">
           <label>Yazar(lar)</label>
-          <input type="text" id="author" list="datalist-authors" placeholder="Virgülle ayırın veya listeden seçin">
-          <datalist id="datalist-authors"></datalist>
+          <input type="text" id="author" placeholder="Yazın veya alttaki hazır yazara dokunun">
+          <div class="suggestions-container" id="suggestions-authors"></div>
         </div>
 
         <div class="form-group">
           <label>Metin Türü</label>
-          <input type="text" id="type" list="datalist-types" placeholder="Kitap, Makale vb. seçin ya da yazın">
-          <datalist id="datalist-types"></datalist>
+          <input type="text" id="type" placeholder="Yazın veya alttaki türe dokunun">
+          <div class="suggestions-container" id="suggestions-types"></div>
         </div>
 
         <div class="form-group">
           <label>Seri / Raf</label>
-          <input type="text" id="shelf" list="datalist-shelves" placeholder="Raf seçin ya da yenisini yazın">
-          <datalist id="datalist-shelves"></datalist>
+          <input type="text" id="shelf" placeholder="Yazın veya alttaki rafa dokunun">
+          <div class="suggestions-container" id="suggestions-shelves"></div>
         </div>
 
         <div class="form-group">
@@ -731,8 +759,8 @@
 
         <div class="form-group">
           <label>Etiketler</label>
-          <input type="text" id="tags" list="datalist-tags" placeholder="Virgülle ayırın veya listeden seçin">
-          <datalist id="datalist-tags"></datalist>
+          <input type="text" id="tags" placeholder="Yazın veya alttaki etikete dokunun">
+          <div class="suggestions-container" id="suggestions-tags"></div>
         </div>
 
         <div class="form-group">
@@ -1027,6 +1055,53 @@
     return parseInt(`${comp.year}${comp.month}${comp.day}`, 10);
   }
 
+  // Dokunmatik Seçim / Doldurma Yardımcısı
+  function applySuggestion(inputId, val, isMulti = false) {
+    const inp = document.getElementById(inputId);
+    if (!isMulti) {
+      inp.value = val;
+    } else {
+      const parts = inp.value.split(",").map(p => p.trim()).filter(Boolean);
+      if (!parts.includes(val)) {
+        parts.push(val);
+      }
+      inp.value = parts.join(", ");
+    }
+    inp.focus();
+  }
+
+  function populateSuggestions() {
+    const authorsSet = new Set();
+    const typesSet = new Set(["Kitap", "Makale", "Rapor", "Karar", "Tez"]); // Temel türler her zaman hazır
+    const shelvesSet = new Set();
+    const tagsSet = new Set();
+
+    records.forEach(r => {
+      (r.authors || []).forEach(a => authorsSet.add(a));
+      if (r.type) typesSet.add(r.type);
+      if (r.shelf) shelvesSet.add(r.shelf);
+      (r.tags || []).forEach(t => tagsSet.add(t));
+    });
+
+    renderPills("suggestions-authors", "author", authorsSet, true);
+    renderPills("suggestions-types", "type", typesSet, false);
+    renderPills("suggestions-shelves", "shelf", shelvesSet, false);
+    renderPills("suggestions-tags", "tags", tagsSet, true);
+  }
+
+  function renderPills(containerId, inputId, setObj, isMulti) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = "";
+    Array.from(setObj).sort().forEach(item => {
+      const pill = document.createElement("span");
+      pill.className = "suggestion-pill";
+      pill.textContent = "+ " + item;
+      pill.onclick = () => applySuggestion(inputId, item, isMulti);
+      container.appendChild(pill);
+    });
+  }
+
   const form = document.getElementById("record-form");
   const editIdInput = document.getElementById("edit-id");
   const formHeading = document.getElementById("form-heading");
@@ -1131,7 +1206,7 @@
   function saveAndRender() {
     localStorage.setItem("reader_records_v5", JSON.stringify(records));
     populateFilterDropdowns();
-    populateFormDatalists(); // Dinamik datalist önerilerini güncelle
+    populateSuggestions();
     renderItems();
   }
 
@@ -1178,37 +1253,6 @@
   const filterYear = document.getElementById("filter-year");
   const filterMonth = document.getElementById("filter-month");
   const countDisplay = document.getElementById("count-display");
-
-  // Form Datalistlerini Otomatik Doldurma
-  function populateFormDatalists() {
-    const authorsSet = new Set();
-    const typesSet = new Set();
-    const shelvesSet = new Set();
-    const tagsSet = new Set();
-
-    records.forEach(r => {
-      (r.authors || []).forEach(a => authorsSet.add(a));
-      if (r.type) typesSet.add(r.type);
-      if (r.shelf) shelvesSet.add(r.shelf);
-      (r.tags || []).forEach(t => tagsSet.add(t));
-    });
-
-    fillDatalist("datalist-authors", authorsSet);
-    fillDatalist("datalist-types", typesSet);
-    fillDatalist("datalist-shelves", shelvesSet);
-    fillDatalist("datalist-tags", tagsSet);
-  }
-
-  function fillDatalist(elementId, dataSet) {
-    const dl = document.getElementById(elementId);
-    if (!dl) return;
-    dl.innerHTML = "";
-    Array.from(dataSet).sort().forEach(item => {
-      const opt = document.createElement("option");
-      opt.value = item;
-      dl.appendChild(opt);
-    });
-  }
 
   function populateFilterDropdowns() {
     const curAuthor = filterAuthor.value;
@@ -1494,7 +1538,7 @@
 
   // İlk Kurulum
   populateFilterDropdowns();
-  populateFormDatalists();
+  populateSuggestions();
   renderItems();
 </script>
 
