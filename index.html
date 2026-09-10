@@ -259,6 +259,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.35rem;
+      position: relative;
     }
 
     .form-group label {
@@ -287,57 +288,83 @@
 
     textarea { resize: vertical; min-height: 70px; }
 
-    .custom-new-input {
-      margin-top: 0.35rem;
-      display: none;
-      animation: fadeIn 0.15s ease;
-    }
-
-    /* Silinebilir Çarpılı Seçenek Rozetleri */
-    .pills-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem;
-      margin-top: 0.4rem;
-      max-height: 90px;
-      overflow-y: auto;
-    }
-
-    .deletable-pill {
-      background: var(--badge-bg);
+    /* Özel Açılır Menü (Çarpılı Seçenekler) */
+    .custom-select-trigger {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
       border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      background: var(--input-bg);
       color: var(--text-main);
-      border-radius: 6px;
-      padding: 0.2rem 0.45rem;
-      font-size: 0.78rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .deletable-pill span.pill-label {
       cursor: pointer;
-    }
-    .deletable-pill span.pill-label:hover {
-      text-decoration: underline;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
     }
 
-    .deletable-pill button.delete-pill-btn {
+    .custom-dropdown-panel {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      z-index: 1000;
+      max-height: 220px;
+      overflow-y: auto;
+      margin-top: 4px;
+    }
+
+    .dropdown-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid var(--border-color);
+      transition: background 0.15s;
+    }
+
+    .dropdown-item-row:hover {
+      background: rgba(0,0,0,0.04);
+    }
+
+    .dropdown-item-name {
+      cursor: pointer;
+      flex: 1;
+      font-size: 0.9rem;
+    }
+
+    .dropdown-item-del {
       background: none;
       border: none;
       color: #ef4444;
-      font-size: 0.85rem;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
-      padding: 0 0.15rem;
+      padding: 0 0.35rem;
+      border-radius: 4px;
       line-height: 1;
-      border-radius: 3px;
-      transition: background 0.15s, transform 0.1s;
+      transition: transform 0.1s;
     }
 
-    .deletable-pill button.delete-pill-btn:hover {
-      background: rgba(239, 68, 68, 0.15);
-      transform: scale(1.15);
+    .dropdown-item-del:hover {
+      transform: scale(1.25);
+    }
+
+    .dropdown-add-new-btn {
+      padding: 0.65rem 0.85rem;
+      color: var(--active-accent);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
     }
 
     .filter-grid {
@@ -724,7 +751,7 @@
     </div>
   </div>
 
-  <!-- Kayıt Formu (Çarpı ile Silinebilir Seçenekler) -->
+  <!-- Kayıt Formu (Özel Çarpılı Açılır Menüler) -->
   <div class="form-card" id="form-panel">
     <h2 id="form-heading" style="margin-bottom: 1rem; font-size: 1.25rem;" class="themed-text">Yeni Metin Ekle</h2>
     <form id="record-form">
@@ -738,40 +765,44 @@
 
         <!-- Yazar -->
         <div class="form-group">
-          <label>Yazar</label>
-          <select id="select-author" onchange="handleSelectChoice('select-author', 'input-new-author')">
-            <option value="">Belirtilmedi</option>
-            <option value="__NEW__">➕ Yeni Yazar Ekle...</option>
-          </select>
-          <input type="text" id="input-new-author" class="custom-new-input" placeholder="Yeni yazar adını yazın...">
-          <div class="pills-container" id="pills-author"></div>
+          <label>Yazar(lar)</label>
+          <input type="hidden" id="field-val-author">
+          <div class="custom-select-trigger" onclick="toggleCustomDropdown('dropdown-author')">
+            <span id="trigger-label-author">Seçiniz veya Ekleyiniz</span>
+            <span>▼</span>
+          </div>
+          <div class="custom-dropdown-panel" id="dropdown-author">
+            <div id="items-author"></div>
+            <div class="dropdown-add-new-btn" onclick="promptAddNewOption('author')">➕ Yeni Yazar Ekle...</div>
+          </div>
         </div>
 
         <!-- Metin Türü -->
         <div class="form-group">
           <label>Metin Türü</label>
-          <select id="select-type" onchange="handleSelectChoice('select-type', 'input-new-type')">
-            <option value="">Belirtilmedi</option>
-            <option value="Kitap">Kitap</option>
-            <option value="Makale">Makale</option>
-            <option value="Rapor">Rapor</option>
-            <option value="Karar">Karar</option>
-            <option value="Tez">Tez</option>
-            <option value="__NEW__">➕ Yeni Metin Türü Ekle...</option>
-          </select>
-          <input type="text" id="input-new-type" class="custom-new-input" placeholder="Yeni metin türünü yazın...">
-          <div class="pills-container" id="pills-type"></div>
+          <input type="hidden" id="field-val-type">
+          <div class="custom-select-trigger" onclick="toggleCustomDropdown('dropdown-type')">
+            <span id="trigger-label-type">Seçiniz veya Ekleyiniz</span>
+            <span>▼</span>
+          </div>
+          <div class="custom-dropdown-panel" id="dropdown-type">
+            <div id="items-type"></div>
+            <div class="dropdown-add-new-btn" onclick="promptAddNewOption('type')">➕ Yeni Metin Türü Ekle...</div>
+          </div>
         </div>
 
         <!-- Seri / Raf -->
         <div class="form-group">
           <label>Seri / Raf</label>
-          <select id="select-shelf" onchange="handleSelectChoice('select-shelf', 'input-new-shelf')">
-            <option value="">Belirtilmedi</option>
-            <option value="__NEW__">➕ Yeni Seri/Raf Ekle...</option>
-          </select>
-          <input type="text" id="input-new-shelf" class="custom-new-input" placeholder="Yeni raf adını yazın...">
-          <div class="pills-container" id="pills-shelf"></div>
+          <input type="hidden" id="field-val-shelf">
+          <div class="custom-select-trigger" onclick="toggleCustomDropdown('dropdown-shelf')">
+            <span id="trigger-label-shelf">Seçiniz veya Ekleyiniz</span>
+            <span>▼</span>
+          </div>
+          <div class="custom-dropdown-panel" id="dropdown-shelf">
+            <div id="items-shelf"></div>
+            <div class="dropdown-add-new-btn" onclick="promptAddNewOption('shelf')">➕ Yeni Seri/Raf Ekle...</div>
+          </div>
         </div>
 
         <!-- Okuma Durumu -->
@@ -804,13 +835,16 @@
 
         <!-- Etiketler -->
         <div class="form-group">
-          <label>Etiket</label>
-          <select id="select-tags" onchange="handleSelectChoice('select-tags', 'input-new-tags')">
-            <option value="">Belirtilmedi</option>
-            <option value="__NEW__">➕ Yeni Etiket Ekle...</option>
-          </select>
-          <input type="text" id="input-new-tags" class="custom-new-input" placeholder="Yeni etiketi yazın (virgülle ayırabilirsiniz)...">
-          <div class="pills-container" id="pills-tags"></div>
+          <label>Etiketler</label>
+          <input type="hidden" id="field-val-tags">
+          <div class="custom-select-trigger" onclick="toggleCustomDropdown('dropdown-tags')">
+            <span id="trigger-label-tags">Seçiniz veya Ekleyiniz</span>
+            <span>▼</span>
+          </div>
+          <div class="custom-dropdown-panel" id="dropdown-tags">
+            <div id="items-tags"></div>
+            <div class="dropdown-add-new-btn" onclick="promptAddNewOption('tags')">➕ Yeni Etiket Ekle...</div>
+          </div>
         </div>
 
         <div class="form-group">
@@ -1105,51 +1139,61 @@
     return parseInt(`${comp.year}${comp.month}${comp.day}`, 10);
   }
 
-  // Seçim Kutusu Kontrolü
-  function handleSelectChoice(selectId, inputId) {
-    const sel = document.getElementById(selectId);
-    const inp = document.getElementById(inputId);
-    if (sel.value === "__NEW__") {
-      inp.style.display = "block";
-      inp.focus();
-    } else {
-      inp.style.display = "none";
-      inp.value = "";
+  // Özel Sayfa İçi Açılır Menü Kontrolü
+  function toggleCustomDropdown(dropdownId) {
+    const dp = document.getElementById(dropdownId);
+    const isShowing = dp.style.display === "block";
+    document.querySelectorAll(".custom-dropdown-panel").forEach(p => p.style.display = "none");
+    dp.style.display = isShowing ? "none" : "block";
+  }
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".custom-select-trigger") && !e.target.closest(".custom-dropdown-panel")) {
+      document.querySelectorAll(".custom-dropdown-panel").forEach(p => p.style.display = "none");
+    }
+  });
+
+  function selectOption(key, val) {
+    document.getElementById(`field-val-${key}`).value = val;
+    document.getElementById(`trigger-label-${key}`).textContent = val || "Seçiniz veya Ekleyiniz";
+    document.getElementById(`dropdown-${key}`).style.display = "none";
+  }
+
+  function promptAddNewOption(key) {
+    const val = prompt("Lütfen yeni seçeneğin adını yazın:");
+    if (val && val.trim()) {
+      selectOption(key, val.trim());
+      updateCustomDropdowns();
     }
   }
 
-  function getFinalValue(selectId, inputId) {
-    const sel = document.getElementById(selectId);
-    const inp = document.getElementById(inputId);
-    if (sel.value === "__NEW__") {
-      return inp.value.trim();
-    }
-    return sel.value.trim();
-  }
-
-  // Var Olan Seçenekleri Silme (Çarpı Fonksiyonu)
-  function deleteExistingOption(fieldKey, valueToDelete) {
-    if (!confirm(`"${valueToDelete}" seçeneğini kalıcı olarak silmek istiyor musunuz?`)) {
+  // Çarpı Butonuyla Seçeneği Kalıcı Silme
+  function deleteOptionFromDropdown(key, valToDelete) {
+    if (!confirm(`"${valToDelete}" seçeneğini kalıcı olarak silmek istiyor musunuz?`)) {
       return;
     }
 
     records.forEach(r => {
-      if (fieldKey === "author") {
-        if (r.authors) r.authors = r.authors.filter(a => a !== valueToDelete);
-      } else if (fieldKey === "type") {
-        if (r.type === valueToDelete) r.type = "";
-      } else if (fieldKey === "shelf") {
-        if (r.shelf === valueToDelete) r.shelf = "";
-      } else if (fieldKey === "tags") {
-        if (r.tags) r.tags = r.tags.filter(t => t !== valueToDelete);
+      if (key === "author" && r.authors) {
+        r.authors = r.authors.filter(a => a !== valToDelete);
+      } else if (key === "type" && r.type === valToDelete) {
+        r.type = "";
+      } else if (key === "shelf" && r.shelf === valToDelete) {
+        r.shelf = "";
+      } else if (key === "tags" && r.tags) {
+        r.tags = r.tags.filter(t => t !== valToDelete);
       }
     });
+
+    if (document.getElementById(`field-val-${key}`).value === valToDelete) {
+      selectOption(key, "");
+    }
 
     saveAndRender();
   }
 
-  // Form Seçeneklerini Dinamik Doldurma ve Çarpılı Rozetleri Oluşturma
-  function updateFormSelects() {
+  // Özel Menü İçini Oluşturma
+  function updateCustomDropdowns() {
     const authorsSet = new Set();
     const typesSet = new Set(["Kitap", "Makale", "Rapor", "Karar", "Tez"]);
     const shelvesSet = new Set();
@@ -1162,62 +1206,42 @@
       (r.tags || []).forEach(t => tagsSet.add(t));
     });
 
-    fillFormSelect("select-author", authorsSet, "Yazar");
-    fillFormSelect("select-type", typesSet, "Metin Türü");
-    fillFormSelect("select-shelf", shelvesSet, "Seri/Raf");
-    fillFormSelect("select-tags", tagsSet, "Etiket");
-
-    renderDeletablePills("pills-author", "author", "select-author", authorsSet);
-    renderDeletablePills("pills-type", "type", "select-type", typesSet);
-    renderDeletablePills("pills-shelf", "shelf", "select-shelf", shelvesSet);
-    renderDeletablePills("pills-tags", "tags", "select-tags", tagsSet);
+    renderDropdownItems("author", authorsSet);
+    renderDropdownItems("type", typesSet);
+    renderDropdownItems("shelf", shelvesSet);
+    renderDropdownItems("tags", tagsSet);
   }
 
-  function fillFormSelect(selectId, setObj, labelName) {
-    const sel = document.getElementById(selectId);
-    const currentVal = sel.value;
-    sel.innerHTML = `
-      <option value="">Belirtilmedi</option>
-      ${Array.from(setObj).sort().map(val => `<option value="${escapeHtml(val)}">${escapeHtml(val)}</option>`).join("")}
-      <option value="__NEW__">➕ Yeni ${labelName} Ekle...</option>
+  function renderDropdownItems(key, setObj) {
+    const container = document.getElementById(`items-${key}`);
+    container.innerHTML = `
+      <div class="dropdown-item-row">
+        <span class="dropdown-item-name" style="color: #64748b;" onclick="selectOption('${key}', '')"><em>(Belirtilmedi)</em></span>
+      </div>
     `;
-    if (setObj.has(currentVal)) {
-      sel.value = currentVal;
-    }
-  }
-
-  function renderDeletablePills(containerId, fieldKey, selectId, setObj) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = "";
 
     Array.from(setObj).sort().forEach(val => {
-      const pill = document.createElement("div");
-      pill.className = "deletable-pill";
+      const row = document.createElement("div");
+      row.className = "dropdown-item-row";
 
-      const labelSpan = document.createElement("span");
-      labelSpan.className = "pill-label";
-      labelSpan.textContent = val;
-      labelSpan.title = "Seç";
-      labelSpan.onclick = () => {
-        const sel = document.getElementById(selectId);
-        sel.value = val;
-        handleSelectChoice(selectId, selectId.replace("select-", "input-new-"));
-      };
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "dropdown-item-name";
+      nameSpan.textContent = val;
+      nameSpan.onclick = () => selectOption(key, val);
 
       const delBtn = document.createElement("button");
-      delBtn.className = "delete-pill-btn";
+      delBtn.className = "dropdown-item-del";
       delBtn.type = "button";
       delBtn.innerHTML = "✕";
-      delBtn.title = "Bu seçeneği sil";
+      delBtn.title = "Kalıcı Olarak Sil";
       delBtn.onclick = (e) => {
         e.stopPropagation();
-        deleteExistingOption(fieldKey, val);
+        deleteOptionFromDropdown(key, val);
       };
 
-      pill.appendChild(labelSpan);
-      pill.appendChild(delBtn);
-      container.appendChild(pill);
+      row.appendChild(nameSpan);
+      row.appendChild(delBtn);
+      container.appendChild(row);
     });
   }
 
@@ -1244,13 +1268,13 @@
     startDateVal = normalizeDateInput(startDateVal);
     endDateVal = normalizeDateInput(endDateVal);
 
-    const rawAuthor = getFinalValue("select-author", "input-new-author");
+    const rawAuthor = document.getElementById("field-val-author").value.trim();
     const authorsArray = rawAuthor ? rawAuthor.split(",").map(a => a.trim()).filter(Boolean) : [];
 
-    const finalType = getFinalValue("select-type", "input-new-type");
-    const finalShelf = getFinalValue("select-shelf", "input-new-shelf");
+    const finalType = document.getElementById("field-val-type").value.trim();
+    const finalShelf = document.getElementById("field-val-shelf").value.trim();
 
-    const rawTags = getFinalValue("select-tags", "input-new-tags");
+    const rawTags = document.getElementById("field-val-tags").value.trim();
     const tagsArray = rawTags ? rawTags.split(",").map(t => t.trim()).filter(Boolean) : [];
 
     const totalPages = document.getElementById("total-pages").value ? parseInt(document.getElementById("total-pages").value, 10) : null;
@@ -1291,9 +1315,7 @@
     editIdInput.value = "";
     formHeading.textContent = "Yeni Metin Ekle";
     cancelEditBtn.style.display = "none";
-    ["input-new-author", "input-new-type", "input-new-shelf", "input-new-tags"].forEach(id => {
-      document.getElementById(id).style.display = "none";
-    });
+    ["author", "type", "shelf", "tags"].forEach(k => selectOption(k, ""));
   }
 
   function startEdit(id) {
@@ -1303,10 +1325,10 @@
     editIdInput.value = item.id;
     document.getElementById("title").value = item.title;
 
-    setSelectForEdit("select-author", "input-new-author", (item.authors || []).join(", "));
-    setSelectForEdit("select-type", "input-new-type", item.type || "");
-    setSelectForEdit("select-shelf", "input-new-shelf", item.shelf || "");
-    setSelectForEdit("select-tags", "input-new-tags", (item.tags || []).join(", "));
+    selectOption("author", (item.authors || []).join(", "));
+    selectOption("type", item.type || "");
+    selectOption("shelf", item.shelf || "");
+    selectOption("tags", (item.tags || []).join(", "));
 
     document.getElementById("status").value = item.status || "";
     document.getElementById("total-pages").value = item.totalPages || "";
@@ -1322,28 +1344,6 @@
     document.getElementById("form-panel").scrollIntoView({ behavior: "smooth" });
   }
 
-  function setSelectForEdit(selectId, inputId, value) {
-    const sel = document.getElementById(selectId);
-    const inp = document.getElementById(inputId);
-    let found = false;
-    for (let opt of sel.options) {
-      if (opt.value === value) {
-        sel.value = value;
-        inp.style.display = "none";
-        found = true;
-        break;
-      }
-    }
-    if (!found && value) {
-      sel.value = "__NEW__";
-      inp.style.display = "block";
-      inp.value = value;
-    } else if (!value) {
-      sel.value = "";
-      inp.style.display = "none";
-    }
-  }
-
   function deleteRecord(id) {
     if (confirm("Bu metin kaydını silmek istediğinize emin misiniz?")) {
       records = records.filter(r => r.id != id);
@@ -1355,7 +1355,7 @@
   function saveAndRender() {
     localStorage.setItem("reader_records_v5", JSON.stringify(records));
     populateFilterDropdowns();
-    updateFormSelects();
+    updateCustomDropdowns();
     renderItems();
   }
 
@@ -1687,7 +1687,7 @@
 
   // İlk Kurulum
   populateFilterDropdowns();
-  updateFormSelects();
+  updateCustomDropdowns();
   renderItems();
 </script>
 
