@@ -58,28 +58,16 @@
       pointer-events: all;
     }
 
-    #splash-screen h1 {
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
-      font-weight: 800;
-    }
+    #splash-screen h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800; }
+    #splash-screen p { font-size: 1.1rem; opacity: 0.9; }
 
-    #splash-screen p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-    }
-
-    .anim-circle-out {
-      animation: circleShrink 2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
-    }
+    .anim-circle-out { animation: circleShrink 2s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
     @keyframes circleShrink {
       0% { clip-path: circle(150% at 50% 50%); opacity: 1; }
       100% { clip-path: circle(0% at 50% 50%); opacity: 0; visibility: hidden; }
     }
 
-    .anim-water-out {
-      animation: waterDrain 4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
+    .anim-water-out { animation: waterDrain 4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
     @keyframes waterDrain {
       0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
       25% { clip-path: polygon(0 25%, 100% 18%, 100% 100%, 0 100%); }
@@ -93,68 +81,132 @@
       margin: 0 auto;
     }
 
-    /* 1. Satır: Başlık & Sağ Üst Ayarlar Emojisi */
-    .header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.85rem;
-    }
-
-    .app-title {
-      font-size: 1.45rem;
-      font-weight: 800;
+    /* Üst Başlık & Hamburger */
+    .top-header {
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
     }
 
-    .settings-corner-btn {
+    .hamburger-btn {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
       color: var(--active-text);
-      font-size: 1.25rem;
-      width: 42px;
-      height: 42px;
+      font-size: 1.35rem;
+      width: 44px;
+      height: 44px;
       border-radius: 10px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-      transition: background 0.15s, transform 0.1s;
+      transition: transform 0.1s;
+    }
+    .hamburger-btn:active { transform: scale(0.95); }
+
+    .app-title {
+      font-size: 1.45rem;
+      font-weight: 800;
     }
 
-    .settings-corner-btn:hover { background: var(--card-bg); }
-    .settings-corner-btn:active { transform: scale(0.95); }
-
-    /* 2. Satır: Eylem Butonları */
-    .actions-row {
+    /* Streak & Hedefler Şeridi */
+    .status-strip {
       display: flex;
-      gap: 0.6rem;
-      margin-bottom: 1.25rem;
+      align-items: center;
       flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
     }
 
-    .action-btn {
+    .streak-badge {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      color: #ea580c;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      user-select: none;
+    }
+
+    .goals-display {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
       color: var(--active-text);
-      padding: 0.55rem 1rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.35rem 0.75rem;
       border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.92rem;
-      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      white-space: nowrap;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      transition: background 0.15s, transform 0.1s;
+      gap: 0.5rem;
     }
 
-    .action-btn:hover { background: var(--card-bg); }
-    .action-btn:active { transform: scale(0.97); }
+    /* Soldan Açılan Çekmece Menü (Drawer) */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(2px);
+      z-index: 9998;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    .drawer-overlay.open { opacity: 1; visibility: visible; }
+
+    .side-drawer {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 280px;
+      max-width: 80%;
+      background: var(--card-bg);
+      border-right: 1px solid var(--border-color);
+      box-shadow: 4px 0 16px rgba(0,0,0,0.15);
+      z-index: 9999;
+      transform: translateX(-100%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .side-drawer.open { transform: translateX(0); }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .drawer-item-btn {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-align: left;
+      transition: background 0.15s;
+    }
+    .drawer-item-btn:hover { background: rgba(0,0,0,0.04); color: var(--active-accent); }
 
     /* Açılır Paneller */
     .collapsible-panel {
@@ -184,12 +236,7 @@
       padding-bottom: 0.75rem;
       border-bottom: 1px solid var(--border-color);
     }
-
-    .settings-row:last-child {
-      margin-bottom: 0;
-      padding-bottom: 0;
-      border-bottom: none;
-    }
+    .settings-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
 
     .settings-controls-group {
       display: flex;
@@ -215,7 +262,6 @@
       cursor: pointer;
       transition: transform 0.15s;
     }
-
     .color-btn:hover { transform: scale(1.08); }
     .color-btn.selected { border-color: #ffffff; box-shadow: 0 0 0 2px #000; }
 
@@ -232,10 +278,9 @@
       font-size: 0.95rem;
       transition: opacity 0.2s;
     }
-
     .btn-action:hover { opacity: 0.9; }
 
-    /* Form Paneli */
+    /* Form */
     .form-card {
       display: none;
       background: var(--card-bg);
@@ -267,7 +312,6 @@
       font-weight: 600;
       color: var(--active-text);
     }
-
     .form-group.full-width { grid-column: 1 / -1; }
 
     input, textarea, select {
@@ -280,15 +324,13 @@
       color: var(--text-main);
       outline: none;
     }
-
     input:focus, textarea:focus, select:focus {
       border-color: var(--active-accent);
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
     }
-
     textarea { resize: vertical; min-height: 70px; }
 
-    /* Özel Açılır Menü (Çarpılı Seçenekler) */
+    /* Çarpılı Seçim Menüleri */
     .custom-select-trigger {
       width: 100%;
       padding: 0.65rem 0.85rem;
@@ -328,17 +370,8 @@
       border-bottom: 1px solid var(--border-color);
       transition: background 0.15s;
     }
-
-    .dropdown-item-row:hover {
-      background: rgba(0,0,0,0.04);
-    }
-
-    .dropdown-item-name {
-      cursor: pointer;
-      flex: 1;
-      font-size: 0.9rem;
-    }
-
+    .dropdown-item-row:hover { background: rgba(0,0,0,0.04); }
+    .dropdown-item-name { cursor: pointer; flex: 1; font-size: 0.9rem; }
     .dropdown-item-del {
       background: none;
       border: none;
@@ -349,11 +382,6 @@
       padding: 0 0.35rem;
       border-radius: 4px;
       line-height: 1;
-      transition: transform 0.1s;
-    }
-
-    .dropdown-item-del:hover {
-      transform: scale(1.25);
     }
 
     .dropdown-add-new-btn {
@@ -362,9 +390,6 @@
       font-weight: 700;
       font-size: 0.88rem;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
     }
 
     .filter-grid {
@@ -406,13 +431,7 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
-    .item-main {
-      display: flex;
-      gap: 0.85rem;
-      align-items: flex-start;
-      flex: 1;
-    }
-
+    .item-main { display: flex; gap: 0.85rem; align-items: flex-start; flex: 1; }
     .entry-number {
       font-size: 0.85rem;
       font-weight: 700;
@@ -427,13 +446,7 @@
     }
 
     .item-info { flex: 1; }
-
-    .item-info h3 {
-      font-size: 1.15rem;
-      margin-bottom: 0.35rem;
-      color: var(--active-text);
-    }
-
+    .item-info h3 { font-size: 1.15rem; margin-bottom: 0.35rem; color: var(--active-text); }
     .item-meta {
       font-size: 0.85rem;
       color: var(--text-muted);
@@ -444,26 +457,11 @@
       gap: 0.6rem;
     }
 
-    .clickable-badge {
-      cursor: pointer;
-      display: inline-block;
-      transition: opacity 0.15s, transform 0.1s;
-    }
-    .clickable-badge:hover {
-      opacity: 0.8;
-      transform: translateY(-1px);
-    }
-    .clickable-badge.active-filter {
-      outline: 2px solid var(--active-accent);
-    }
+    .clickable-badge { cursor: pointer; display: inline-block; transition: opacity 0.15s; }
+    .clickable-badge:hover { opacity: 0.8; }
+    .clickable-badge.active-filter { outline: 2px solid var(--active-accent); }
 
-    .tags-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem;
-      margin-top: 0.5rem;
-    }
-
+    .tags-container { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
     .tag-badge {
       background: var(--badge-bg);
       color: var(--active-text);
@@ -508,14 +506,9 @@
       border-radius: 6px;
       font-size: 0.88rem;
       white-space: pre-wrap;
-      color: var(--text-main);
     }
 
-    .card-actions {
-      display: flex;
-      gap: 0.4rem;
-    }
-
+    .card-actions { display: flex; gap: 0.4rem; }
     .icon-btn {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -524,10 +517,7 @@
       font-size: 1rem;
       border-radius: 6px;
       cursor: pointer;
-      transition: background 0.15s;
     }
-
-    .icon-btn:hover { background: rgba(0,0,0,0.05); }
 
     @media (max-width: 600px) {
       .palette-grid { grid-template-columns: repeat(5, 1fr); }
@@ -541,19 +531,58 @@
   <p>Okuma listen ve metin arşivin yükleniyor...</p>
 </div>
 
+<!-- Çekmece Menü Karartması -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+<!-- Sol Çekmece Menü (Drawer) -->
+<div class="side-drawer" id="side-drawer">
+  <div class="drawer-header">
+    <span class="themed-text" style="font-weight: 800; font-size: 1.15rem;">Menü</span>
+    <button class="icon-btn" onclick="closeDrawer()">✕</button>
+  </div>
+  <button class="drawer-item-btn" onclick="handleDrawerAction('form-panel')">➕ Yeni Metin Ekle</button>
+  <button class="drawer-item-btn" onclick="handleDrawerAction('filter-panel')">🔍 Filtrele & Ara</button>
+  <button class="drawer-item-btn" onclick="handleDrawerAction('sort-panel')">🔃 Sıralama Ölçütü</button>
+  <button class="drawer-item-btn" onclick="handleDrawerAction('goals-panel')">🎯 Okuma Hedefleri</button>
+  <button class="drawer-item-btn" onclick="handleDrawerAction('settings-panel')">⚙️ Ayarlar & Görünüm</button>
+</div>
+
 <div class="container">
 
-  <!-- 1. Satır: Başlık & Sağ Üstte Ayarlar Emojisi -->
-  <div class="header-row">
+  <!-- Üst Başlık & Hamburger Butonu -->
+  <div class="top-header">
+    <button class="hamburger-btn" onclick="openDrawer()" title="Menü">☰</button>
     <h2 class="app-title themed-text">ReaderTracker 📚</h2>
-    <button class="settings-corner-btn" title="Ayarlar" onclick="togglePanel('settings-panel')">⚙️</button>
   </div>
 
-  <!-- 2. Satır: Metin Ekle, Filtrele ve Sırala Butonları -->
-  <div class="actions-row">
-    <button class="action-btn" onclick="toggleFormPanel()">➕ Metin Ekle</button>
-    <button class="action-btn" onclick="togglePanel('filter-panel')">🔍 Filtrele</button>
-    <button class="action-btn" onclick="togglePanel('sort-panel')">🔃 Sırala</button>
+  <!-- Başlığın Altındaki Streak & Hedef Göstergesi -->
+  <div class="status-strip" id="status-strip">
+    <div class="streak-badge" id="streak-badge" title="Giriş Yapılan Gün Sayısı">1 🔥</div>
+    <div class="goals-display" id="goals-display" style="display: none;"></div>
+  </div>
+
+  <!-- Hedefler Paneli (Drawer'dan Açılır) -->
+  <div class="collapsible-panel" id="goals-panel">
+    <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">🎯 Okuma Hedeflerini Belirle</h3>
+    <div class="filter-grid">
+      <div class="form-group">
+        <label>Aylık Hedef (Metin Sayısı):</label>
+        <input type="number" id="goal-monthly-count" placeholder="Örn: 5" min="0" oninput="saveGoals()">
+      </div>
+      <div class="form-group">
+        <label>Yıllık Hedef (Metin Sayısı):</label>
+        <input type="number" id="goal-yearly-count" placeholder="Örn: 12" min="0" oninput="saveGoals()">
+      </div>
+      <div class="form-group">
+        <label>Aylık Hedef (Sayfa Sayısı):</label>
+        <input type="number" id="goal-monthly-pages" placeholder="Örn: 1000" min="0" oninput="saveGoals()">
+      </div>
+      <div class="form-group">
+        <label>Yıllık Hedef (Sayfa Sayısı):</label>
+        <input type="number" id="goal-yearly-pages" placeholder="Örn: 12000" min="0" oninput="saveGoals()">
+      </div>
+    </div>
+    <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">İstediğiniz alanları boş bırakabilirsiniz. Belirttiğiniz hedefler ana sayfada özetlenir.</small>
   </div>
 
   <!-- Sıralama Paneli -->
@@ -586,6 +615,22 @@
       </div>
       <div>
         <button class="icon-btn" id="theme-icon-btn" style="font-size: 1.3rem; padding: 0.35rem 0.9rem;" onclick="toggleThemeMode()">☀️</button>
+      </div>
+    </div>
+
+    <!-- Gösterge Görünürlük Ayarları -->
+    <div class="settings-row">
+      <div>
+        <div style="font-weight: 600;" class="themed-text">Streak ve Hedef Göstergesi:</div>
+        <small style="color: var(--text-muted);">Başlığın altındaki şeridin görünümünü yönetin.</small>
+      </div>
+      <div class="settings-controls-group">
+        <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.3rem;">
+          <input type="checkbox" id="setting-show-streak" onchange="updateVisibilitySettings()" checked style="width: auto;"> Streak (🔥)
+        </label>
+        <label style="font-size: 0.85rem; display: flex; align-items: center; gap: 0.3rem; margin-left: 0.5rem;">
+          <input type="checkbox" id="setting-show-goals" onchange="updateVisibilitySettings()" checked style="width: auto;"> Hedefler (🎯)
+        </label>
       </div>
     </div>
 
@@ -751,7 +796,7 @@
     </div>
   </div>
 
-  <!-- Kayıt Formu (Özel Çarpılı Açılır Menüler) -->
+  <!-- Kayıt Formu -->
   <div class="form-card" id="form-panel">
     <h2 id="form-heading" style="margin-bottom: 1rem; font-size: 1.25rem;" class="themed-text">Yeni Metin Ekle</h2>
     <form id="record-form">
@@ -763,7 +808,6 @@
           <input type="text" id="title" placeholder="Metnin adı (Zorunlu tek alan)" required>
         </div>
 
-        <!-- Yazar -->
         <div class="form-group">
           <label>Yazar(lar)</label>
           <input type="hidden" id="field-val-author">
@@ -777,7 +821,6 @@
           </div>
         </div>
 
-        <!-- Metin Türü -->
         <div class="form-group">
           <label>Metin Türü</label>
           <input type="hidden" id="field-val-type">
@@ -791,7 +834,6 @@
           </div>
         </div>
 
-        <!-- Seri / Raf -->
         <div class="form-group">
           <label>Seri / Raf</label>
           <input type="hidden" id="field-val-shelf">
@@ -805,7 +847,6 @@
           </div>
         </div>
 
-        <!-- Okuma Durumu -->
         <div class="form-group">
           <label>Okuma Durumu</label>
           <select id="status">
@@ -833,7 +874,6 @@
           <input type="number" id="progress-percent" min="0" max="100" step="1" placeholder="Örn: 50" onchange="sanitizeProgressInput(this)">
         </div>
 
-        <!-- Etiketler -->
         <div class="form-group">
           <label>Etiketler</label>
           <input type="hidden" id="field-val-tags">
@@ -870,10 +910,7 @@
     </form>
   </div>
 
-  <!-- 3. Satır: Başlık Sayacı -->
   <div class="count-bar themed-text" id="count-display">0 kadar başlık sıralanıyor</div>
-
-  <!-- Kayıtlar Listesi -->
   <div id="records-list"></div>
 
 </div>
@@ -911,10 +948,135 @@
   let splashEnabled = localStorage.getItem("reader_splash_enabled") !== "false";
   let splashAnim = localStorage.getItem("reader_splash_anim") || "circle";
 
+  let showStreak = localStorage.getItem("reader_show_streak") !== "false";
+  let showGoals = localStorage.getItem("reader_show_goals") !== "false";
+  let userGoals = JSON.parse(localStorage.getItem("reader_user_goals")) || { mCount: "", yCount: "", mPages: "", yPages: "" };
+
   let activeClickFilters = { author: null, type: null, shelf: null, tag: null };
+
+  // Çekmece Menü Kontrolü
+  function openDrawer() {
+    document.getElementById("side-drawer").classList.add("open");
+    document.getElementById("drawer-overlay").classList.add("open");
+  }
+  function closeDrawer() {
+    document.getElementById("side-drawer").classList.remove("open");
+    document.getElementById("drawer-overlay").classList.remove("open");
+  }
+  function handleDrawerAction(panelId) {
+    closeDrawer();
+    const p = document.getElementById(panelId);
+    const isShowing = p.style.display === "block";
+    document.querySelectorAll(".collapsible-panel, .form-card").forEach(el => el.style.display = "none");
+    if (!isShowing) {
+      p.style.display = "block";
+      p.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
+  // Streak (Seri) Hesaplama
+  function calculateStreak() {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    let streakCount = parseInt(localStorage.getItem("reader_streak_count") || "1", 10);
+    const lastVisit = localStorage.getItem("reader_last_visit_date");
+
+    if (lastVisit) {
+      const lastDate = new Date(lastVisit);
+      const todayDate = new Date(todayStr);
+      const diffDays = Math.round((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 1) {
+        streakCount++;
+        localStorage.setItem("reader_streak_count", streakCount);
+      } else if (diffDays > 1) {
+        streakCount = 1;
+        localStorage.setItem("reader_streak_count", streakCount);
+      }
+    } else {
+      localStorage.setItem("reader_streak_count", "1");
+      streakCount = 1;
+    }
+    localStorage.setItem("reader_last_visit_date", todayStr);
+    document.getElementById("streak-badge").textContent = `${streakCount} 🔥`;
+  }
+
+  // Hedef Göstergesi Hesaplama
+  function updateGoalsDisplay() {
+    const displayEl = document.getElementById("goals-display");
+    const now = new Date();
+    const curYear = String(now.getFullYear());
+    const curMonth = String(now.getMonth() + 1).padStart(2, "0");
+
+    let monthReadCount = 0;
+    let yearReadCount = 0;
+    let monthReadPages = 0;
+    let yearReadPages = 0;
+
+    records.forEach(r => {
+      const dStr = r.endDate || r.startDate;
+      const comp = parseDateComponents(dStr);
+      const isFinished = r.status === "Bitti";
+
+      if (comp) {
+        if (comp.year === curYear) {
+          if (isFinished) yearReadCount++;
+          if (r.readPages) yearReadPages += r.readPages;
+
+          if (comp.month === curMonth) {
+            if (isFinished) monthReadCount++;
+            if (r.readPages) monthReadPages += r.readPages;
+          }
+        }
+      }
+    });
+
+    const goalSegments = [];
+    if (userGoals.mCount) goalSegments.push(`M🎯: ${monthReadCount}/${userGoals.mCount}`);
+    if (userGoals.yCount) goalSegments.push(`Y🎯: ${yearReadCount}/${userGoals.yCount}`);
+    if (userGoals.mPages) goalSegments.push(`S🎯: ${monthReadPages}/${userGoals.mPages}`);
+    if (userGoals.yPages) goalSegments.push(`YS🎯: ${yearReadPages}/${userGoals.yPages}`);
+
+    if (goalSegments.length > 0 && showGoals) {
+      displayEl.style.display = "inline-flex";
+      displayEl.textContent = goalSegments.join(" | ");
+    } else {
+      displayEl.style.display = "none";
+    }
+
+    document.getElementById("streak-badge").style.display = showStreak ? "inline-flex" : "none";
+  }
+
+  function saveGoals() {
+    userGoals = {
+      mCount: document.getElementById("goal-monthly-count").value,
+      yCount: document.getElementById("goal-yearly-count").value,
+      mPages: document.getElementById("goal-monthly-pages").value,
+      yPages: document.getElementById("goal-yearly-pages").value
+    };
+    localStorage.setItem("reader_user_goals", JSON.stringify(userGoals));
+    updateGoalsDisplay();
+  }
+
+  function updateVisibilitySettings() {
+    showStreak = document.getElementById("setting-show-streak").checked;
+    showGoals = document.getElementById("setting-show-goals").checked;
+    localStorage.setItem("reader_show_streak", showStreak);
+    localStorage.setItem("reader_show_goals", showGoals);
+    updateGoalsDisplay();
+  }
 
   // Karşılama Ekranı
   window.addEventListener("DOMContentLoaded", () => {
+    calculateStreak();
+    updateGoalsDisplay();
+
+    document.getElementById("goal-monthly-count").value = userGoals.mCount || "";
+    document.getElementById("goal-yearly-count").value = userGoals.yCount || "";
+    document.getElementById("goal-monthly-pages").value = userGoals.mPages || "";
+    document.getElementById("goal-yearly-pages").value = userGoals.yPages || "";
+    document.getElementById("setting-show-streak").checked = showStreak;
+    document.getElementById("setting-show-goals").checked = showGoals;
+
     const splash = document.getElementById("splash-screen");
     const splashTitle = document.getElementById("splash-title");
     splashTitle.textContent = currentUsername ? `Hoş geldin ${currentUsername}!` : `Hoş geldin!`;
@@ -972,19 +1134,6 @@
     isDarkMode = !isDarkMode;
     localStorage.setItem("reader_dark_mode", isDarkMode);
     applyThemeMode();
-  }
-
-  function togglePanel(panelId) {
-    const p = document.getElementById(panelId);
-    p.style.display = p.style.display === "block" ? "none" : "block";
-  }
-
-  function toggleFormPanel() {
-    const f = document.getElementById("form-panel");
-    f.style.display = f.style.display === "block" ? "none" : "block";
-    if (f.style.display === "block") {
-      f.scrollIntoView({ behavior: "smooth" });
-    }
   }
 
   function changeDateFormat(format) {
@@ -1167,32 +1316,20 @@
     }
   }
 
-  // Çarpı Butonuyla Seçeneği Kalıcı Silme
   function deleteOptionFromDropdown(key, valToDelete) {
-    if (!confirm(`"${valToDelete}" seçeneğini kalıcı olarak silmek istiyor musunuz?`)) {
-      return;
-    }
+    if (!confirm(`"${valToDelete}" seçeneğini kalıcı olarak silmek istiyor musunuz?`)) return;
 
     records.forEach(r => {
-      if (key === "author" && r.authors) {
-        r.authors = r.authors.filter(a => a !== valToDelete);
-      } else if (key === "type" && r.type === valToDelete) {
-        r.type = "";
-      } else if (key === "shelf" && r.shelf === valToDelete) {
-        r.shelf = "";
-      } else if (key === "tags" && r.tags) {
-        r.tags = r.tags.filter(t => t !== valToDelete);
-      }
+      if (key === "author" && r.authors) r.authors = r.authors.filter(a => a !== valToDelete);
+      else if (key === "type" && r.type === valToDelete) r.type = "";
+      else if (key === "shelf" && r.shelf === valToDelete) r.shelf = "";
+      else if (key === "tags" && r.tags) r.tags = r.tags.filter(t => t !== valToDelete);
     });
 
-    if (document.getElementById(`field-val-${key}`).value === valToDelete) {
-      selectOption(key, "");
-    }
-
+    if (document.getElementById(`field-val-${key}`).value === valToDelete) selectOption(key, "");
     saveAndRender();
   }
 
-  // Özel Menü İçini Oluşturma
   function updateCustomDropdowns() {
     const authorsSet = new Set();
     const typesSet = new Set(["Kitap", "Makale", "Rapor", "Karar", "Tez"]);
@@ -1270,10 +1407,8 @@
 
     const rawAuthor = document.getElementById("field-val-author").value.trim();
     const authorsArray = rawAuthor ? rawAuthor.split(",").map(a => a.trim()).filter(Boolean) : [];
-
     const finalType = document.getElementById("field-val-type").value.trim();
     const finalShelf = document.getElementById("field-val-shelf").value.trim();
-
     const rawTags = document.getElementById("field-val-tags").value.trim();
     const tagsArray = rawTags ? rawTags.split(",").map(t => t.trim()).filter(Boolean) : [];
 
@@ -1356,15 +1491,13 @@
     localStorage.setItem("reader_records_v5", JSON.stringify(records));
     populateFilterDropdowns();
     updateCustomDropdowns();
+    updateGoalsDisplay();
     renderItems();
   }
 
   function toggleClickFilter(type, value) {
-    if (activeClickFilters[type] === value) {
-      activeClickFilters[type] = null;
-    } else {
-      activeClickFilters[type] = value;
-    }
+    if (activeClickFilters[type] === value) activeClickFilters[type] = null;
+    else activeClickFilters[type] = value;
     updateActiveFilterBadge();
     renderItems();
   }
@@ -1491,7 +1624,6 @@
         const matchMonth = (selMonth === "all") || (sComp && sComp.month === selMonth) || (eComp && eComp.month === selMonth);
         if (!matchYear || !matchMonth) return false;
       }
-
       return true;
     });
 
@@ -1501,13 +1633,10 @@
       if (order === "oldest") return a.id - b.id;
       if (order === "title-asc") return (a.title || "").localeCompare(b.title || "", "tr");
       if (order === "author-asc") return ((a.authors && a.authors[0]) || "").localeCompare(((b.authors && b.authors[0]) || ""), "tr");
-      
       if (order === "prog-desc") return (b.progress ?? -1) - (a.progress ?? -1);
       if (order === "prog-asc") return (a.progress ?? 999) - (b.progress ?? 999);
-      
       if (order === "pages-desc") return (b.totalPages ?? -1) - (a.totalPages ?? -1);
       if (order === "pages-asc") return (a.totalPages ?? 999999) - (b.totalPages ?? 999999);
-      
       if (order === "end-desc") return dateToComparableNumber(b.endDate) - dateToComparableNumber(a.endDate);
       if (order === "end-asc") {
         const dateA = dateToComparableNumber(a.endDate) || 99999999;
@@ -1529,7 +1658,6 @@
       card.className = "item-card";
 
       let metaDetails = [];
-
       if (item.authors && item.authors.length > 0) {
         const authorsHtml = item.authors.map(a => {
           const isAct = activeClickFilters.author === a ? "active-filter" : "";
