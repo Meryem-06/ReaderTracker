@@ -394,6 +394,7 @@
       border: 1px solid var(--border-color);
     }
 
+    /* Durum Rozetleri */
     .status-badge {
       display: inline-block;
       font-size: 0.75rem;
@@ -402,6 +403,7 @@
       border-radius: 4px;
       margin-right: 0.4rem;
     }
+    .status-Okunuyor { background: #dbeafe; color: #1d4ed8; }
     .status-Bitti { background: #dcfce7; color: #15803d; }
     .status-Yarım-Kaldı { background: #fef9c3; color: #854d0e; }
     .status-Yarıda-Bırakıldı { background: #fee2e2; color: #991b1b; }
@@ -475,7 +477,7 @@
     <button class="action-btn" onclick="togglePanel('sort-panel')">🔃 Sırala</button>
   </div>
 
-  <!-- Sıralama Paneli (Bağımsız Açılır) -->
+  <!-- Sıralama Paneli -->
   <div class="collapsible-panel" id="sort-panel">
     <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">🔃 Sıralama Ölçütü</h3>
     <div class="form-group" style="max-width: 320px;">
@@ -601,6 +603,7 @@
         <label>Okuma Durumu:</label>
         <select id="filter-status" onchange="renderItems()">
           <option value="all">Tüm Durumlar</option>
+          <option value="Okunuyor">Okunuyor</option>
           <option value="Bitti">Bitti</option>
           <option value="Yarım Kaldı">Yarım Kaldı</option>
           <option value="Yarıda Bırakıldı">Yarıda Bırakıldı</option>
@@ -669,7 +672,7 @@
     </div>
   </div>
 
-  <!-- Kayıt Formu -->
+  <!-- Kayıt Formu (Dinamik Öneri Listeleri ile) -->
   <div class="form-card" id="form-panel">
     <h2 id="form-heading" style="margin-bottom: 1rem; font-size: 1.25rem;" class="themed-text">Yeni Metin Ekle</h2>
     <form id="record-form">
@@ -683,23 +686,27 @@
 
         <div class="form-group">
           <label>Yazar(lar)</label>
-          <input type="text" id="author" placeholder="Virgülle ayırın (örn: Platon, Aristo)">
+          <input type="text" id="author" list="datalist-authors" placeholder="Virgülle ayırın veya listeden seçin">
+          <datalist id="datalist-authors"></datalist>
         </div>
 
         <div class="form-group">
           <label>Metin Türü</label>
-          <input type="text" id="type" placeholder="Kitap, Makale, Karar vb.">
+          <input type="text" id="type" list="datalist-types" placeholder="Kitap, Makale vb. seçin ya da yazın">
+          <datalist id="datalist-types"></datalist>
         </div>
 
         <div class="form-group">
           <label>Seri / Raf</label>
-          <input type="text" id="shelf" placeholder="Örn: Hukuk Felsefesi, Klasikler Rafı">
+          <input type="text" id="shelf" list="datalist-shelves" placeholder="Raf seçin ya da yenisini yazın">
+          <datalist id="datalist-shelves"></datalist>
         </div>
 
         <div class="form-group">
           <label>Okuma Durumu</label>
           <select id="status">
             <option value="">Belirtilmedi</option>
+            <option value="Okunuyor">Okunuyor</option>
             <option value="Bitti">Bitti</option>
             <option value="Yarım Kaldı">Yarım Kaldı</option>
             <option value="Yarıda Bırakıldı">Yarıda Bırakıldı</option>
@@ -724,7 +731,8 @@
 
         <div class="form-group">
           <label>Etiketler</label>
-          <input type="text" id="tags" placeholder="Virgülle ayırın (örn: ceza, tez)">
+          <input type="text" id="tags" list="datalist-tags" placeholder="Virgülle ayırın veya listeden seçin">
+          <datalist id="datalist-tags"></datalist>
         </div>
 
         <div class="form-group">
@@ -793,7 +801,7 @@
 
   let activeClickFilters = { author: null, type: null, shelf: null, tag: null };
 
-  // Karşılama Ekranı Süreleri: Daire 2 sn, Su 4 sn
+  // Karşılama Ekranı
   window.addEventListener("DOMContentLoaded", () => {
     const splash = document.getElementById("splash-screen");
     const splashTitle = document.getElementById("splash-title");
@@ -1123,6 +1131,7 @@
   function saveAndRender() {
     localStorage.setItem("reader_records_v5", JSON.stringify(records));
     populateFilterDropdowns();
+    populateFormDatalists(); // Dinamik datalist önerilerini güncelle
     renderItems();
   }
 
@@ -1169,6 +1178,37 @@
   const filterYear = document.getElementById("filter-year");
   const filterMonth = document.getElementById("filter-month");
   const countDisplay = document.getElementById("count-display");
+
+  // Form Datalistlerini Otomatik Doldurma
+  function populateFormDatalists() {
+    const authorsSet = new Set();
+    const typesSet = new Set();
+    const shelvesSet = new Set();
+    const tagsSet = new Set();
+
+    records.forEach(r => {
+      (r.authors || []).forEach(a => authorsSet.add(a));
+      if (r.type) typesSet.add(r.type);
+      if (r.shelf) shelvesSet.add(r.shelf);
+      (r.tags || []).forEach(t => tagsSet.add(t));
+    });
+
+    fillDatalist("datalist-authors", authorsSet);
+    fillDatalist("datalist-types", typesSet);
+    fillDatalist("datalist-shelves", shelvesSet);
+    fillDatalist("datalist-tags", tagsSet);
+  }
+
+  function fillDatalist(elementId, dataSet) {
+    const dl = document.getElementById(elementId);
+    if (!dl) return;
+    dl.innerHTML = "";
+    Array.from(dataSet).sort().forEach(item => {
+      const opt = document.createElement("option");
+      opt.value = item;
+      dl.appendChild(opt);
+    });
+  }
 
   function populateFilterDropdowns() {
     const curAuthor = filterAuthor.value;
@@ -1452,7 +1492,9 @@
     );
   }
 
+  // İlk Kurulum
   populateFilterDropdowns();
+  populateFormDatalists();
   renderItems();
 </script>
 
