@@ -293,6 +293,53 @@
       animation: fadeIn 0.15s ease;
     }
 
+    /* Silinebilir Çarpılı Seçenek Rozetleri */
+    .pills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.4rem;
+      max-height: 90px;
+      overflow-y: auto;
+    }
+
+    .deletable-pill {
+      background: var(--badge-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 6px;
+      padding: 0.2rem 0.45rem;
+      font-size: 0.78rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .deletable-pill span.pill-label {
+      cursor: pointer;
+    }
+    .deletable-pill span.pill-label:hover {
+      text-decoration: underline;
+    }
+
+    .deletable-pill button.delete-pill-btn {
+      background: none;
+      border: none;
+      color: #ef4444;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 0 0.15rem;
+      line-height: 1;
+      border-radius: 3px;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .deletable-pill button.delete-pill-btn:hover {
+      background: rgba(239, 68, 68, 0.15);
+      transform: scale(1.15);
+    }
+
     .filter-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -677,7 +724,7 @@
     </div>
   </div>
 
-  <!-- Kayıt Formu (Kusursuz Seçim + Yeni Ekle Modeli) -->
+  <!-- Kayıt Formu (Çarpı ile Silinebilir Seçenekler) -->
   <div class="form-card" id="form-panel">
     <h2 id="form-heading" style="margin-bottom: 1rem; font-size: 1.25rem;" class="themed-text">Yeni Metin Ekle</h2>
     <form id="record-form">
@@ -697,6 +744,7 @@
             <option value="__NEW__">➕ Yeni Yazar Ekle...</option>
           </select>
           <input type="text" id="input-new-author" class="custom-new-input" placeholder="Yeni yazar adını yazın...">
+          <div class="pills-container" id="pills-author"></div>
         </div>
 
         <!-- Metin Türü -->
@@ -712,6 +760,7 @@
             <option value="__NEW__">➕ Yeni Metin Türü Ekle...</option>
           </select>
           <input type="text" id="input-new-type" class="custom-new-input" placeholder="Yeni metin türünü yazın...">
+          <div class="pills-container" id="pills-type"></div>
         </div>
 
         <!-- Seri / Raf -->
@@ -722,6 +771,7 @@
             <option value="__NEW__">➕ Yeni Seri/Raf Ekle...</option>
           </select>
           <input type="text" id="input-new-shelf" class="custom-new-input" placeholder="Yeni raf adını yazın...">
+          <div class="pills-container" id="pills-shelf"></div>
         </div>
 
         <!-- Okuma Durumu -->
@@ -760,6 +810,7 @@
             <option value="__NEW__">➕ Yeni Etiket Ekle...</option>
           </select>
           <input type="text" id="input-new-tags" class="custom-new-input" placeholder="Yeni etiketi yazın (virgülle ayırabilirsiniz)...">
+          <div class="pills-container" id="pills-tags"></div>
         </div>
 
         <div class="form-group">
@@ -1054,7 +1105,7 @@
     return parseInt(`${comp.year}${comp.month}${comp.day}`, 10);
   }
 
-  // Seçim Kutusu Kontrolü (Yeni Ekle seçilirse input alanını açar)
+  // Seçim Kutusu Kontrolü
   function handleSelectChoice(selectId, inputId) {
     const sel = document.getElementById(selectId);
     const inp = document.getElementById(inputId);
@@ -1076,7 +1127,28 @@
     return sel.value.trim();
   }
 
-  // Form Seçeneklerini Dinamik Doldurma
+  // Var Olan Seçenekleri Silme (Çarpı Fonksiyonu)
+  function deleteExistingOption(fieldKey, valueToDelete) {
+    if (!confirm(`"${valueToDelete}" seçeneğini kalıcı olarak silmek istiyor musunuz?`)) {
+      return;
+    }
+
+    records.forEach(r => {
+      if (fieldKey === "author") {
+        if (r.authors) r.authors = r.authors.filter(a => a !== valueToDelete);
+      } else if (fieldKey === "type") {
+        if (r.type === valueToDelete) r.type = "";
+      } else if (fieldKey === "shelf") {
+        if (r.shelf === valueToDelete) r.shelf = "";
+      } else if (fieldKey === "tags") {
+        if (r.tags) r.tags = r.tags.filter(t => t !== valueToDelete);
+      }
+    });
+
+    saveAndRender();
+  }
+
+  // Form Seçeneklerini Dinamik Doldurma ve Çarpılı Rozetleri Oluşturma
   function updateFormSelects() {
     const authorsSet = new Set();
     const typesSet = new Set(["Kitap", "Makale", "Rapor", "Karar", "Tez"]);
@@ -1094,6 +1166,11 @@
     fillFormSelect("select-type", typesSet, "Metin Türü");
     fillFormSelect("select-shelf", shelvesSet, "Seri/Raf");
     fillFormSelect("select-tags", tagsSet, "Etiket");
+
+    renderDeletablePills("pills-author", "author", "select-author", authorsSet);
+    renderDeletablePills("pills-type", "type", "select-type", typesSet);
+    renderDeletablePills("pills-shelf", "shelf", "select-shelf", shelvesSet);
+    renderDeletablePills("pills-tags", "tags", "select-tags", tagsSet);
   }
 
   function fillFormSelect(selectId, setObj, labelName) {
@@ -1107,6 +1184,41 @@
     if (setObj.has(currentVal)) {
       sel.value = currentVal;
     }
+  }
+
+  function renderDeletablePills(containerId, fieldKey, selectId, setObj) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = "";
+
+    Array.from(setObj).sort().forEach(val => {
+      const pill = document.createElement("div");
+      pill.className = "deletable-pill";
+
+      const labelSpan = document.createElement("span");
+      labelSpan.className = "pill-label";
+      labelSpan.textContent = val;
+      labelSpan.title = "Seç";
+      labelSpan.onclick = () => {
+        const sel = document.getElementById(selectId);
+        sel.value = val;
+        handleSelectChoice(selectId, selectId.replace("select-", "input-new-"));
+      };
+
+      const delBtn = document.createElement("button");
+      delBtn.className = "delete-pill-btn";
+      delBtn.type = "button";
+      delBtn.innerHTML = "✕";
+      delBtn.title = "Bu seçeneği sil";
+      delBtn.onclick = (e) => {
+        e.stopPropagation();
+        deleteExistingOption(fieldKey, val);
+      };
+
+      pill.appendChild(labelSpan);
+      pill.appendChild(delBtn);
+      container.appendChild(pill);
+    });
   }
 
   const form = document.getElementById("record-form");
@@ -1132,7 +1244,6 @@
     startDateVal = normalizeDateInput(startDateVal);
     endDateVal = normalizeDateInput(endDateVal);
 
-    // Değerleri Al
     const rawAuthor = getFinalValue("select-author", "input-new-author");
     const authorsArray = rawAuthor ? rawAuthor.split(",").map(a => a.trim()).filter(Boolean) : [];
 
@@ -1192,13 +1303,9 @@
     editIdInput.value = item.id;
     document.getElementById("title").value = item.title;
 
-    // Yazar Düzenleme
     setSelectForEdit("select-author", "input-new-author", (item.authors || []).join(", "));
-    // Tür Düzenleme
     setSelectForEdit("select-type", "input-new-type", item.type || "");
-    // Raf Düzenleme
     setSelectForEdit("select-shelf", "input-new-shelf", item.shelf || "");
-    // Etiket Düzenleme
     setSelectForEdit("select-tags", "input-new-tags", (item.tags || []).join(", "));
 
     document.getElementById("status").value = item.status || "";
