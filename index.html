@@ -69,7 +69,6 @@
       opacity: 0.9;
     }
 
-    /* Daire Animasyonu: 2 saniye */
     .anim-circle-out {
       animation: circleShrink 2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
     }
@@ -78,29 +77,15 @@
       100% { clip-path: circle(0% at 50% 50%); opacity: 0; visibility: hidden; }
     }
 
-    /* Su Dalgası Animasyonu: 4 saniye */
     .anim-water-out {
       animation: waterDrain 4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
     @keyframes waterDrain {
-      0% {
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-        opacity: 1;
-      }
-      25% {
-        clip-path: polygon(0 25%, 100% 18%, 100% 100%, 0 100%);
-      }
-      50% {
-        clip-path: polygon(0 50%, 100% 58%, 100% 100%, 0 100%);
-      }
-      75% {
-        clip-path: polygon(0 80%, 100% 72%, 100% 100%, 0 100%);
-      }
-      100% {
-        clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
-        opacity: 0;
-        visibility: hidden;
-      }
+      0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
+      25% { clip-path: polygon(0 25%, 100% 18%, 100% 100%, 0 100%); }
+      50% { clip-path: polygon(0 50%, 100% 58%, 100% 100%, 0 100%); }
+      75% { clip-path: polygon(0 80%, 100% 72%, 100% 100%, 0 100%); }
+      100% { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); opacity: 0; visibility: hidden; }
     }
 
     .container {
@@ -143,7 +128,7 @@
     .settings-corner-btn:hover { background: var(--card-bg); }
     .settings-corner-btn:active { transform: scale(0.95); }
 
-    /* Başlığın Altındaki İşlem Butonları */
+    /* Başlığın Altındaki Eylem Butonları */
     .actions-row {
       display: flex;
       gap: 0.6rem;
@@ -483,10 +468,30 @@
     <button class="settings-corner-btn" title="Ayarlar" onclick="togglePanel('settings-panel')">⚙️</button>
   </div>
 
-  <!-- 2. Satır: Metin Ekle & Filtrele Butonları -->
+  <!-- 2. Satır: Metin Ekle, Filtrele ve Sırala Butonları -->
   <div class="actions-row">
     <button class="action-btn" onclick="toggleFormPanel()">➕ Metin Ekle</button>
     <button class="action-btn" onclick="togglePanel('filter-panel')">🔍 Filtrele</button>
+    <button class="action-btn" onclick="togglePanel('sort-panel')">🔃 Sırala</button>
+  </div>
+
+  <!-- Sıralama Paneli (Bağımsız Açılır) -->
+  <div class="collapsible-panel" id="sort-panel">
+    <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">🔃 Sıralama Ölçütü</h3>
+    <div class="form-group" style="max-width: 320px;">
+      <select id="sort-order" onchange="renderItems()">
+        <option value="newest">Son Eklenenler (Varsayılan)</option>
+        <option value="oldest">İlk Eklenenler</option>
+        <option value="title-asc">Başlık (A → Z)</option>
+        <option value="author-asc">Yazar (A → Z)</option>
+        <option value="prog-desc">İlerleme: En Yüksek → En Düşük</option>
+        <option value="prog-asc">İlerleme: En Düşük → En Yüksek</option>
+        <option value="pages-desc">Sayfa Sayısı: En Çok → En Az</option>
+        <option value="pages-asc">Sayfa Sayısı: En Az → En Çok</option>
+        <option value="end-desc">Bitiş Tarihi: En Yeni → En Eski</option>
+        <option value="end-asc">Bitiş Tarihi: En Eski → En Yeni</option>
+      </select>
+    </div>
   </div>
 
   <!-- Ayarlar Paneli -->
@@ -513,7 +518,6 @@
       </div>
     </div>
 
-    <!-- Karşılama Ekranı Tercihi -->
     <div class="settings-row">
       <div>
         <div style="font-weight: 600;" class="themed-text">Açılış Karşılama Ekranı:</div>
@@ -584,30 +588,13 @@
     </div>
   </div>
 
-  <!-- Filtre & Sıralama Paneli -->
+  <!-- Filtre Paneli -->
   <div class="collapsible-panel" id="filter-panel">
-    <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">🔍 Kayıtları Filtrele & Sırala</h3>
+    <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">🔍 Kayıtları Filtrele & Ara</h3>
     <div class="filter-grid">
       <div class="form-group full-width">
         <label>Kelime Bazlı Canlı Arama:</label>
         <input type="text" id="search-input" placeholder="Başlık, yazar, tür, etiket, raf veya notlarda ara..." oninput="renderItems()">
-      </div>
-
-      <!-- Kapsamlı Sıralama Ölçütü Menüsü -->
-      <div class="form-group">
-        <label>Sıralama Ölçütü:</label>
-        <select id="sort-order" onchange="renderItems()">
-          <option value="newest">Son Eklenenler (Varsayılan)</option>
-          <option value="oldest">İlk Eklenenler</option>
-          <option value="title-asc">Başlık (A → Z)</option>
-          <option value="author-asc">Yazar (A → Z)</option>
-          <option value="prog-desc">İlerleme: En Yüksek → En Düşük</option>
-          <option value="prog-asc">İlerleme: En Düşük → En Yüksek</option>
-          <option value="pages-desc">Sayfa Sayısı: En Çok → En Az</option>
-          <option value="pages-asc">Sayfa Sayısı: En Az → En Çok</option>
-          <option value="end-desc">Bitiş Tarihi: En Yeni → En Eski</option>
-          <option value="end-asc">Bitiş Tarihi: En Eski → En Yeni</option>
-        </select>
       </div>
 
       <div class="form-group">
@@ -1275,7 +1262,6 @@
       return true;
     });
 
-    // Sıralama Mantığı
     const order = sortOrder.value;
     filtered.sort((a, b) => {
       if (order === "newest") return b.id - a.id;
