@@ -259,7 +259,6 @@
       display: flex;
       flex-direction: column;
       gap: 0.35rem;
-      position: relative;
     }
 
     .form-group label {
@@ -288,32 +287,10 @@
 
     textarea { resize: vertical; min-height: 70px; }
 
-    /* Mobil Uyumlu Hızlı Seçim Rozetleri */
-    .suggestions-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem;
+    .custom-new-input {
       margin-top: 0.35rem;
-      max-height: 85px;
-      overflow-y: auto;
-      padding: 0.2rem 0;
-    }
-
-    .suggestion-pill {
-      background: var(--badge-bg);
-      color: var(--text-main);
-      border: 1px solid var(--border-color);
-      padding: 0.25rem 0.55rem;
-      border-radius: 6px;
-      font-size: 0.78rem;
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
-    }
-
-    .suggestion-pill:hover, .suggestion-pill:active {
-      background: var(--active-accent);
-      color: #ffffff;
-      border-color: var(--active-accent);
+      display: none;
+      animation: fadeIn 0.15s ease;
     }
 
     .filter-grid {
@@ -700,7 +677,7 @@
     </div>
   </div>
 
-  <!-- Kayıt Formu (Dokunmatik Hızlı Seçim Rozetleri ile) -->
+  <!-- Kayıt Formu (Kusursuz Seçim + Yeni Ekle Modeli) -->
   <div class="form-card" id="form-panel">
     <h2 id="form-heading" style="margin-bottom: 1rem; font-size: 1.25rem;" class="themed-text">Yeni Metin Ekle</h2>
     <form id="record-form">
@@ -712,24 +689,42 @@
           <input type="text" id="title" placeholder="Metnin adı (Zorunlu tek alan)" required>
         </div>
 
+        <!-- Yazar -->
         <div class="form-group">
-          <label>Yazar(lar)</label>
-          <input type="text" id="author" placeholder="Yazın veya alttaki hazır yazara dokunun">
-          <div class="suggestions-container" id="suggestions-authors"></div>
+          <label>Yazar</label>
+          <select id="select-author" onchange="handleSelectChoice('select-author', 'input-new-author')">
+            <option value="">Belirtilmedi</option>
+            <option value="__NEW__">➕ Yeni Yazar Ekle...</option>
+          </select>
+          <input type="text" id="input-new-author" class="custom-new-input" placeholder="Yeni yazar adını yazın...">
         </div>
 
+        <!-- Metin Türü -->
         <div class="form-group">
           <label>Metin Türü</label>
-          <input type="text" id="type" placeholder="Yazın veya alttaki türe dokunun">
-          <div class="suggestions-container" id="suggestions-types"></div>
+          <select id="select-type" onchange="handleSelectChoice('select-type', 'input-new-type')">
+            <option value="">Belirtilmedi</option>
+            <option value="Kitap">Kitap</option>
+            <option value="Makale">Makale</option>
+            <option value="Rapor">Rapor</option>
+            <option value="Karar">Karar</option>
+            <option value="Tez">Tez</option>
+            <option value="__NEW__">➕ Yeni Metin Türü Ekle...</option>
+          </select>
+          <input type="text" id="input-new-type" class="custom-new-input" placeholder="Yeni metin türünü yazın...">
         </div>
 
+        <!-- Seri / Raf -->
         <div class="form-group">
           <label>Seri / Raf</label>
-          <input type="text" id="shelf" placeholder="Yazın veya alttaki rafa dokunun">
-          <div class="suggestions-container" id="suggestions-shelves"></div>
+          <select id="select-shelf" onchange="handleSelectChoice('select-shelf', 'input-new-shelf')">
+            <option value="">Belirtilmedi</option>
+            <option value="__NEW__">➕ Yeni Seri/Raf Ekle...</option>
+          </select>
+          <input type="text" id="input-new-shelf" class="custom-new-input" placeholder="Yeni raf adını yazın...">
         </div>
 
+        <!-- Okuma Durumu -->
         <div class="form-group">
           <label>Okuma Durumu</label>
           <select id="status">
@@ -757,10 +752,14 @@
           <input type="number" id="progress-percent" min="0" max="100" step="1" placeholder="Örn: 50" onchange="sanitizeProgressInput(this)">
         </div>
 
+        <!-- Etiketler -->
         <div class="form-group">
-          <label>Etiketler</label>
-          <input type="text" id="tags" placeholder="Yazın veya alttaki etikete dokunun">
-          <div class="suggestions-container" id="suggestions-tags"></div>
+          <label>Etiket</label>
+          <select id="select-tags" onchange="handleSelectChoice('select-tags', 'input-new-tags')">
+            <option value="">Belirtilmedi</option>
+            <option value="__NEW__">➕ Yeni Etiket Ekle...</option>
+          </select>
+          <input type="text" id="input-new-tags" class="custom-new-input" placeholder="Yeni etiketi yazın (virgülle ayırabilirsiniz)...">
         </div>
 
         <div class="form-group">
@@ -1055,24 +1054,32 @@
     return parseInt(`${comp.year}${comp.month}${comp.day}`, 10);
   }
 
-  // Dokunmatik Seçim / Doldurma Yardımcısı
-  function applySuggestion(inputId, val, isMulti = false) {
+  // Seçim Kutusu Kontrolü (Yeni Ekle seçilirse input alanını açar)
+  function handleSelectChoice(selectId, inputId) {
+    const sel = document.getElementById(selectId);
     const inp = document.getElementById(inputId);
-    if (!isMulti) {
-      inp.value = val;
+    if (sel.value === "__NEW__") {
+      inp.style.display = "block";
+      inp.focus();
     } else {
-      const parts = inp.value.split(",").map(p => p.trim()).filter(Boolean);
-      if (!parts.includes(val)) {
-        parts.push(val);
-      }
-      inp.value = parts.join(", ");
+      inp.style.display = "none";
+      inp.value = "";
     }
-    inp.focus();
   }
 
-  function populateSuggestions() {
+  function getFinalValue(selectId, inputId) {
+    const sel = document.getElementById(selectId);
+    const inp = document.getElementById(inputId);
+    if (sel.value === "__NEW__") {
+      return inp.value.trim();
+    }
+    return sel.value.trim();
+  }
+
+  // Form Seçeneklerini Dinamik Doldurma
+  function updateFormSelects() {
     const authorsSet = new Set();
-    const typesSet = new Set(["Kitap", "Makale", "Rapor", "Karar", "Tez"]); // Temel türler her zaman hazır
+    const typesSet = new Set(["Kitap", "Makale", "Rapor", "Karar", "Tez"]);
     const shelvesSet = new Set();
     const tagsSet = new Set();
 
@@ -1083,23 +1090,23 @@
       (r.tags || []).forEach(t => tagsSet.add(t));
     });
 
-    renderPills("suggestions-authors", "author", authorsSet, true);
-    renderPills("suggestions-types", "type", typesSet, false);
-    renderPills("suggestions-shelves", "shelf", shelvesSet, false);
-    renderPills("suggestions-tags", "tags", tagsSet, true);
+    fillFormSelect("select-author", authorsSet, "Yazar");
+    fillFormSelect("select-type", typesSet, "Metin Türü");
+    fillFormSelect("select-shelf", shelvesSet, "Seri/Raf");
+    fillFormSelect("select-tags", tagsSet, "Etiket");
   }
 
-  function renderPills(containerId, inputId, setObj, isMulti) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = "";
-    Array.from(setObj).sort().forEach(item => {
-      const pill = document.createElement("span");
-      pill.className = "suggestion-pill";
-      pill.textContent = "+ " + item;
-      pill.onclick = () => applySuggestion(inputId, item, isMulti);
-      container.appendChild(pill);
-    });
+  function fillFormSelect(selectId, setObj, labelName) {
+    const sel = document.getElementById(selectId);
+    const currentVal = sel.value;
+    sel.innerHTML = `
+      <option value="">Belirtilmedi</option>
+      ${Array.from(setObj).sort().map(val => `<option value="${escapeHtml(val)}">${escapeHtml(val)}</option>`).join("")}
+      <option value="__NEW__">➕ Yeni ${labelName} Ekle...</option>
+    `;
+    if (setObj.has(currentVal)) {
+      sel.value = currentVal;
+    }
   }
 
   const form = document.getElementById("record-form");
@@ -1125,11 +1132,15 @@
     startDateVal = normalizeDateInput(startDateVal);
     endDateVal = normalizeDateInput(endDateVal);
 
-    const rawAuthors = document.getElementById("author").value;
-    const authorsArray = rawAuthors.split(",").map(a => a.trim()).filter(Boolean);
+    // Değerleri Al
+    const rawAuthor = getFinalValue("select-author", "input-new-author");
+    const authorsArray = rawAuthor ? rawAuthor.split(",").map(a => a.trim()).filter(Boolean) : [];
 
-    const rawTags = document.getElementById("tags").value;
-    const tagsArray = rawTags.split(",").map(t => t.trim()).filter(Boolean);
+    const finalType = getFinalValue("select-type", "input-new-type");
+    const finalShelf = getFinalValue("select-shelf", "input-new-shelf");
+
+    const rawTags = getFinalValue("select-tags", "input-new-tags");
+    const tagsArray = rawTags ? rawTags.split(",").map(t => t.trim()).filter(Boolean) : [];
 
     const totalPages = document.getElementById("total-pages").value ? parseInt(document.getElementById("total-pages").value, 10) : null;
     const readPages = document.getElementById("read-pages").value ? parseInt(document.getElementById("read-pages").value, 10) : null;
@@ -1139,8 +1150,8 @@
     const recordData = {
       title: title,
       authors: authorsArray,
-      type: document.getElementById("type").value.trim(),
-      shelf: document.getElementById("shelf").value.trim(),
+      type: finalType,
+      shelf: finalShelf,
       status: document.getElementById("status").value,
       totalPages: totalPages,
       readPages: readPages,
@@ -1169,6 +1180,9 @@
     editIdInput.value = "";
     formHeading.textContent = "Yeni Metin Ekle";
     cancelEditBtn.style.display = "none";
+    ["input-new-author", "input-new-type", "input-new-shelf", "input-new-tags"].forEach(id => {
+      document.getElementById(id).style.display = "none";
+    });
   }
 
   function startEdit(id) {
@@ -1177,14 +1191,20 @@
 
     editIdInput.value = item.id;
     document.getElementById("title").value = item.title;
-    document.getElementById("author").value = (item.authors || []).join(", ");
-    document.getElementById("type").value = item.type || "";
-    document.getElementById("shelf").value = item.shelf || "";
+
+    // Yazar Düzenleme
+    setSelectForEdit("select-author", "input-new-author", (item.authors || []).join(", "));
+    // Tür Düzenleme
+    setSelectForEdit("select-type", "input-new-type", item.type || "");
+    // Raf Düzenleme
+    setSelectForEdit("select-shelf", "input-new-shelf", item.shelf || "");
+    // Etiket Düzenleme
+    setSelectForEdit("select-tags", "input-new-tags", (item.tags || []).join(", "));
+
     document.getElementById("status").value = item.status || "";
     document.getElementById("total-pages").value = item.totalPages || "";
     document.getElementById("read-pages").value = item.readPages || "";
     document.getElementById("progress-percent").value = item.progress !== null && item.progress !== undefined ? item.progress : "";
-    document.getElementById("tags").value = (item.tags || []).join(", ");
     document.getElementById("start-date").value = item.startDate || "";
     document.getElementById("end-date").value = item.endDate || "";
     document.getElementById("notes").value = item.notes || "";
@@ -1193,6 +1213,28 @@
     cancelEditBtn.style.display = "inline-block";
     document.getElementById("form-panel").style.display = "block";
     document.getElementById("form-panel").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function setSelectForEdit(selectId, inputId, value) {
+    const sel = document.getElementById(selectId);
+    const inp = document.getElementById(inputId);
+    let found = false;
+    for (let opt of sel.options) {
+      if (opt.value === value) {
+        sel.value = value;
+        inp.style.display = "none";
+        found = true;
+        break;
+      }
+    }
+    if (!found && value) {
+      sel.value = "__NEW__";
+      inp.style.display = "block";
+      inp.value = value;
+    } else if (!value) {
+      sel.value = "";
+      inp.style.display = "none";
+    }
   }
 
   function deleteRecord(id) {
@@ -1206,7 +1248,7 @@
   function saveAndRender() {
     localStorage.setItem("reader_records_v5", JSON.stringify(records));
     populateFilterDropdowns();
-    populateSuggestions();
+    updateFormSelects();
     renderItems();
   }
 
@@ -1538,7 +1580,7 @@
 
   // İlk Kurulum
   populateFilterDropdowns();
-  populateSuggestions();
+  updateFormSelects();
   renderItems();
 </script>
 
