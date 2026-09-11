@@ -1563,136 +1563,155 @@
     if (activeFlag) activeFlag.classList.add("active");
 
     const splashTitle = document.getElementById("splash-title");
-    splashTitle.textContent = currentUsername ? `${t.welcome.replace('!', '')} ${currentUsername}!` : t.welcome;
-    document.getElementById("splash-subtitle").textContent = t.welcomeSub;
+    if (splashTitle) splashTitle.textContent = currentUsername ? `${t.welcome.replace('!', '')} ${currentUsername}!` : t.welcome;
+    const splashSubtitle = document.getElementById("splash-subtitle");
+    if (splashSubtitle) splashSubtitle.textContent = t.welcomeSub;
 
-    document.getElementById("lbl-menu-header").textContent = t.menuHeader;
-    document.getElementById("btn-menu-shelves").textContent = t.menuShelves;
-    document.getElementById("btn-menu-goals").textContent = t.menuGoals;
-    document.getElementById("btn-menu-export").textContent = t.menuExport;
-    document.getElementById("btn-menu-settings").textContent = t.menuSettings;
+    const setText = (id, text) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    };
 
-    if (!document.getElementById("edit-id").value) {
-      document.getElementById("form-heading").textContent = t.newText;
+    setText("lbl-menu-header", t.menuHeader);
+    setText("btn-menu-shelves", t.menuShelves);
+    setText("btn-menu-goals", t.menuGoals);
+    setText("btn-menu-export", t.menuExport);
+    setText("btn-menu-settings", t.menuSettings);
+
+    const editIdEl = document.getElementById("edit-id");
+    if (editIdEl && !editIdEl.value) {
+      setText("form-heading", t.newText);
     }
-    document.getElementById("lbl-text-title").textContent = t.textTitle;
-    document.getElementById("lbl-cover-img").textContent = t.coverImg;
-    document.getElementById("btn-from-device").textContent = t.fromDevice;
-    document.getElementById("lbl-authors").textContent = t.authors;
-    document.getElementById("btn-add-author").textContent = t.addAuthor;
-    document.getElementById("lbl-type").textContent = t.type;
-    document.getElementById("btn-add-type").textContent = t.addType;
-    document.getElementById("lbl-shelf").textContent = t.shelf;
-    document.getElementById("btn-add-shelf").textContent = t.addShelf;
-    document.getElementById("lbl-status").textContent = t.status;
-    document.getElementById("lbl-total-pages").textContent = t.totalPages;
-    document.getElementById("lbl-read-pages").textContent = t.readPages;
-    document.getElementById("lbl-progress-pct").textContent = t.progressPct;
-    document.getElementById("lbl-tags").textContent = t.tags;
-    document.getElementById("btn-add-tag").textContent = t.addTag;
-    document.getElementById("lbl-start-date").textContent = t.startDate;
-    document.getElementById("lbl-end-date").textContent = t.endDate;
-    document.getElementById("lbl-notes").textContent = t.notes;
-    document.getElementById("save-button").textContent = t.save;
-    document.getElementById("cancel-edit-btn").textContent = t.cancel;
+    setText("lbl-text-title", t.textTitle);
+    setText("lbl-cover-img", t.coverImg);
+    setText("btn-from-device", t.fromDevice);
+    setText("lbl-authors", t.authors);
+    setText("btn-add-author", t.addAuthor);
+    setText("lbl-type", t.type);
+    setText("btn-add-type", t.addType);
+    setText("lbl-shelf", t.shelf);
+    setText("btn-add-shelf", t.addShelf);
+    setText("lbl-status", t.status);
+    setText("lbl-total-pages", t.totalPages);
+    setText("lbl-read-pages", t.readPages);
+    setText("lbl-progress-pct", t.progressPct);
+    setText("lbl-tags", t.tags);
+    setText("btn-add-tag", t.addTag);
+    setText("lbl-start-date", t.startDate);
+    setText("lbl-end-date", t.endDate);
+    setText("lbl-notes", t.notes);
+    setText("save-button", t.save);
+    setText("cancel-edit-btn", t.cancel);
 
-    document.getElementById("lbl-filter-modal-title").textContent = t.filterModalTitle;
-    document.getElementById("lbl-search-term").textContent = t.searchTerm;
-    document.getElementById("search-input").placeholder = t.searchPlaceholder;
-    document.getElementById("lbl-filter-status").textContent = t.status;
-    document.getElementById("lbl-filter-author").textContent = t.authors;
-    document.getElementById("lbl-filter-type").textContent = t.type;
-    document.getElementById("lbl-filter-shelf").textContent = t.shelf;
-    document.getElementById("lbl-filter-tag").textContent = t.tags;
-    document.getElementById("btn-apply-filters").textContent = t.applyFilters;
+    setText("lbl-filter-modal-title", t.filterModalTitle);
+    setText("lbl-search-term", t.searchTerm);
+    const searchInput = document.getElementById("search-input");
+    if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+    setText("lbl-filter-status", t.status);
+    setText("lbl-filter-author", t.authors);
+    setText("lbl-filter-type", t.type);
+    setText("lbl-filter-shelf", t.shelf);
+    setText("lbl-filter-tag", t.tags);
+    setText("btn-apply-filters", t.applyFilters);
 
-    document.getElementById("lbl-sort-modal-title").textContent = t.sortModalTitle;
-    document.getElementById("lbl-sort-select").textContent = t.sortSelect;
-    document.getElementById("btn-confirm-sort").textContent = t.confirmSort;
+    setText("lbl-sort-modal-title", t.sortModalTitle);
+    setText("lbl-sort-select", t.sortSelect);
+    setText("btn-confirm-sort", t.confirmSort);
 
-    document.getElementById("lbl-shelves-modal-title").textContent = t.shelvesModalTitle;
-    document.getElementById("btn-new-shelf").textContent = t.newShelf;
+    setText("lbl-shelves-modal-title", t.shelvesModalTitle);
+    setText("btn-new-shelf", t.newShelf);
 
-    document.getElementById("lbl-goals-modal-title").textContent = t.goalsModalTitle;
-    document.getElementById("lbl-m-count").textContent = t.mCount;
-    document.getElementById("lbl-y-count").textContent = t.yCount;
-    document.getElementById("lbl-m-pages").textContent = t.mPages;
-    document.getElementById("lbl-y-pages").textContent = t.yPages;
-    document.getElementById("btn-save-goals").textContent = t.saveGoals;
+    setText("lbl-goals-modal-title", t.goalsModalTitle);
+    setText("lbl-m-count", t.mCount);
+    setText("lbl-y-count", t.yCount);
+    setText("lbl-m-pages", t.mPages);
+    setText("lbl-y-pages", t.yPages);
+    setText("btn-save-goals", t.saveGoals);
 
-    document.getElementById("lbl-export-modal-title").textContent = t.exportModalTitle;
-    document.getElementById("lbl-export-filter-heading").textContent = t.exportFilterHeading;
-    document.getElementById("lbl-exp-status").textContent = t.byStatus;
-    document.getElementById("lbl-exp-shelf").textContent = t.byShelf;
-    document.getElementById("lbl-export-format-choice").textContent = t.exportFormatChoice;
-    document.getElementById("lbl-image-export-details").textContent = t.imgDetailsHeading;
-    document.getElementById("lbl-opt-shelf").textContent = t.optShelf;
-    document.getElementById("lbl-opt-status").textContent = t.optStatus;
-    document.getElementById("lbl-opt-progress").textContent = t.optProgress;
-    document.getElementById("lbl-opt-pages").textContent = t.optPages;
-    document.getElementById("lbl-opt-tags").textContent = t.optTags;
-    document.getElementById("lbl-opt-dates").textContent = t.optDates;
-    document.getElementById("lbl-opt-notes").textContent = t.optNotes;
+    setText("lbl-export-modal-title", t.exportModalTitle);
+    setText("lbl-export-filter-heading", t.exportFilterHeading);
+    setText("lbl-exp-status", t.byStatus);
+    setText("lbl-exp-shelf", t.byShelf);
+    setText("lbl-export-format-choice", t.exportFormatChoice);
+    setText("lbl-image-export-details", t.imgDetailsHeading);
+    setText("lbl-opt-shelf", t.optShelf);
+    setText("lbl-opt-status", t.optStatus);
+    setText("lbl-opt-progress", t.optProgress);
+    setText("lbl-opt-pages", t.optPages);
+    setText("lbl-opt-tags", t.optTags);
+    setText("lbl-opt-dates", t.optDates);
+    setText("lbl-opt-notes", t.optNotes);
 
-    document.getElementById("lbl-settings-modal-title").textContent = t.settingsModalTitle;
-    document.getElementById("lbl-theme-mode").textContent = t.themeMode;
-    document.getElementById("lbl-theme-desc").textContent = t.themeDesc;
-    document.getElementById("lbl-streak-goals-toggle").textContent = t.streakGoalsToggle;
-    document.getElementById("lbl-streak-goals-desc").textContent = t.streakGoalsDesc;
-    document.getElementById("lbl-username").textContent = t.username;
-    document.getElementById("lbl-splash-setting").textContent = t.splashSetting;
-    document.getElementById("lbl-wallpaper").textContent = t.wallpaper;
-    document.getElementById("btn-select-bg").textContent = t.selectImg;
-    document.getElementById("btn-clear-bg").textContent = t.clearImg;
-    document.getElementById("lbl-palette-title").textContent = t.paletteTitle;
+    setText("lbl-settings-modal-title", t.settingsModalTitle);
+    setText("lbl-theme-mode", t.themeMode);
+    setText("lbl-theme-desc", t.themeDesc);
+    setText("lbl-streak-goals-toggle", t.streakGoalsToggle);
+    setText("lbl-streak-goals-desc", t.streakGoalsDesc);
+    setText("lbl-username", t.username);
+    setText("lbl-splash-setting", t.splashSetting);
+    setText("lbl-wallpaper", t.wallpaper);
+    setText("btn-select-bg", t.selectImg);
+    setText("btn-clear-bg", t.clearImg);
+    setText("lbl-palette-title", t.paletteTitle);
 
-    document.getElementById("item-view-toggle-btn").textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
+    const toggleBtn = document.getElementById("item-view-toggle-btn");
+    if (toggleBtn) toggleBtn.textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
 
     const statusSelect = document.getElementById("status");
-    const currentStatusVal = statusSelect.value;
-    statusSelect.innerHTML = `
-      <option value="">${t.notSpecified}</option>
-      ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
-    `;
-    statusSelect.value = currentStatusVal;
+    if (statusSelect) {
+      const currentStatusVal = statusSelect.value;
+      statusSelect.innerHTML = `
+        <option value="">${t.notSpecified}</option>
+        ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
+      `;
+      statusSelect.value = currentStatusVal;
+    }
 
     const filterStatusSelect = document.getElementById("filter-status");
-    const curFilterStatusVal = filterStatusSelect.value;
-    filterStatusSelect.innerHTML = `
-      <option value="all">${t.allStatuses}</option>
-      ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
-    `;
-    filterStatusSelect.value = curFilterStatusVal;
+    if (filterStatusSelect) {
+      const curFilterStatusVal = filterStatusSelect.value;
+      filterStatusSelect.innerHTML = `
+        <option value="all">${t.allStatuses}</option>
+        ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
+      `;
+      filterStatusSelect.value = curFilterStatusVal;
+    }
 
     const expStatusSelect = document.getElementById("export-filter-status");
-    const curExpStatusVal = expStatusSelect.value;
-    expStatusSelect.innerHTML = `
-      <option value="all">${t.allStatuses}</option>
-      ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
-    `;
-    expStatusSelect.value = curExpStatusVal;
+    if (expStatusSelect) {
+      const curExpStatusVal = expStatusSelect.value;
+      expStatusSelect.innerHTML = `
+        <option value="all">${t.allStatuses}</option>
+        ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
+      `;
+      expStatusSelect.value = curExpStatusVal;
+    }
 
     const sortSelect = document.getElementById("sort-order");
-    const curSortVal = sortSelect.value;
-    sortSelect.innerHTML = `
-      <option value="newest">${t.sortNewest}</option>
-      <option value="oldest">${t.sortOldest}</option>
-      <option value="title-asc">${t.sortTitleAsc}</option>
-      <option value="author-asc">${t.sortAuthorAsc}</option>
-      <option value="prog-desc">${t.sortProgDesc}</option>
-      <option value="prog-asc">${t.sortProgAsc}</option>
-      <option value="pages-desc">${t.sortPagesDesc}</option>
-      <option value="pages-asc">${t.sortPagesAsc}</option>
-      <option value="end-desc">${t.sortEndDesc}</option>
-      <option value="end-asc">${t.sortEndAsc}</option>
-    `;
-    sortSelect.value = curSortVal;
+    if (sortSelect) {
+      const curSortVal = sortSelect.value || "newest";
+      sortSelect.innerHTML = `
+        <option value="newest">${t.sortNewest}</option>
+        <option value="oldest">${t.sortOldest}</option>
+        <option value="title-asc">${t.sortTitleAsc}</option>
+        <option value="author-asc">${t.sortAuthorAsc}</option>
+        <option value="prog-desc">${t.sortProgDesc}</option>
+        <option value="prog-asc">${t.sortProgAsc}</option>
+        <option value="pages-desc">${t.sortPagesDesc}</option>
+        <option value="pages-asc">${t.sortPagesAsc}</option>
+        <option value="end-desc">${t.sortEndDesc}</option>
+        <option value="end-asc">${t.sortEndAsc}</option>
+      `;
+      sortSelect.value = curSortVal;
+    }
 
     const filterMonthSelect = document.getElementById("filter-month");
-    const curMonthVal = filterMonthSelect.value;
-    filterMonthSelect.innerHTML = `<option value="all">${t.allMonths}</option>` +
-      t.months.map((mName, i) => `<option value="${String(i + 1).padStart(2, '0')}">${mName}</option>`).join("");
-    filterMonthSelect.value = curMonthVal;
+    if (filterMonthSelect) {
+      const curMonthVal = filterMonthSelect.value || "all";
+      filterMonthSelect.innerHTML = `<option value="all">${t.allMonths}</option>` +
+        t.months.map((mName, i) => `<option value="${String(i + 1).padStart(2, '0')}">${mName}</option>`).join("");
+      filterMonthSelect.value = curMonthVal;
+    }
 
     updateCustomDropdowns();
     populateFilterDropdowns();
@@ -1763,6 +1782,7 @@
   // ================= RAFLAR YÖNETİMİ =================
   function renderShelvesContainer() {
     const container = document.getElementById("shelves-container");
+    if (!container) return;
     const t = translations[currentLang] || translations.tr;
     container.innerHTML = "";
     container.className = shelfViewMode === "grid" ? "grid-view-container" : "list-view-container";
@@ -1877,24 +1897,32 @@
 
   // ================= GÖRSEL PAYLAŞIM AYARLARI =================
   function loadImageExportPrefs() {
-    document.getElementById("img-opt-shelf").checked = !!imageExportPrefs.shelf;
-    document.getElementById("img-opt-status").checked = !!imageExportPrefs.status;
-    document.getElementById("img-opt-progress").checked = !!imageExportPrefs.progress;
-    document.getElementById("img-opt-pages").checked = !!imageExportPrefs.pages;
-    document.getElementById("img-opt-tags").checked = !!imageExportPrefs.tags;
-    document.getElementById("img-opt-dates").checked = !!imageExportPrefs.dates;
-    document.getElementById("img-opt-notes").checked = !!imageExportPrefs.notes;
+    const setChk = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.checked = !!val;
+    };
+    setChk("img-opt-shelf", imageExportPrefs.shelf);
+    setChk("img-opt-status", imageExportPrefs.status);
+    setChk("img-opt-progress", imageExportPrefs.progress);
+    setChk("img-opt-pages", imageExportPrefs.pages);
+    setChk("img-opt-tags", imageExportPrefs.tags);
+    setChk("img-opt-dates", imageExportPrefs.dates);
+    setChk("img-opt-notes", imageExportPrefs.notes);
   }
 
   function saveImageExportPrefs() {
+    const getChk = (id) => {
+      const el = document.getElementById(id);
+      return el ? el.checked : false;
+    };
     imageExportPrefs = {
-      shelf: document.getElementById("img-opt-shelf").checked,
-      status: document.getElementById("img-opt-status").checked,
-      progress: document.getElementById("img-opt-progress").checked,
-      pages: document.getElementById("img-opt-pages").checked,
-      tags: document.getElementById("img-opt-tags").checked,
-      dates: document.getElementById("img-opt-dates").checked,
-      notes: document.getElementById("img-opt-notes").checked
+      shelf: getChk("img-opt-shelf"),
+      status: getChk("img-opt-status"),
+      progress: getChk("img-opt-progress"),
+      pages: getChk("img-opt-pages"),
+      tags: getChk("img-opt-tags"),
+      dates: getChk("img-opt-dates"),
+      notes: getChk("img-opt-notes")
     };
     localStorage.setItem("reader_image_export_prefs", JSON.stringify(imageExportPrefs));
   }
@@ -1903,20 +1931,24 @@
   function populateExportFilterOptions() {
     const t = translations[currentLang] || translations.tr;
     const shelfSel = document.getElementById("export-filter-shelf");
-    shelfSel.innerHTML = `<option value="all">${t.allShelves}</option>`;
-    shelvesList.forEach(s => {
-      const opt = document.createElement("option");
-      opt.value = s.name;
-      opt.textContent = translateValue("shelves", s.name);
-      shelfSel.appendChild(opt);
-    });
+    if (shelfSel) {
+      shelfSel.innerHTML = `<option value="all">${t.allShelves}</option>`;
+      shelvesList.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s.name;
+        opt.textContent = translateValue("shelves", s.name);
+        shelfSel.appendChild(opt);
+      });
+    }
     loadImageExportPrefs();
     updateExportPreviewCount();
   }
 
   function getExportFilteredRecords() {
-    const selStatus = document.getElementById("export-filter-status").value;
-    const selShelf = document.getElementById("export-filter-shelf").value;
+    const statusEl = document.getElementById("export-filter-status");
+    const shelfEl = document.getElementById("export-filter-shelf");
+    const selStatus = statusEl ? statusEl.value : "all";
+    const selShelf = shelfEl ? shelfEl.value : "all";
 
     return records.filter(r => {
       if (selStatus !== "all" && r.status !== selStatus) return false;
@@ -1927,7 +1959,8 @@
 
   function updateExportPreviewCount() {
     const count = getExportFilteredRecords().length;
-    document.getElementById("export-preview-text").textContent = `Seçilen filtreye göre toplam ${count} metin paylaşılacak.`;
+    const txtEl = document.getElementById("export-preview-text");
+    if (txtEl) txtEl.textContent = `Seçilen filtreye göre toplam ${count} metin paylaşılacak.`;
   }
 
   function executeExport(format) {
@@ -1936,7 +1969,8 @@
 
     if (targetData.length === 0) {
       alert("Seçilen filtreye uygun paylaşılacak metin bulunamadı.");
-      document.getElementById("export-format-choice").value = "";
+      const fmtEl = document.getElementById("export-format-choice");
+      if (fmtEl) fmtEl.value = "";
       return;
     }
 
@@ -1946,7 +1980,8 @@
     else if (format === "pdf") exportToPDF();
     else if (format === "copy") exportToClipboard(targetData);
 
-    document.getElementById("export-format-choice").value = "";
+    const fmtEl = document.getElementById("export-format-choice");
+    if (fmtEl) fmtEl.value = "";
   }
 
   function exportAsImage(targetData) {
@@ -2071,7 +2106,7 @@
     document.body.removeChild(link);
   }
 
-  // ================= STREAK, HEDEFLER & HESAPLAMALAR =================
+  // ================= STREAK & HEDEFLER =================
   function calculateStreak() {
     const todayStr = new Date().toISOString().slice(0, 10);
     let streakCount = parseInt(localStorage.getItem("reader_streak_count") || "1", 10);
@@ -2093,11 +2128,13 @@
       streakCount = 1;
     }
     localStorage.setItem("reader_last_visit_date", todayStr);
-    document.getElementById("streak-badge").textContent = `${streakCount} 🔥`;
+    const badgeEl = document.getElementById("streak-badge");
+    if (badgeEl) badgeEl.textContent = `${streakCount} 🔥`;
   }
 
   function updateGoalsDisplay() {
     const displayEl = document.getElementById("goals-display");
+    if (!displayEl) return;
     const now = new Date();
     const curYear = String(now.getFullYear());
     const curMonth = String(now.getMonth() + 1).padStart(2, "0");
@@ -2138,7 +2175,8 @@
     } else {
       displayEl.style.display = "none";
     }
-    document.getElementById("streak-badge").style.display = showStreak ? "inline-flex" : "none";
+    const badgeEl = document.getElementById("streak-badge");
+    if (badgeEl) badgeEl.style.display = showStreak ? "inline-flex" : "none";
   }
 
   function saveGoals() {
@@ -2208,6 +2246,7 @@
   // ================= FORM & VERİ KAYIT =================
   function toggleCustomDropdown(dropdownId) {
     const dp = document.getElementById(dropdownId);
+    if (!dp) return;
     const isShowing = dp.style.display === "block";
     document.querySelectorAll(".custom-dropdown-panel").forEach(p => p.style.display = "none");
     dp.style.display = isShowing ? "none" : "block";
@@ -2221,10 +2260,13 @@
 
   function selectOption(key, val) {
     const t = translations[currentLang] || translations.tr;
-    document.getElementById(`field-val-${key}`).value = val;
+    const fieldVal = document.getElementById(`field-val-${key}`);
+    const triggerLabel = document.getElementById(`trigger-label-${key}`);
+    const dropdown = document.getElementById(`dropdown-${key}`);
+    if (fieldVal) fieldVal.value = val;
     let labelText = val ? (key === 'type' ? translateValue('types', val) : (key === 'shelf' ? translateValue('shelves', val) : val)) : t.chooseOrAdd;
-    document.getElementById(`trigger-label-${key}`).textContent = labelText;
-    document.getElementById(`dropdown-${key}`).style.display = "none";
+    if (triggerLabel) triggerLabel.textContent = labelText;
+    if (dropdown) dropdown.style.display = "none";
   }
 
   function promptAddNewOption(key) {
@@ -2254,7 +2296,8 @@
       else if (key === "tags" && r.tags) r.tags = r.tags.filter(t => t !== valToDelete);
     });
 
-    if (document.getElementById(`field-val-${key}`).value === valToDelete) selectOption(key, "");
+    const fieldVal = document.getElementById(`field-val-${key}`);
+    if (fieldVal && fieldVal.value === valToDelete) selectOption(key, "");
     saveAndRender();
   }
 
@@ -2280,6 +2323,7 @@
   function renderDropdownItems(key, setObj, category) {
     const t = translations[currentLang] || translations.tr;
     const container = document.getElementById(`items-${key}`);
+    if (!container) return;
     container.innerHTML = `
       <div class="dropdown-item-row">
         <span class="dropdown-item-name" style="color: #64748b;" onclick="selectOption('${key}', '')"><em>${t.notSpecified}</em></span>
@@ -2299,56 +2343,62 @@
   }
 
   const form = document.getElementById("record-form");
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const title = document.getElementById("title").value.trim();
-    if (!title) return;
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const title = document.getElementById("title").value.trim();
+      if (!title) return;
 
-    const rawAuthor = document.getElementById("field-val-author").value.trim();
-    const authorsArray = rawAuthor ? rawAuthor.split(",").map(a => a.trim()).filter(Boolean) : [];
-    const rawTags = document.getElementById("field-val-tags").value.trim();
-    const tagsArray = rawTags ? rawTags.split(",").map(t => t.trim()).filter(Boolean) : [];
+      const rawAuthor = document.getElementById("field-val-author").value.trim();
+      const authorsArray = rawAuthor ? rawAuthor.split(",").map(a => a.trim()).filter(Boolean) : [];
+      const rawTags = document.getElementById("field-val-tags").value.trim();
+      const tagsArray = rawTags ? rawTags.split(",").map(t => t.trim()).filter(Boolean) : [];
 
-    const totalPages = document.getElementById("total-pages").value ? parseInt(document.getElementById("total-pages").value, 10) : null;
-    const readPages = document.getElementById("read-pages").value ? parseInt(document.getElementById("read-pages").value, 10) : null;
-    let progress = document.getElementById("progress-percent").value ? Math.round(parseFloat(document.getElementById("progress-percent").value)) : null;
+      const totalPages = document.getElementById("total-pages").value ? parseInt(document.getElementById("total-pages").value, 10) : null;
+      const readPages = document.getElementById("read-pages").value ? parseInt(document.getElementById("read-pages").value, 10) : null;
+      let progress = document.getElementById("progress-percent").value ? Math.round(parseFloat(document.getElementById("progress-percent").value)) : null;
 
-    const recordData = {
-      title: title,
-      cover: document.getElementById("cover-url").value.trim(),
-      authors: authorsArray,
-      type: document.getElementById("field-val-type").value.trim(),
-      shelf: document.getElementById("field-val-shelf").value.trim(),
-      status: document.getElementById("status").value,
-      totalPages: totalPages,
-      readPages: readPages,
-      progress: progress,
-      tags: tagsArray,
-      startDate: document.getElementById("start-date").value.trim(),
-      endDate: document.getElementById("end-date").value.trim(),
-      notes: document.getElementById("notes").value.trim()
-    };
+      const recordData = {
+        title: title,
+        cover: document.getElementById("cover-url").value.trim(),
+        authors: authorsArray,
+        type: document.getElementById("field-val-type").value.trim(),
+        shelf: document.getElementById("field-val-shelf").value.trim(),
+        status: document.getElementById("status").value,
+        totalPages: totalPages,
+        readPages: readPages,
+        progress: progress,
+        tags: tagsArray,
+        startDate: document.getElementById("start-date").value.trim(),
+        endDate: document.getElementById("end-date").value.trim(),
+        notes: document.getElementById("notes").value.trim()
+      };
 
-    const editId = document.getElementById("edit-id").value;
-    if (editId) {
-      records = records.map(item => item.id == editId ? { ...item, ...recordData } : item);
-    } else {
-      recordData.id = Date.now();
-      records.unshift(recordData);
-    }
+      const editId = document.getElementById("edit-id").value;
+      if (editId) {
+        records = records.map(item => item.id == editId ? { ...item, ...recordData } : item);
+      } else {
+        recordData.id = Date.now();
+        records.unshift(recordData);
+      }
 
-    saveAndRender();
-    resetForm();
-    closeFullScreenModal("modal-form");
-  });
+      saveAndRender();
+      resetForm();
+      closeFullScreenModal("modal-form");
+    });
+  }
 
   function resetForm() {
     const t = translations[currentLang] || translations.tr;
-    form.reset();
-    document.getElementById("edit-id").value = "";
-    document.getElementById("cover-url").value = "";
-    document.getElementById("form-heading").textContent = t.newText;
-    document.getElementById("cancel-edit-btn").style.display = "none";
+    if (form) form.reset();
+    const editId = document.getElementById("edit-id");
+    if (editId) editId.value = "";
+    const coverUrl = document.getElementById("cover-url");
+    if (coverUrl) coverUrl.value = "";
+    const formHeading = document.getElementById("form-heading");
+    if (formHeading) formHeading.textContent = t.newText;
+    const cancelBtn = document.getElementById("cancel-edit-btn");
+    if (cancelBtn) cancelBtn.style.display = "none";
     ["author", "type", "shelf", "tags"].forEach(k => selectOption(k, ""));
   }
 
@@ -2373,8 +2423,10 @@
     document.getElementById("end-date").value = item.endDate || "";
     document.getElementById("notes").value = item.notes || "";
 
-    document.getElementById("form-heading").textContent = t.editText + item.title;
-    document.getElementById("cancel-edit-btn").style.display = "inline-block";
+    const formHeading = document.getElementById("form-heading");
+    if (formHeading) formHeading.textContent = t.editText + item.title;
+    const cancelBtn = document.getElementById("cancel-edit-btn");
+    if (cancelBtn) cancelBtn.style.display = "inline-block";
     openFullScreenModal("modal-form");
   }
 
@@ -2411,6 +2463,7 @@
   function updateActiveFilterBadge() {
     const box = document.getElementById("active-tag-filter-display");
     const txt = document.getElementById("active-filter-text");
+    if (!box || !txt) return;
     const list = [];
     if (activeClickFilters.author) list.push(`Yazar: "${activeClickFilters.author}"`);
     if (activeClickFilters.type) list.push(`Tür: "${translateValue("types", activeClickFilters.type)}"`);
@@ -2444,13 +2497,14 @@
       (r.tags || []).forEach(t => tagsSet.add(t));
     });
 
-    populateSelect(filterAuthor, authorsSet, t.allAuthors, false);
-    populateSelect(filterType, typesSet, t.allTypes, "types");
-    populateSelect(filterShelf, shelvesSet, t.allShelves, "shelves");
-    populateSelect(filterTag, tagsSet, t.allTags, false);
+    if (filterAuthor) populateSelect(filterAuthor, authorsSet, t.allAuthors, false);
+    if (filterType) populateSelect(filterType, typesSet, t.allTypes, "types");
+    if (filterShelf) populateSelect(filterShelf, shelvesSet, t.allShelves, "shelves");
+    if (filterTag) populateSelect(filterTag, tagsSet, t.allTags, false);
   }
 
   function populateSelect(elem, setObj, defaultLabel, category) {
+    if (!elem) return;
     const curVal = elem.value;
     elem.innerHTML = `<option value="all">${defaultLabel}</option>`;
     Array.from(setObj).sort().forEach(val => {
@@ -2464,18 +2518,28 @@
 
   function renderItems() {
     const listContainer = document.getElementById("records-container");
+    if (!listContainer) return;
     const t = translations[currentLang] || translations.tr;
     listContainer.innerHTML = "";
     listContainer.className = itemViewMode === "grid" ? "grid-view-container" : "list-view-container";
 
-    const query = document.getElementById("search-input").value.toLowerCase().trim();
-    const selStatus = document.getElementById("filter-status").value;
-    const selAuthor = document.getElementById("filter-author").value;
-    const selType = document.getElementById("filter-type").value;
-    const selShelf = document.getElementById("filter-shelf").value;
-    const selTag = document.getElementById("filter-tag").value;
-    const selYear = document.getElementById("filter-year").value;
-    const selMonth = document.getElementById("filter-month").value;
+    const searchInput = document.getElementById("search-input");
+    const filterStatus = document.getElementById("filter-status");
+    const filterAuthor = document.getElementById("filter-author");
+    const filterType = document.getElementById("filter-type");
+    const filterShelf = document.getElementById("filter-shelf");
+    const filterTag = document.getElementById("filter-tag");
+    const filterYear = document.getElementById("filter-year");
+    const filterMonth = document.getElementById("filter-month");
+
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+    const selStatus = filterStatus ? filterStatus.value : "all";
+    const selAuthor = filterAuthor ? filterAuthor.value : "all";
+    const selType = filterType ? filterType.value : "all";
+    const selShelf = filterShelf ? filterShelf.value : "all";
+    const selTag = filterTag ? filterTag.value : "all";
+    const selYear = filterYear ? filterYear.value : "all";
+    const selMonth = filterMonth ? filterMonth.value : "all";
 
     let filtered = records.filter(item => {
       if (query) {
@@ -2503,7 +2567,8 @@
       return true;
     });
 
-    const order = document.getElementById("sort-order").value;
+    const sortOrder = document.getElementById("sort-order");
+    const order = sortOrder ? sortOrder.value : "newest";
     filtered.sort((a, b) => {
       if (order === "newest") return b.id - a.id;
       if (order === "oldest") return a.id - b.id;
@@ -2516,7 +2581,8 @@
       return 0;
     });
 
-    document.getElementById("count-display").textContent = `${filtered.length} ${t.countTexts}`;
+    const countDisplay = document.getElementById("count-display");
+    if (countDisplay) countDisplay.textContent = `${filtered.length} ${t.countTexts}`;
 
     if (filtered.length === 0) {
       listContainer.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-muted); background: var(--panel-bg); border-radius: 12px; border: 1px solid var(--border-color);">${t.noRecords}</div>`;
@@ -2592,10 +2658,10 @@
     const btn = document.getElementById("theme-icon-btn");
     if (isDarkMode) {
       document.body.classList.add("dark-mode");
-      btn.textContent = "☀️";
+      if (btn) btn.textContent = "☀️";
     } else {
       document.body.classList.remove("dark-mode");
-      btn.textContent = "🌙";
+      if (btn) btn.textContent = "🌙";
     }
     const currentThemeObj = colorPalette.find(c => c.hex === currentColorHex) || colorPalette[11];
     applyThemeColor(currentThemeObj);
@@ -2627,14 +2693,16 @@
   }
 
   const paletteContainer = document.getElementById("palette-container");
-  colorPalette.forEach(col => {
-    const btn = document.createElement("button");
-    btn.className = "color-btn";
-    btn.style.backgroundColor = col.hex;
-    btn.title = col.name;
-    btn.onclick = () => applyThemeColor(col);
-    paletteContainer.appendChild(btn);
-  });
+  if (paletteContainer) {
+    colorPalette.forEach(col => {
+      const btn = document.createElement("button");
+      btn.className = "color-btn";
+      btn.style.backgroundColor = col.hex;
+      btn.title = col.name;
+      btn.onclick = () => applyThemeColor(col);
+      paletteContainer.appendChild(btn);
+    });
+  }
 
   function handleBgUpload(e) {
     const file = e.target.files[0];
@@ -2683,12 +2751,15 @@
 
   function proceedSplashExit() {
     const splash = document.getElementById("splash-screen");
+    if (!splash) return;
     if (!splashEnabled) {
       splash.style.display = "none";
     } else {
       setTimeout(() => {
         splash.classList.add(splashAnim === "water" ? "anim-water-out" : "anim-circle-out");
-        setTimeout(() => { splash.style.display = "none"; }, splashAnim === "water" ? 4000 : 2000);
+        setTimeout(() => { 
+          splash.style.display = "none"; 
+        }, splashAnim === "water" ? 4000 : 2000);
       }, 1000);
     }
   }
@@ -2698,23 +2769,26 @@
     calculateStreak();
     loadBg(localStorage.getItem("reader_custom_bg"));
     applyThemeMode();
+
+    const usernameInp = document.getElementById("setting-username");
+    if (usernameInp) usernameInp.value = currentUsername;
+    const mCountInp = document.getElementById("goal-monthly-count");
+    if (mCountInp) mCountInp.value = userGoals.mCount || "";
+    const yCountInp = document.getElementById("goal-yearly-count");
+    if (yCountInp) yCountInp.value = userGoals.yCount || "";
+    const mPagesInp = document.getElementById("goal-monthly-pages");
+    if (mPagesInp) mPagesInp.value = userGoals.mPages || "";
+    const yPagesInp = document.getElementById("goal-yearly-pages");
+    if (yPagesInp) yPagesInp.value = userGoals.yPages || "";
+
     applyTranslations();
 
-    document.getElementById("setting-username").value = currentUsername;
-    document.getElementById("goal-monthly-count").value = userGoals.mCount || "";
-    document.getElementById("goal-yearly-count").value = userGoals.yCount || "";
-    document.getElementById("goal-monthly-pages").value = userGoals.mPages || "";
-    document.getElementById("goal-yearly-pages").value = userGoals.yPages || "";
-
     if (needsInitialLangPrompt) {
-      document.getElementById("splash-lang-box").style.display = "block";
+      const langBox = document.getElementById("splash-lang-box");
+      if (langBox) langBox.style.display = "block";
     } else {
       proceedSplashExit();
     }
-
-    populateFilterDropdowns();
-    updateCustomDropdowns();
-    renderItems();
   });
 </script>
 
