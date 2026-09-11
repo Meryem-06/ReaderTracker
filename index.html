@@ -560,6 +560,44 @@
     .shelf-popover-menu button:hover { background: rgba(0,0,0,0.06); }
     .shelf-popover-menu button.delete { color: #ef4444; }
 
+    /* DÜZELTİLEN RENK PALETİ IZGARASI */
+    .palette-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)) !important;
+      gap: 8px !important;
+      width: 100% !important;
+      margin-top: 0.6rem !important;
+    }
+
+    .color-btn {
+      width: 100% !important;
+      min-height: 38px !important;
+      height: 38px !important;
+      border-radius: 8px !important;
+      border: 2px solid transparent !important;
+      cursor: pointer !important;
+      transition: transform 0.15s, border-color 0.15s !important;
+      outline: none !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+    .color-btn:hover { transform: scale(1.1); }
+    .color-btn.selected {
+      border-color: #ffffff !important;
+      box-shadow: 0 0 0 3px var(--text-main) !important;
+    }
+
+    .settings-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .settings-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
     .themed-text { color: var(--active-text) !important; }
     .btn-action { background-color: var(--active-accent) !important; color: #ffffff; border: none; padding: 0.65rem 1.4rem; border-radius: 8px; cursor: pointer; font-weight: 600; }
   </style>
@@ -1032,7 +1070,6 @@
   let showGoals = localStorage.getItem("reader_show_goals") !== "false";
   let userGoals = JSON.parse(localStorage.getItem("reader_user_goals")) || { mCount: "", yCount: "", mPages: "", yPages: "" };
 
-  // Görünüm Modları: 'list' (sıra sıra) veya 'grid' (2'li kare kutucuk)
   let itemViewMode = localStorage.getItem("reader_item_view_mode") || "list";
   let shelfViewMode = localStorage.getItem("reader_shelf_view_mode") || "grid";
 
@@ -1194,7 +1231,7 @@
     updateCustomDropdowns();
   }
 
-  // ================= DETAYLARI AÇ/KAPA (ACCORDION) =================
+  // ================= DETAYLARI AÇ/KAPA =================
   function toggleDetails(btn, detailsId) {
     const det = document.getElementById(detailsId);
     if (!det) return;
@@ -1799,7 +1836,6 @@
     filtered.forEach((item, index) => {
       const card = document.createElement("div");
 
-      // Detay bilgileri
       let metaDetails = [];
       if (item.authors && item.authors.length) {
         metaDetails.push(item.authors.map(a => `<span class="clickable-badge" onclick="toggleClickFilter('author', '${escapeHtml(a)}')"><strong>✍️ ${escapeHtml(a)}</strong></span>`).join(", "));
@@ -1894,6 +1930,10 @@
       document.documentElement.style.setProperty("--active-bg-tint", bgToApply);
       document.body.style.backgroundColor = bgToApply;
     }
+
+    document.querySelectorAll(".color-btn").forEach(b => {
+      b.classList.toggle("selected", b.style.backgroundColor === colObj.hex);
+    });
   }
 
   const paletteContainer = document.getElementById("palette-container");
