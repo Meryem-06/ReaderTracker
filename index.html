@@ -198,7 +198,7 @@
       gap: 0.3rem;
     }
 
-    /* Sıralı Görünümün Altındaki Hızlı Emoji Butonları */
+    /* Hızlı Emoji Butonları */
     .quick-actions-row {
       display: flex;
       gap: 0.6rem;
@@ -306,7 +306,7 @@
       outline: 2px solid var(--active-accent);
     }
 
-    /* TAM EKRAN MODAL / SAYFA YAPISI */
+    /* TAM EKRAN MODAL */
     .full-page-view {
       display: none;
       position: fixed;
@@ -362,7 +362,6 @@
     }
     .modal-close-btn:hover { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
 
-    /* Form & Inputlar */
     .form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -400,7 +399,6 @@
     }
     textarea { resize: vertical; min-height: 70px; }
 
-    /* Çarpılı Özel Açılır Menüler */
     .custom-select-trigger {
       width: 100%;
       padding: 0.65rem 0.85rem;
@@ -451,7 +449,7 @@
       cursor: pointer;
     }
 
-    /* KARE IZGARA (GRID - 2'li Yan Yana) */
+    /* 2'li Kare Izgara */
     .grid-view-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -519,9 +517,7 @@
       padding: 0.2rem;
       transition: transform 0.2s ease;
     }
-    .expand-toggle-btn.expanded {
-      transform: rotate(180deg);
-    }
+    .expand-toggle-btn.expanded { transform: rotate(180deg); }
 
     .card-expandable-details {
       display: none;
@@ -531,7 +527,7 @@
       background: var(--panel-bg);
     }
 
-    /* SIRALI (LİSTE) GÖRÜNÜM */
+    /* Sıralı Görünüm */
     .list-view-container {
       display: flex;
       flex-direction: column;
@@ -629,7 +625,7 @@
     .shelf-popover-menu button:hover { background: rgba(0,0,0,0.06); }
     .shelf-popover-menu button.delete { color: #ef4444; }
 
-    /* DÜZELTİLEN RENK PALETİ IZGARASI */
+    /* Renk Paleti Izgarası */
     .palette-grid {
       display: grid !important;
       grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)) !important;
@@ -1030,7 +1026,6 @@
       </div>
     </div>
 
-    <!-- Görsel Paylaşımı İçin Detay Seçenekleri Kutusu -->
     <div class="image-export-options-box">
       <div style="font-weight: 700; font-size: 0.88rem; color: var(--active-accent);" id="lbl-image-export-details">
         🖼️ Görselde Gösterilecek Ek Detaylar (Kapak, Başlık ve Yazar Varsayılandır):
@@ -1120,7 +1115,7 @@
   </div>
 </div>
 
-<!-- ================= ANA SAYFA GÖRÜNÜMÜ ================= -->
+<!-- ================= ANA SAYFA ================= -->
 <div class="container" id="main-content-view">
   <div class="top-header">
     <div class="top-header-left">
@@ -1144,7 +1139,6 @@
     <button class="view-toggle-btn" id="item-view-toggle-btn" onclick="toggleItemViewMode()">⊞ Izgara Görünümü</button>
   </div>
 
-  <!-- "Sıralı Görünüm" Butonunun Altındaki Emoji Butonları -->
   <div class="quick-actions-row">
     <button class="quick-icon-btn" onclick="openFullScreenModal('modal-form')" title="Yeni Metin Ekle">➕</button>
     <button class="quick-icon-btn" onclick="openFullScreenModal('modal-filter')" title="Filtrele & Ara">🔍</button>
@@ -1155,7 +1149,11 @@
 </div>
 
 <script>
-  // ================= DİL VE ÇEVİRİ SÖZLÜĞÜ =================
+  // ================= ÇOK DİLLİ SÖZLÜK VE SABİTLER =================
+  const canonicalStatuses = ["Okunuyor", "Bitti", "Yarım Kaldı", "Yarıda Bırakıldı", "Okumak İstenilenlerde"];
+  const canonicalTypes = ["Kitap", "Makale", "Rapor", "Karar", "Tez"];
+  const canonicalShelves = ["Macera", "Aşk", "Bilim Kurgu", "Klasikler", "Felsefe"];
+
   const translations = {
     tr: {
       welcome: "Hoş geldin!",
@@ -1227,6 +1225,46 @@
       edit: "Düzenle",
       delete: "Sil",
       clearFilter: "Filtreyi Temizle",
+      notSpecified: "(Belirtilmedi)",
+      allStatuses: "Tüm Durumlar",
+      allShelves: "Tüm Raflar",
+      allTypes: "Tüm Türler",
+      allAuthors: "Tüm Yazarlar",
+      allTags: "Tüm Etiketler",
+      allYears: "Tüm Yıllar",
+      allMonths: "Tüm Aylar",
+      sortNewest: "Son Eklenenler (Varsayılan)",
+      sortOldest: "İlk Eklenenler",
+      sortTitleAsc: "Başlık (A → Z)",
+      sortAuthorAsc: "Yazar (A → Z)",
+      sortProgDesc: "İlerleme: En Yüksek → En Düşük",
+      sortProgAsc: "İlerleme: En Düşük → En Yüksek",
+      sortPagesDesc: "Sayfa Sayısı: En Çok → En Az",
+      sortPagesAsc: "Sayfa Sayısı: En Az → En Çok",
+      sortEndDesc: "Bitiş Tarihi: En Yeni → En Eski",
+      sortEndAsc: "Bitiş Tarihi: En Eski → En Yeni",
+      statuses: {
+        "Okunuyor": "Okunuyor",
+        "Bitti": "Bitti",
+        "Yarım Kaldı": "Yarım Kaldı",
+        "Yarıda Bırakıldı": "Yarıda Bırakıldı",
+        "Okumak İstenilenlerde": "Okumak İstenilenlerde"
+      },
+      types: {
+        "Kitap": "Kitap",
+        "Makale": "Makale",
+        "Rapor": "Rapor",
+        "Karar": "Karar",
+        "Tez": "Tez"
+      },
+      shelves: {
+        "Macera": "Macera",
+        "Aşk": "Aşk",
+        "Bilim Kurgu": "Bilim Kurgu",
+        "Klasikler": "Klasikler",
+        "Felsefe": "Felsefe"
+      },
+      months: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
       imgDetailsHeading: "🖼️ Görselde Gösterilecek Ek Detaylar (Kapak, Başlık ve Yazar Varsayılandır):",
       optShelf: "Raf / Seri",
       optStatus: "Okuma Durumu",
@@ -1306,6 +1344,46 @@
       edit: "Edit",
       delete: "Delete",
       clearFilter: "Clear Filter",
+      notSpecified: "(Not Specified)",
+      allStatuses: "All Statuses",
+      allShelves: "All Shelves",
+      allTypes: "All Types",
+      allAuthors: "All Authors",
+      allTags: "All Tags",
+      allYears: "All Years",
+      allMonths: "All Months",
+      sortNewest: "Newest (Default)",
+      sortOldest: "Oldest",
+      sortTitleAsc: "Title (A → Z)",
+      sortAuthorAsc: "Author (A → Z)",
+      sortProgDesc: "Progress: High → Low",
+      sortProgAsc: "Progress: Low → High",
+      sortPagesDesc: "Pages: Most → Least",
+      sortPagesAsc: "Pages: Least → Most",
+      sortEndDesc: "Finish Date: Newest → Oldest",
+      sortEndAsc: "Finish Date: Oldest → Newest",
+      statuses: {
+        "Okunuyor": "Reading",
+        "Bitti": "Finished",
+        "Yarım Kaldı": "On Hold",
+        "Yarıda Bırakıldı": "Dropped",
+        "Okumak İstenilenlerde": "Want to Read"
+      },
+      types: {
+        "Kitap": "Book",
+        "Makale": "Article",
+        "Rapor": "Report",
+        "Karar": "Decision",
+        "Tez": "Thesis"
+      },
+      shelves: {
+        "Macera": "Adventure",
+        "Aşk": "Romance",
+        "Bilim Kurgu": "Sci-Fi",
+        "Klasikler": "Classics",
+        "Felsefe": "Philosophy"
+      },
+      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       imgDetailsHeading: "🖼️ Extra Details on Image (Cover, Title and Author are default):",
       optShelf: "Shelf / Series",
       optStatus: "Status",
@@ -1385,6 +1463,46 @@
       edit: "Editar",
       delete: "Eliminar",
       clearFilter: "Limpiar Filtro",
+      notSpecified: "(No especificado)",
+      allStatuses: "Todos los estados",
+      allShelves: "Todas las estanterías",
+      allTypes: "Todos los tipos",
+      allAuthors: "Todos los autores",
+      allTags: "Todas las etiquetas",
+      allYears: "Todos los años",
+      allMonths: "Todos los meses",
+      sortNewest: "Más recientes (Predeterminado)",
+      sortOldest: "Más antiguos",
+      sortTitleAsc: "Título (A → Z)",
+      sortAuthorAsc: "Autor (A → Z)",
+      sortProgDesc: "Progreso: Alto → Bajo",
+      sortProgAsc: "Progreso: Bajo → Alto",
+      sortPagesDesc: "Páginas: Más → Menos",
+      sortPagesAsc: "Páginas: Menos → Más",
+      sortEndDesc: "Fecha de fin: Más reciente → Más antigua",
+      sortEndAsc: "Fecha de fin: Más antigua → Más reciente",
+      statuses: {
+        "Okunuyor": "Leyendo",
+        "Bitti": "Terminado",
+        "Yarım Kaldı": "Pausado",
+        "Yarıda Bırakıldı": "Abandonado",
+        "Okumak İstenilenlerde": "Quiero Leer"
+      },
+      types: {
+        "Kitap": "Libro",
+        "Makale": "Artículo",
+        "Rapor": "Informe",
+        "Karar": "Sentencia",
+        "Tez": "Tesis"
+      },
+      shelves: {
+        "Macera": "Aventura",
+        "Aşk": "Romance",
+        "Bilim Kurgu": "Ciencia Ficción",
+        "Klasikler": "Clásicos",
+        "Felsefe": "Filosofía"
+      },
+      months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
       imgDetailsHeading: "🖼️ Detalles Adicionales en la Imagen (Portada, Título y Autor son predeterminados):",
       optShelf: "Estantería / Serie",
       optStatus: "Estado",
@@ -1395,6 +1513,15 @@
       optNotes: "Notas"
     }
   };
+
+  function translateValue(category, val) {
+    if (!val) return "";
+    const t = translations[currentLang] || translations.tr;
+    if (t[category] && t[category][val]) {
+      return t[category][val];
+    }
+    return val;
+  }
 
   const colorPalette = [
     { name: "Açık Sarı", hex: "#eab308", bg: "#fefce8" },
@@ -1442,7 +1569,6 @@
   let shelfViewMode = localStorage.getItem("reader_shelf_view_mode") || "grid";
   let activeClickFilters = { author: null, type: null, shelf: null, tag: null };
 
-  // Görselde Çıkacak Detay Tercihleri (Varsayılan: Sadece Kapak, Başlık ve Yazar)
   let imageExportPrefs = JSON.parse(localStorage.getItem("reader_image_export_prefs")) || {
     shelf: false,
     status: false,
@@ -1453,7 +1579,6 @@
     notes: false
   };
 
-  // Dil Belirleme Mantığı
   let currentLang = localStorage.getItem("reader_app_lang");
   let needsInitialLangPrompt = false;
 
@@ -1571,8 +1696,62 @@
 
     document.getElementById("item-view-toggle-btn").textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
 
-    renderItems();
+    // Durum Seçim Kutusu (Form İçi) Çevirisi
+    const statusSelect = document.getElementById("status");
+    const currentStatusVal = statusSelect.value;
+    statusSelect.innerHTML = `
+      <option value="">${t.notSpecified}</option>
+      ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
+    `;
+    statusSelect.value = currentStatusVal;
+
+    // Filtreleme Durum Kutusu Çevirisi
+    const filterStatusSelect = document.getElementById("filter-status");
+    const curFilterStatusVal = filterStatusSelect.value;
+    filterStatusSelect.innerHTML = `
+      <option value="all">${t.allStatuses}</option>
+      ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
+    `;
+    filterStatusSelect.value = curFilterStatusVal;
+
+    // Dışa Aktar Durum Kutusu Çevirisi
+    const expStatusSelect = document.getElementById("export-filter-status");
+    const curExpStatusVal = expStatusSelect.value;
+    expStatusSelect.innerHTML = `
+      <option value="all">${t.allStatuses}</option>
+      ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
+    `;
+    expStatusSelect.value = curExpStatusVal;
+
+    // Sıralama Seçenekleri Çevirisi
+    const sortSelect = document.getElementById("sort-order");
+    const curSortVal = sortSelect.value;
+    sortSelect.innerHTML = `
+      <option value="newest">${t.sortNewest}</option>
+      <option value="oldest">${t.sortOldest}</option>
+      <option value="title-asc">${t.sortTitleAsc}</option>
+      <option value="author-asc">${t.sortAuthorAsc}</option>
+      <option value="prog-desc">${t.sortProgDesc}</option>
+      <option value="prog-asc">${t.sortProgAsc}</option>
+      <option value="pages-desc">${t.sortPagesDesc}</option>
+      <option value="pages-asc">${t.sortPagesAsc}</option>
+      <option value="end-desc">${t.sortEndDesc}</option>
+      <option value="end-asc">${t.sortEndAsc}</option>
+    `;
+    sortSelect.value = curSortVal;
+
+    // Filtreleme Ay Seçenekleri
+    const filterMonthSelect = document.getElementById("filter-month");
+    const curMonthVal = filterMonthSelect.value;
+    filterMonthSelect.innerHTML = `<option value="all">${t.allMonths}</option>` +
+      t.months.map((mName, i) => `<option value="${String(i + 1).padStart(2, '0')}">${mName}</option>`).join("");
+    filterMonthSelect.value = curMonthVal;
+
+    // Seçim kutularını ve listeleri güncelle
+    updateCustomDropdowns();
+    populateFilterDropdowns();
     renderShelvesContainer();
+    renderItems();
     updateGoalsDisplay();
   }
 
@@ -1637,12 +1816,13 @@
     shelvesList.forEach((shelf, idx) => {
       const bookCount = records.filter(r => r.shelf === shelf.name).length;
       const shelfItem = document.createElement("div");
+      const displayedShelfName = translateValue("shelves", shelf.name);
 
       if (shelfViewMode === "grid") {
         shelfItem.className = "grid-card";
         shelfItem.innerHTML = `
           <div class="card-cover-box" style="${shelf.cover ? `background-image: url('${shelf.cover}');` : ''}">
-            ${!shelf.cover ? `<div class="cover-fallback-title">${escapeHtml(shelf.name)}</div>` : ''}
+            ${!shelf.cover ? `<div class="cover-fallback-title">${escapeHtml(displayedShelfName)}</div>` : ''}
             <button class="shelf-menu-btn" onclick="toggleShelfMenu(event, ${idx})">⋮</button>
             <div class="shelf-popover-menu" id="shelf-menu-${idx}">
               <button onclick="editShelf(${idx})">✏️ ${t.edit}</button>
@@ -1650,7 +1830,7 @@
             </div>
           </div>
           <div class="card-basic-header">
-            <span class="card-basic-title">${escapeHtml(shelf.name)}</span>
+            <span class="card-basic-title">${escapeHtml(displayedShelfName)}</span>
             <button class="expand-toggle-btn" onclick="toggleDetails(this, 'shelf-det-${idx}')">▼</button>
           </div>
           <div class="card-expandable-details" id="shelf-det-${idx}">
@@ -1665,9 +1845,9 @@
         shelfItem.innerHTML = `
           <div class="list-card-main-row">
             <div class="list-thumb" style="${shelf.cover ? `background-image: url('${shelf.cover}');` : ''}">
-              ${!shelf.cover ? escapeHtml(shelf.name.slice(0, 5)) : ''}
+              ${!shelf.cover ? escapeHtml(displayedShelfName.slice(0, 5)) : ''}
             </div>
-            <div class="list-card-title">${escapeHtml(shelf.name)}</div>
+            <div class="list-card-title">${escapeHtml(displayedShelfName)}</div>
             <button class="expand-toggle-btn" onclick="toggleDetails(this, 'shelf-det-${idx}')">▼</button>
           </div>
           <div class="card-expandable-details" id="shelf-det-${idx}">
@@ -1720,7 +1900,7 @@
 
   function deleteShelf(idx) {
     const s = shelvesList[idx];
-    if (!confirm(`"${s.name}" rafını silmek istediğinize emin misiniz?`)) return;
+    if (!confirm(`"${translateValue('shelves', s.name)}" silinsin mi?`)) return;
     records.forEach(r => { if (r.shelf === s.name) r.shelf = ""; });
     shelvesList.splice(idx, 1);
     saveShelvesAndRender();
@@ -1767,12 +1947,13 @@
 
   // ================= DIŞA AKTARMA VE PAYLAŞIM =================
   function populateExportFilterOptions() {
+    const t = translations[currentLang] || translations.tr;
     const shelfSel = document.getElementById("export-filter-shelf");
-    shelfSel.innerHTML = `<option value="all">Tüm Raflar</option>`;
+    shelfSel.innerHTML = `<option value="all">${t.allShelves}</option>`;
     shelvesList.forEach(s => {
       const opt = document.createElement("option");
       opt.value = s.name;
-      opt.textContent = s.name;
+      opt.textContent = translateValue("shelves", s.name);
       shelfSel.appendChild(opt);
     });
     loadImageExportPrefs();
@@ -1830,8 +2011,8 @@
       <p style="margin-bottom: 1rem; font-size: 0.85rem; opacity: 0.8;">Tarih: ${new Date().toLocaleDateString('tr-TR')} | Toplam: ${targetData.length} Eser</p>
       ${targetData.map((r, i) => {
         const authorText = r.authors && r.authors.length ? ` - <span>✍️ ${escapeHtml(r.authors.join(', '))}</span>` : '';
-        const shelfText = imageExportPrefs.shelf && r.shelf ? ` • <span>📁 ${escapeHtml(r.shelf)}</span>` : '';
-        const statusText = imageExportPrefs.status && r.status ? ` • <span style="font-weight:700;">[${escapeHtml(r.status)}]</span>` : '';
+        const shelfText = imageExportPrefs.shelf && r.shelf ? ` • <span>📁 ${escapeHtml(translateValue("shelves", r.shelf))}</span>` : '';
+        const statusText = imageExportPrefs.status && r.status ? ` • <span style="font-weight:700;">[${escapeHtml(translateValue("statuses", r.status))}]</span>` : '';
         const progressText = imageExportPrefs.progress && (r.progress !== null) ? ` • <span>%${r.progress}</span>` : '';
         const pagesText = imageExportPrefs.pages && r.totalPages ? ` • <span>📖 ${r.readPages || 0}/${r.totalPages} s.</span>` : '';
         const datesText = imageExportPrefs.dates && (r.startDate || r.endDate) ? ` • <span>🗓️ ${[r.startDate, r.endDate].filter(Boolean).join(' - ')}</span>` : '';
@@ -1873,7 +2054,7 @@
     const headers = ["Sıra No", "Metin Adı", "Yazar(lar)", "Tür", "Seri/Raf", "Durum", "Toplam Sayfa", "Okunan Sayfa", "İlerleme (%)", "Etiketler", "Başlangıç Tarihi", "Bitiş Tarihi", "Notlar"];
     const rows = dataList.map((r, i) => [
       `"${i + 1}"`, `"${(r.title || '').replace(/"/g, '""')}"`, `"${(r.authors ? r.authors.join(', ') : '').replace(/"/g, '""')}"`,
-      `"${(r.type || '').replace(/"/g, '""')}"`, `"${(r.shelf || '').replace(/"/g, '""')}"`, `"${(r.status || '').replace(/"/g, '""')}"`,
+      `"${(translateValue('types', r.type) || '').replace(/"/g, '""')}"`, `"${(translateValue('shelves', r.shelf) || '').replace(/"/g, '""')}"`, `"${(translateValue('statuses', r.status) || '').replace(/"/g, '""')}"`,
       `"${r.totalPages || ''}"`, `"${r.readPages || ''}"`, `"${r.progress ?? ''}"`, `"${(r.tags ? r.tags.join(', ') : '').replace(/"/g, '""')}"`,
       `"${r.startDate || ''}"`, `"${r.endDate || ''}"`, `"${(r.notes || '').replace(/"/g, '""')}"`
     ]);
@@ -1901,8 +2082,8 @@
               <td>${i + 1}</td>
               <td><strong>${escapeHtml(r.title)}</strong></td>
               <td>${escapeHtml((r.authors || []).join(", ")) || "-"}</td>
-              <td>${escapeHtml(r.shelf) || "-"}</td>
-              <td>${escapeHtml(r.status) || "-"}</td>
+              <td>${escapeHtml(translateValue("shelves", r.shelf)) || "-"}</td>
+              <td>${escapeHtml(translateValue("statuses", r.status)) || "-"}</td>
               <td>%${r.progress ?? 0}</td>
             </tr>
           `).join("")}
@@ -1919,8 +2100,8 @@
     dataList.forEach((r, i) => {
       text += `${i + 1}. ${r.title}`;
       if (r.authors && r.authors.length) text += ` - ${r.authors.join(", ")}`;
-      if (r.shelf) text += ` [${r.shelf}]`;
-      if (r.status) text += ` (${r.status})`;
+      if (r.shelf) text += ` [${translateValue("shelves", r.shelf)}]`;
+      if (r.status) text += ` (${translateValue("statuses", r.status)})`;
       text += `\n`;
     });
     navigator.clipboard.writeText(text).then(() => alert("Kopyalandı!"));
@@ -1936,7 +2117,7 @@
     document.body.removeChild(link);
   }
 
-  // ================= STREAK, HEDEFLER & HESAPLAMALAR =================
+  // ================= STREAK & HEDEFLER =================
   function calculateStreak() {
     const todayStr = new Date().toISOString().slice(0, 10);
     let streakCount = parseInt(localStorage.getItem("reader_streak_count") || "1", 10);
@@ -2087,7 +2268,8 @@
   function selectOption(key, val) {
     const t = translations[currentLang] || translations.tr;
     document.getElementById(`field-val-${key}`).value = val;
-    document.getElementById(`trigger-label-${key}`).textContent = val || t.chooseOrAdd;
+    let labelText = val ? (key === 'type' ? translateValue('types', val) : (key === 'shelf' ? translateValue('shelves', val) : val)) : t.chooseOrAdd;
+    document.getElementById(`trigger-label-${key}`).textContent = labelText;
     document.getElementById(`dropdown-${key}`).style.display = "none";
   }
 
@@ -2104,7 +2286,7 @@
   }
 
   function deleteOptionFromDropdown(key, valToDelete) {
-    if (!confirm(`"${valToDelete}" silinsin mi?`)) return;
+    if (!confirm(`"${key === 'type' ? translateValue('types', valToDelete) : (key === 'shelf' ? translateValue('shelves', valToDelete) : valToDelete)}" silinsin mi?`)) return;
 
     if (key === "shelf") {
       shelvesList = shelvesList.filter(s => s.name !== valToDelete);
@@ -2124,7 +2306,7 @@
 
   function updateCustomDropdowns() {
     const authorsSet = new Set();
-    const typesSet = new Set(["Kitap", "Makale", "Rapor", "Karar", "Tez"]);
+    const typesSet = new Set(canonicalTypes);
     const shelvesSet = new Set(shelvesList.map(s => s.name));
     const tagsSet = new Set();
 
@@ -2135,25 +2317,27 @@
       (r.tags || []).forEach(t => tagsSet.add(t));
     });
 
-    renderDropdownItems("author", authorsSet);
-    renderDropdownItems("type", typesSet);
-    renderDropdownItems("shelf", shelvesSet);
-    renderDropdownItems("tags", tagsSet);
+    renderDropdownItems("author", authorsSet, "authors");
+    renderDropdownItems("type", typesSet, "types");
+    renderDropdownItems("shelf", shelvesSet, "shelves");
+    renderDropdownItems("tags", tagsSet, "tags");
   }
 
-  function renderDropdownItems(key, setObj) {
+  function renderDropdownItems(key, setObj, category) {
+    const t = translations[currentLang] || translations.tr;
     const container = document.getElementById(`items-${key}`);
     container.innerHTML = `
       <div class="dropdown-item-row">
-        <span class="dropdown-item-name" style="color: #64748b;" onclick="selectOption('${key}', '')"><em>(Belirtilmedi)</em></span>
+        <span class="dropdown-item-name" style="color: #64748b;" onclick="selectOption('${key}', '')"><em>${t.notSpecified}</em></span>
       </div>
     `;
 
     Array.from(setObj).sort().forEach(val => {
       const row = document.createElement("div");
       row.className = "dropdown-item-row";
+      const displayVal = category ? translateValue(category, val) : val;
       row.innerHTML = `
-        <span class="dropdown-item-name" onclick="selectOption('${key}', '${escapeHtml(val)}')">${escapeHtml(val)}</span>
+        <span class="dropdown-item-name" onclick="selectOption('${key}', '${escapeHtml(val)}')">${escapeHtml(displayVal)}</span>
         <button class="dropdown-item-del" type="button" onclick="event.stopPropagation(); deleteOptionFromDropdown('${key}', '${escapeHtml(val)}')">✕</button>
       `;
       container.appendChild(row);
@@ -2256,6 +2440,7 @@
     renderItems();
   }
 
+  // ================= FİLTRELEME & LİSTELEME =================
   function toggleClickFilter(type, value) {
     if (activeClickFilters[type] === value) activeClickFilters[type] = null;
     else activeClickFilters[type] = value;
@@ -2274,8 +2459,8 @@
     const txt = document.getElementById("active-filter-text");
     const list = [];
     if (activeClickFilters.author) list.push(`Yazar: "${activeClickFilters.author}"`);
-    if (activeClickFilters.type) list.push(`Tür: "${activeClickFilters.type}"`);
-    if (activeClickFilters.shelf) list.push(`Raf: "${activeClickFilters.shelf}"`);
+    if (activeClickFilters.type) list.push(`Tür: "${translateValue("types", activeClickFilters.type)}"`);
+    if (activeClickFilters.shelf) list.push(`Raf: "${translateValue("shelves", activeClickFilters.shelf)}"`);
     if (activeClickFilters.tag) list.push(`Etiket: #${activeClickFilters.tag}`);
 
     if (list.length > 0) {
@@ -2287,13 +2472,14 @@
   }
 
   function populateFilterDropdowns() {
+    const t = translations[currentLang] || translations.tr;
     const filterShelf = document.getElementById("filter-shelf");
     const filterAuthor = document.getElementById("filter-author");
     const filterType = document.getElementById("filter-type");
     const filterTag = document.getElementById("filter-tag");
 
     const authorsSet = new Set();
-    const typesSet = new Set();
+    const typesSet = new Set(canonicalTypes);
     const shelvesSet = new Set(shelvesList.map(s => s.name));
     const tagsSet = new Set();
 
@@ -2304,19 +2490,19 @@
       (r.tags || []).forEach(t => tagsSet.add(t));
     });
 
-    populateSelect(filterAuthor, authorsSet, "Tüm Yazarlar");
-    populateSelect(filterType, typesSet, "Tüm Türler");
-    populateSelect(filterShelf, shelvesSet, "Tüm Seri ve Raflar");
-    populateSelect(filterTag, tagsSet, "Tüm Etiketler");
+    populateSelect(filterAuthor, authorsSet, t.allAuthors, false);
+    populateSelect(filterType, typesSet, t.allTypes, "types");
+    populateSelect(filterShelf, shelvesSet, t.allShelves, "shelves");
+    populateSelect(filterTag, tagsSet, t.allTags, false);
   }
 
-  function populateSelect(elem, setObj, defaultLabel) {
+  function populateSelect(elem, setObj, defaultLabel, category) {
     const curVal = elem.value;
     elem.innerHTML = `<option value="all">${defaultLabel}</option>`;
     Array.from(setObj).sort().forEach(val => {
       const opt = document.createElement("option");
       opt.value = val;
-      opt.textContent = val;
+      opt.textContent = category ? translateValue(category, val) : val;
       if (val === curVal) opt.selected = true;
       elem.appendChild(opt);
     });
@@ -2339,7 +2525,7 @@
 
     let filtered = records.filter(item => {
       if (query) {
-        const fullContent = `${item.title} ${(item.authors || []).join(' ')} ${item.type || ''} ${item.shelf || ''} ${(item.tags || []).join(' ')} ${item.notes || ''}`.toLowerCase();
+        const fullContent = `${item.title} ${(item.authors || []).join(' ')} ${translateValue("types", item.type)} ${translateValue("shelves", item.shelf)} ${(item.tags || []).join(' ')} ${item.notes || ''}`.toLowerCase();
         if (!fullContent.includes(query)) return false;
       }
       if (selStatus !== "all" && item.status !== selStatus) return false;
@@ -2390,14 +2576,14 @@
       if (item.authors && item.authors.length) {
         metaDetails.push(item.authors.map(a => `<span class="clickable-badge" onclick="toggleClickFilter('author', '${escapeHtml(a)}')"><strong>✍️ ${escapeHtml(a)}</strong></span>`).join(", "));
       }
-      if (item.type) metaDetails.push(`<span class="clickable-badge" onclick="toggleClickFilter('type', '${escapeHtml(item.type)}')">🏷️ ${escapeHtml(item.type)}</span>`);
-      if (item.shelf) metaDetails.push(`<span class="clickable-badge" onclick="toggleClickFilter('shelf', '${escapeHtml(item.shelf)}')">📁 <em>${escapeHtml(item.shelf)}</em></span>`);
+      if (item.type) metaDetails.push(`<span class="clickable-badge" onclick="toggleClickFilter('type', '${escapeHtml(item.type)}')">🏷️ ${escapeHtml(translateValue("types", item.type))}</span>`);
+      if (item.shelf) metaDetails.push(`<span class="clickable-badge" onclick="toggleClickFilter('shelf', '${escapeHtml(item.shelf)}')">📁 <em>${escapeHtml(translateValue("shelves", item.shelf))}</em></span>`);
       if (item.totalPages) metaDetails.push(`<span>📖 ${item.readPages || 0}/${item.totalPages} s.</span>`);
       if (item.startDate) metaDetails.push(`<span>🗓️ ${escapeHtml(item.startDate)}</span>`);
       if (item.endDate) metaDetails.push(`<span>🏁 ${escapeHtml(item.endDate)}</span>`);
 
       let progressHtml = item.progress !== null ? `<span class="progress-badge">%${item.progress} ${item.progress >= 50 ? '🔋' : '🪫'}</span>` : "";
-      let statusHtml = item.status ? `<span class="status-badge status-${item.status.replace(/\s+/g, '-')}">${escapeHtml(item.status)}</span>` : "";
+      let statusHtml = item.status ? `<span class="status-badge status-${item.status.replace(/\s+/g, '-')}">${escapeHtml(translateValue("statuses", item.status))}</span>` : "";
       let tagsHtml = item.tags && item.tags.length ? `<div class="tags-container">${item.tags.map(t => `<span class="tag-badge clickable-badge" onclick="toggleClickFilter('tag', '${escapeHtml(t)}')">#${escapeHtml(t)}</span>`).join("")}</div>` : "";
 
       if (itemViewMode === "grid") {
