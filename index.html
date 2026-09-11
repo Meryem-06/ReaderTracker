@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kişisel Metin & Okuma Takipçisi</title>
+  <title>ReaderTracker</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     :root {
@@ -45,7 +45,7 @@
       overflow-x: hidden;
     }
 
-    /* Karşılama Ekranı */
+    /* Karşılama Ekranı (Splash) */
     #splash-screen {
       position: fixed;
       inset: 0;
@@ -57,9 +57,36 @@
       justify-content: center;
       z-index: 99999;
       pointer-events: all;
+      text-align: center;
+      padding: 1.5rem;
     }
     #splash-screen h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800; }
     #splash-screen p { font-size: 1.1rem; opacity: 0.9; }
+
+    .splash-lang-select-box {
+      margin-top: 1.5rem;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+      display: none;
+    }
+    .splash-lang-btns {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 0.75rem;
+    }
+    .splash-lang-btn {
+      font-size: 1.8rem;
+      background: rgba(255,255,255,0.25);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 10px;
+      cursor: pointer;
+      padding: 0.3rem 0.6rem;
+      transition: transform 0.15s;
+    }
+    .splash-lang-btn:active { transform: scale(0.9); }
 
     .anim-circle-out { animation: circleShrink 2s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
     @keyframes circleShrink {
@@ -118,7 +145,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
     }
 
     .streak-badge {
@@ -148,12 +175,12 @@
       gap: 0.5rem;
     }
 
-    /* Kontrol ve Sayım Şeridi */
+    /* Kontroller ve Sayım Şeridi */
     .controls-strip {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.85rem;
+      margin-bottom: 0.5rem;
       padding: 0 0.2rem;
     }
 
@@ -170,6 +197,32 @@
       align-items: center;
       gap: 0.3rem;
     }
+
+    /* Sıralı Görünümün Altındaki Hızlı Emoji Butonları */
+    .quick-actions-row {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+      padding: 0 0.2rem;
+    }
+
+    .quick-icon-btn {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      color: var(--active-text);
+      font-size: 1.25rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      transition: transform 0.1s, background 0.15s;
+    }
+    .quick-icon-btn:active { transform: scale(0.92); }
+    .quick-icon-btn:hover { background: var(--card-bg); }
 
     /* Çekmece Menü (Drawer) */
     .drawer-overlay {
@@ -227,6 +280,31 @@
       transition: background 0.15s;
     }
     .drawer-item-btn:hover { background: rgba(0,0,0,0.04); color: var(--active-accent); }
+
+    .drawer-lang-row {
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .lang-flag-btn {
+      background: none;
+      border: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+      padding: 0.3rem;
+      border-radius: 6px;
+      transition: transform 0.15s, background 0.15s;
+      line-height: 1;
+    }
+    .lang-flag-btn:hover { background: var(--badge-bg); transform: scale(1.15); }
+    .lang-flag-btn.active {
+      background: var(--badge-bg);
+      outline: 2px solid var(--active-accent);
+    }
 
     /* TAM EKRAN MODAL / SAYFA YAPISI */
     .full-page-view {
@@ -526,20 +604,11 @@
     /* Raf Menüsü */
     .shelf-menu-btn {
       position: absolute;
-      top: 0.4rem;
-      right: 0.4rem;
-      z-index: 3;
-      background: rgba(0,0,0,0.5);
-      color: #ffffff;
-      border: none;
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      top: 0.4rem; right: 0.4rem; z-index: 3;
+      background: rgba(0,0,0,0.5); color: #ffffff;
+      border: none; width: 26px; height: 26px;
+      border-radius: 6px; font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
     }
 
     .shelf-popover-menu {
@@ -598,6 +667,30 @@
     }
     .settings-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
 
+    .image-export-options-box {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.85rem;
+      margin-top: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .image-export-options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .image-export-options-grid label {
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+    }
+
     .themed-text { color: var(--active-text) !important; }
     .btn-action { background-color: var(--active-accent) !important; color: #ffffff; border: none; padding: 0.65rem 1.4rem; border-radius: 8px; cursor: pointer; font-weight: 600; }
   </style>
@@ -606,7 +699,16 @@
 
 <div id="splash-screen">
   <h1 id="splash-title">Hoş geldin!</h1>
-  <p>Okuma listen ve metin arşivin yükleniyor...</p>
+  <p id="splash-subtitle">Okuma listen ve metin arşivin yükleniyor...</p>
+  
+  <div class="splash-lang-select-box" id="splash-lang-box">
+    <div style="font-weight: 700; font-size: 0.95rem;">Select Language / Dil Seçiniz / Seleccionar Idioma</div>
+    <div class="splash-lang-btns">
+      <button class="splash-lang-btn" onclick="selectLanguageInitial('tr')">🇹🇷</button>
+      <button class="splash-lang-btn" onclick="selectLanguageInitial('en')">🇬🇧</button>
+      <button class="splash-lang-btn" onclick="selectLanguageInitial('es')">🇪🇸</button>
+    </div>
+  </div>
 </div>
 
 <!-- Çekmece Menü Karartması -->
@@ -615,16 +717,20 @@
 <!-- Sol Çekmece Menü -->
 <div class="side-drawer" id="side-drawer">
   <div class="drawer-header">
-    <span class="themed-text" style="font-weight: 800; font-size: 1.15rem;">Menü</span>
+    <span class="themed-text" id="lbl-menu-header" style="font-weight: 800; font-size: 1.15rem;">Menü</span>
     <button class="icon-btn" onclick="closeDrawer()">✕</button>
   </div>
-  <button class="drawer-item-btn" onclick="openFullScreenModal('modal-form')">➕ Yeni Metin Ekle</button>
-  <button class="drawer-item-btn" onclick="openFullScreenModal('modal-filter')">🔍 Filtrele & Ara</button>
-  <button class="drawer-item-btn" onclick="openFullScreenModal('modal-sort')">🔃 Sıralama Ölçütü</button>
-  <button class="drawer-item-btn" onclick="openFullScreenModal('modal-shelves')">📁 Kitaplık Rafları</button>
-  <button class="drawer-item-btn" onclick="openFullScreenModal('modal-goals')">🎯 Okuma Hedefleri</button>
-  <button class="drawer-item-btn" onclick="openFullScreenModal('modal-export')">📤 Dışa Aktar & Paylaş</button>
-  <button class="drawer-item-btn" onclick="openFullScreenModal('modal-settings')">⚙️ Ayarlar & Görünüm</button>
+  <button class="drawer-item-btn" id="btn-menu-shelves" onclick="openFullScreenModal('modal-shelves')">📁 Kitaplık Rafları</button>
+  <button class="drawer-item-btn" id="btn-menu-goals" onclick="openFullScreenModal('modal-goals')">🎯 Okuma Hedefleri</button>
+  <button class="drawer-item-btn" id="btn-menu-export" onclick="openFullScreenModal('modal-export')">📤 Dışa Aktar & Paylaş</button>
+  <button class="drawer-item-btn" id="btn-menu-settings" onclick="openFullScreenModal('modal-settings')">⚙️ Ayarlar & Görünüm</button>
+
+  <!-- En Alttaki Metinsiz Bayrak Butonları -->
+  <div class="drawer-lang-row">
+    <button class="lang-flag-btn" id="flag-tr" onclick="setAppLanguage('tr')" title="Türkçe">🇹🇷</button>
+    <button class="lang-flag-btn" id="flag-en" onclick="setAppLanguage('en')" title="English">🇬🇧</button>
+    <button class="lang-flag-btn" id="flag-es" onclick="setAppLanguage('es')" title="Español">🇪🇸</button>
+  </div>
 </div>
 
 <!-- ================= TAM EKRAN MODALLAR ================= -->
@@ -640,21 +746,21 @@
       <input type="hidden" id="edit-id">
       <div class="form-grid">
         <div class="form-group full-width">
-          <label>Metin Adı *</label>
-          <input type="text" id="title" placeholder="Metnin adı (Zorunlu tek alan)" required>
+          <label id="lbl-text-title">Metin Adı *</label>
+          <input type="text" id="title" placeholder="Metnin adı" required>
         </div>
 
         <div class="form-group">
-          <label>Kapak Görseli (URL veya Cihazdan Seç)</label>
+          <label id="lbl-cover-img">Kapak Görseli</label>
           <div style="display: flex; gap: 0.4rem;">
-            <input type="text" id="cover-url" placeholder="https://... görsel bağlantısı">
+            <input type="text" id="cover-url" placeholder="https://...">
             <input type="file" id="cover-file" accept="image/*" style="display: none;" onchange="handleCoverFileUpload(event, 'cover-url')">
-            <button type="button" class="view-toggle-btn" onclick="document.getElementById('cover-file').click()">📁 Cihazdan</button>
+            <button type="button" class="view-toggle-btn" id="btn-from-device" onclick="document.getElementById('cover-file').click()">📁 Cihazdan</button>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Yazar(lar)</label>
+          <label id="lbl-authors">Yazar(lar)</label>
           <input type="hidden" id="field-val-author">
           <div class="custom-select-trigger" onclick="toggleCustomDropdown('dropdown-author')">
             <span id="trigger-label-author">Seçiniz veya Ekleyiniz</span>
@@ -662,12 +768,12 @@
           </div>
           <div class="custom-dropdown-panel" id="dropdown-author">
             <div id="items-author"></div>
-            <div class="dropdown-add-new-btn" onclick="promptAddNewOption('author')">➕ Yeni Yazar Ekle...</div>
+            <div class="dropdown-add-new-btn" id="btn-add-author" onclick="promptAddNewOption('author')">➕ Yeni Yazar Ekle...</div>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Metin Türü</label>
+          <label id="lbl-type">Metin Türü</label>
           <input type="hidden" id="field-val-type">
           <div class="custom-select-trigger" onclick="toggleCustomDropdown('dropdown-type')">
             <span id="trigger-label-type">Seçiniz veya Ekleyiniz</span>
@@ -675,12 +781,12 @@
           </div>
           <div class="custom-dropdown-panel" id="dropdown-type">
             <div id="items-type"></div>
-            <div class="dropdown-add-new-btn" onclick="promptAddNewOption('type')">➕ Yeni Metin Türü Ekle...</div>
+            <div class="dropdown-add-new-btn" id="btn-add-type" onclick="promptAddNewOption('type')">➕ Yeni Metin Türü Ekle...</div>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Seri / Raf</label>
+          <label id="lbl-shelf">Seri / Raf</label>
           <input type="hidden" id="field-val-shelf">
           <div class="custom-select-trigger" onclick="toggleCustomDropdown('dropdown-shelf')">
             <span id="trigger-label-shelf">Seçiniz veya Ekleyiniz</span>
@@ -688,12 +794,12 @@
           </div>
           <div class="custom-dropdown-panel" id="dropdown-shelf">
             <div id="items-shelf"></div>
-            <div class="dropdown-add-new-btn" onclick="promptAddNewOption('shelf')">➕ Yeni Seri/Raf Ekle...</div>
+            <div class="dropdown-add-new-btn" id="btn-add-shelf" onclick="promptAddNewOption('shelf')">➕ Yeni Seri/Raf Ekle...</div>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Okuma Durumu</label>
+          <label id="lbl-status">Okuma Durumu</label>
           <select id="status" onchange="handleStatusChange(this.value)">
             <option value="">Belirtilmedi</option>
             <option value="Okunuyor">Okunuyor</option>
@@ -705,22 +811,22 @@
         </div>
 
         <div class="form-group">
-          <label>Toplam Sayfa Sayısı</label>
+          <label id="lbl-total-pages">Toplam Sayfa Sayısı</label>
           <input type="number" id="total-pages" min="1" step="1" placeholder="Örn: 350" oninput="calculateProgressFromPages()">
         </div>
 
         <div class="form-group">
-          <label>Okunan Sayfa Sayısı</label>
+          <label id="lbl-read-pages">Okunan Sayfa Sayısı</label>
           <input type="number" id="read-pages" min="0" step="1" placeholder="Örn: 175" oninput="calculateProgressFromPages()">
         </div>
 
         <div class="form-group">
-          <label>Okuma Oranı (%)</label>
+          <label id="lbl-progress-pct">Okuma Oranı (%)</label>
           <input type="number" id="progress-percent" min="0" max="100" step="1" placeholder="Örn: 50" oninput="calculatePagesFromPercent()">
         </div>
 
         <div class="form-group">
-          <label>Etiketler</label>
+          <label id="lbl-tags">Etiketler</label>
           <input type="hidden" id="field-val-tags">
           <div class="custom-select-trigger" onclick="toggleCustomDropdown('dropdown-tags')">
             <span id="trigger-label-tags">Seçiniz veya Ekleyiniz</span>
@@ -728,23 +834,23 @@
           </div>
           <div class="custom-dropdown-panel" id="dropdown-tags">
             <div id="items-tags"></div>
-            <div class="dropdown-add-new-btn" onclick="promptAddNewOption('tags')">➕ Yeni Etiket Ekle...</div>
+            <div class="dropdown-add-new-btn" id="btn-add-tag" onclick="promptAddNewOption('tags')">➕ Yeni Etiket Ekle...</div>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Başlama Tarihi</label>
+          <label id="lbl-start-date">Başlama Tarihi</label>
           <input type="text" id="start-date" placeholder="Örn: 01.01.2001">
         </div>
 
         <div class="form-group">
-          <label>Bitiş Tarihi</label>
+          <label id="lbl-end-date">Bitiş Tarihi</label>
           <input type="text" id="end-date" placeholder="Örn: 01.01.2001">
         </div>
 
         <div class="form-group full-width">
-          <label>Notlar / Alıntılar</label>
-          <textarea id="notes" placeholder="Önemli sayfalar, alıntılar ya da bağlantılar..."></textarea>
+          <label id="lbl-notes">Notlar / Alıntılar</label>
+          <textarea id="notes" placeholder="Önemli notlar ya da alıntılar..."></textarea>
         </div>
       </div>
 
@@ -760,16 +866,16 @@
 <div class="full-page-view" id="modal-filter">
   <div class="modal-content-container">
     <div class="modal-top-bar">
-      <h2 class="themed-text" style="font-size: 1.3rem;">🔍 Kayıtları Filtrele & Ara</h2>
+      <h2 class="themed-text" id="lbl-filter-modal-title" style="font-size: 1.3rem;">🔍 Kayıtları Filtrele & Ara</h2>
       <button class="modal-close-btn" onclick="closeFullScreenModal('modal-filter')">✕</button>
     </div>
     <div class="filter-grid">
       <div class="form-group full-width">
-        <label>Kelime Bazlı Canlı Arama:</label>
+        <label id="lbl-search-term">Kelime Bazlı Canlı Arama:</label>
         <input type="text" id="search-input" placeholder="Başlık, yazar, tür, etiket, raf veya notlarda ara..." oninput="renderItems()">
       </div>
       <div class="form-group">
-        <label>Okuma Durumu:</label>
+        <label id="lbl-filter-status">Okuma Durumu:</label>
         <select id="filter-status" onchange="renderItems()">
           <option value="all">Tüm Durumlar</option>
           <option value="Okunuyor">Okunuyor</option>
@@ -780,27 +886,27 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Yazar:</label>
+        <label id="lbl-filter-author">Yazar:</label>
         <select id="filter-author" onchange="renderItems()"><option value="all">Tüm Yazarlar</option></select>
       </div>
       <div class="form-group">
-        <label>Metin Türü:</label>
+        <label id="lbl-filter-type">Metin Türü:</label>
         <select id="filter-type" onchange="renderItems()"><option value="all">Tüm Türler</option></select>
       </div>
       <div class="form-group">
-        <label>Seri / Raf:</label>
+        <label id="lbl-filter-shelf">Seri / Raf:</label>
         <select id="filter-shelf" onchange="renderItems()"><option value="all">Tüm Seri ve Raflar</option></select>
       </div>
       <div class="form-group">
-        <label>Etiket:</label>
+        <label id="lbl-filter-tag">Etiket:</label>
         <select id="filter-tag" onchange="renderItems()"><option value="all">Tüm Etiketler</option></select>
       </div>
       <div class="form-group">
-        <label>Yıla Göre:</label>
+        <label id="lbl-filter-year">Yıla Göre:</label>
         <select id="filter-year" onchange="renderItems()"><option value="all">Tüm Yıllar</option></select>
       </div>
       <div class="form-group">
-        <label>Aya Göre:</label>
+        <label id="lbl-filter-month">Aya Göre:</label>
         <select id="filter-month" onchange="renderItems()">
           <option value="all">Tüm Aylar</option>
           <option value="01">Ocak</option><option value="02">Şubat</option><option value="03">Mart</option>
@@ -811,7 +917,7 @@
       </div>
     </div>
     <div style="margin-top: 1.25rem;">
-      <button class="btn-action" style="width: 100%;" onclick="closeFullScreenModal('modal-filter')">Filtreleri Uygula ve Listeye Dön</button>
+      <button class="btn-action" id="btn-apply-filters" style="width: 100%;" onclick="closeFullScreenModal('modal-filter')">Filtreleri Uygula ve Listeye Dön</button>
     </div>
   </div>
 </div>
@@ -820,11 +926,11 @@
 <div class="full-page-view" id="modal-sort">
   <div class="modal-content-container">
     <div class="modal-top-bar">
-      <h2 class="themed-text" style="font-size: 1.3rem;">🔃 Sıralama Ölçütü</h2>
+      <h2 class="themed-text" id="lbl-sort-modal-title" style="font-size: 1.3rem;">🔃 Sıralama Ölçütü</h2>
       <button class="modal-close-btn" onclick="closeFullScreenModal('modal-sort')">✕</button>
     </div>
     <div class="form-group">
-      <label>Sıralama Seçeneği:</label>
+      <label id="lbl-sort-select">Sıralama Seçeneği:</label>
       <select id="sort-order" onchange="renderItems()">
         <option value="newest">Son Eklenenler (Varsayılan)</option>
         <option value="oldest">İlk Eklenenler</option>
@@ -839,7 +945,7 @@
       </select>
     </div>
     <div style="margin-top: 1.5rem;">
-      <button class="btn-action" style="width: 100%;" onclick="closeFullScreenModal('modal-sort')">Sıralamayı Onayla ve Dön</button>
+      <button class="btn-action" id="btn-confirm-sort" style="width: 100%;" onclick="closeFullScreenModal('modal-sort')">Sıralamayı Onayla ve Dön</button>
     </div>
   </div>
 </div>
@@ -848,14 +954,12 @@
 <div class="full-page-view" id="modal-shelves">
   <div class="modal-content-container">
     <div class="modal-top-bar">
-      <h2 class="themed-text" style="font-size: 1.3rem;">📁 Kitaplık Rafları</h2>
+      <h2 class="themed-text" id="lbl-shelves-modal-title" style="font-size: 1.3rem;">📁 Kitaplık Rafları</h2>
       <button class="modal-close-btn" onclick="closeFullScreenModal('modal-shelves')">✕</button>
     </div>
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-      <div style="display: flex; gap: 0.4rem;">
-        <button class="view-toggle-btn" id="shelf-view-btn" onclick="toggleShelfViewMode()">⊞ Izgara / ☰ Sıralı</button>
-      </div>
-      <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="promptCreateNewShelf()">➕ Yeni Raf</button>
+      <button class="view-toggle-btn" id="shelf-view-btn" onclick="toggleShelfViewMode()">⊞ Izgara / ☰ Sıralı</button>
+      <button class="btn-action" id="btn-new-shelf" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="promptCreateNewShelf()">➕ Yeni Raf</button>
     </div>
     <div id="shelves-container"></div>
   </div>
@@ -865,29 +969,29 @@
 <div class="full-page-view" id="modal-goals">
   <div class="modal-content-container">
     <div class="modal-top-bar">
-      <h2 class="themed-text" style="font-size: 1.3rem;">🎯 Okuma Hedefleri</h2>
+      <h2 class="themed-text" id="lbl-goals-modal-title" style="font-size: 1.3rem;">🎯 Okuma Hedefleri</h2>
       <button class="modal-close-btn" onclick="closeFullScreenModal('modal-goals')">✕</button>
     </div>
     <div class="filter-grid">
       <div class="form-group">
-        <label>Aylık Hedef (Metin Sayısı):</label>
+        <label id="lbl-m-count">Aylık Hedef (Metin Sayısı):</label>
         <input type="number" id="goal-monthly-count" placeholder="Örn: 5" min="0" oninput="saveGoals()">
       </div>
       <div class="form-group">
-        <label>Yıllık Hedef (Metin Sayısı):</label>
+        <label id="lbl-y-count">Yıllık Hedef (Metin Sayısı):</label>
         <input type="number" id="goal-yearly-count" placeholder="Örn: 12" min="0" oninput="saveGoals()">
       </div>
       <div class="form-group">
-        <label>Aylık Hedef (Sayfa Sayısı):</label>
+        <label id="lbl-m-pages">Aylık Hedef (Sayfa Sayısı):</label>
         <input type="number" id="goal-monthly-pages" placeholder="Örn: 1000" min="0" oninput="saveGoals()">
       </div>
       <div class="form-group">
-        <label>Yıllık Hedef (Sayfa Sayısı):</label>
+        <label id="lbl-y-pages">Yıllık Hedef (Sayfa Sayısı):</label>
         <input type="number" id="goal-yearly-pages" placeholder="Örn: 12000" min="0" oninput="saveGoals()">
       </div>
     </div>
     <div style="margin-top: 1.5rem;">
-      <button class="btn-action" style="width: 100%;" onclick="closeFullScreenModal('modal-goals')">Kaydet ve Dön</button>
+      <button class="btn-action" id="btn-save-goals" style="width: 100%;" onclick="closeFullScreenModal('modal-goals')">Kaydet ve Dön</button>
     </div>
   </div>
 </div>
@@ -896,15 +1000,15 @@
 <div class="full-page-view" id="modal-export">
   <div class="modal-content-container">
     <div class="modal-top-bar">
-      <h2 class="themed-text" style="font-size: 1.3rem;">📤 Dışa Aktar & Paylaş</h2>
+      <h2 class="themed-text" id="lbl-export-modal-title" style="font-size: 1.3rem;">📤 Dışa Aktar & Paylaş</h2>
       <button class="modal-close-btn" onclick="closeFullScreenModal('modal-export')">✕</button>
     </div>
     
-    <div style="background: var(--badge-bg); padding: 1rem; border-radius: 10px; margin-bottom: 1.25rem;">
-      <h4 style="margin-bottom: 0.6rem; font-size: 0.95rem;">🎯 Paylaşılacak Metinleri Filtrele (İsteğe Bağlı)</h4>
+    <div style="background: var(--badge-bg); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+      <h4 id="lbl-export-filter-heading" style="margin-bottom: 0.6rem; font-size: 0.95rem;">🎯 Paylaşılacak Metinleri Filtrele (İsteğe Bağlı)</h4>
       <div class="form-grid" style="margin-bottom: 0;">
         <div class="form-group">
-          <label>Duruma Göre:</label>
+          <label id="lbl-exp-status">Duruma Göre:</label>
           <select id="export-filter-status" onchange="updateExportPreviewCount()">
             <option value="all">Tüm Durumlar</option>
             <option value="Okunuyor">Okunuyor</option>
@@ -915,7 +1019,7 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Rafa Göre:</label>
+          <label id="lbl-exp-shelf">Rafa Göre:</label>
           <select id="export-filter-shelf" onchange="updateExportPreviewCount()">
             <option value="all">Tüm Raflar</option>
           </select>
@@ -926,8 +1030,24 @@
       </div>
     </div>
 
+    <!-- Görsel Paylaşımı İçin Detay Seçenekleri Kutusu -->
+    <div class="image-export-options-box">
+      <div style="font-weight: 700; font-size: 0.88rem; color: var(--active-accent);" id="lbl-image-export-details">
+        🖼️ Görselde Gösterilecek Ek Detaylar (Kapak, Başlık ve Yazar Varsayılandır):
+      </div>
+      <div class="image-export-options-grid">
+        <label><input type="checkbox" id="img-opt-shelf" onchange="saveImageExportPrefs()"> <span id="lbl-opt-shelf">Raf / Seri</span></label>
+        <label><input type="checkbox" id="img-opt-status" onchange="saveImageExportPrefs()"> <span id="lbl-opt-status">Okuma Durumu</span></label>
+        <label><input type="checkbox" id="img-opt-progress" onchange="saveImageExportPrefs()"> <span id="lbl-opt-progress">İlerleme Oranı</span></label>
+        <label><input type="checkbox" id="img-opt-pages" onchange="saveImageExportPrefs()"> <span id="lbl-opt-pages">Sayfa Sayısı</span></label>
+        <label><input type="checkbox" id="img-opt-tags" onchange="saveImageExportPrefs()"> <span id="lbl-opt-tags">Etiketler</span></label>
+        <label><input type="checkbox" id="img-opt-dates" onchange="saveImageExportPrefs()"> <span id="lbl-opt-dates">Tarihler</span></label>
+        <label><input type="checkbox" id="img-opt-notes" onchange="saveImageExportPrefs()"> <span id="lbl-opt-notes">Notlar</span></label>
+      </div>
+    </div>
+
     <div class="form-group">
-      <label>Paylaşım Formatı Seçiniz:</label>
+      <label id="lbl-export-format-choice">Paylaşım Formatı Seçiniz:</label>
       <select id="export-format-choice" onchange="executeExport(this.value)">
         <option value="">Format seçiniz...</option>
         <option value="png">🖼️ Görsel Olarak İndir (PNG / Kart Tablosu)</option>
@@ -944,35 +1064,35 @@
 <div class="full-page-view" id="modal-settings">
   <div class="modal-content-container">
     <div class="modal-top-bar">
-      <h2 class="themed-text" style="font-size: 1.3rem;">⚙️ Uygulama & Görünüm Ayarları</h2>
+      <h2 class="themed-text" id="lbl-settings-modal-title" style="font-size: 1.3rem;">⚙️ Uygulama & Görünüm Ayarları</h2>
       <button class="modal-close-btn" onclick="closeFullScreenModal('modal-settings')">✕</button>
     </div>
     <div class="settings-row">
       <div>
-        <div style="font-weight: 600;" class="themed-text">Tema Modu:</div>
-        <small style="color: var(--text-muted);">Gündüz ve gece modu geçişi.</small>
+        <div style="font-weight: 600;" class="themed-text" id="lbl-theme-mode">Tema Modu:</div>
+        <small style="color: var(--text-muted);" id="lbl-theme-desc">Gündüz ve gece modu geçişi.</small>
       </div>
       <button class="icon-btn" id="theme-icon-btn" style="font-size: 1.3rem;" onclick="toggleThemeMode()">☀️</button>
     </div>
     <div class="settings-row">
       <div>
-        <div style="font-weight: 600;" class="themed-text">Streak ve Hedef Göstergesi:</div>
-        <small style="color: var(--text-muted);">Başlığın altındaki panoyu gizleyin ya da gösterin.</small>
+        <div style="font-weight: 600;" class="themed-text" id="lbl-streak-goals-toggle">Streak ve Hedef Göstergesi:</div>
+        <small style="color: var(--text-muted);" id="lbl-streak-goals-desc">Başlığın altındaki panoyu gizleyin ya da gösterin.</small>
       </div>
       <div style="display: flex; gap: 0.75rem;">
         <label style="font-size: 0.85rem;"><input type="checkbox" id="setting-show-streak" onchange="updateVisibilitySettings()" checked> Streak (🔥)</label>
-        <label style="font-size: 0.85rem;"><input type="checkbox" id="setting-show-goals" onchange="updateVisibilitySettings()" checked> Hedefler (🎯)</label>
+        <label style="font-size: 0.85rem;"><input type="checkbox" id="setting-show-goals" onchange="updateVisibilitySettings()" checked> <span id="lbl-goals-chk">Hedefler (🎯)</span></label>
       </div>
     </div>
     <div class="settings-row">
       <div>
-        <div style="font-weight: 600;" class="themed-text">Kullanıcı Adı:</div>
+        <div style="font-weight: 600;" class="themed-text" id="lbl-username">Kullanıcı Adı:</div>
       </div>
       <input type="text" id="setting-username" placeholder="Adınızı yazın..." oninput="updateUsername(this.value)" style="width: auto;">
     </div>
     <div class="settings-row">
       <div>
-        <div style="font-weight: 600;" class="themed-text">Açılış Karşılama Ekranı:</div>
+        <div style="font-weight: 600;" class="themed-text" id="lbl-splash-setting">Açılış Karşılama Ekranı:</div>
       </div>
       <div style="display: flex; gap: 0.5rem;">
         <select id="setting-splash-enabled" onchange="updateSplashSettings()" style="width: auto;">
@@ -986,15 +1106,15 @@
       </div>
     </div>
     <div class="settings-row">
-      <span style="font-weight: 600;" class="themed-text">Duvar Kağıdı (Wallpaper):</span>
+      <span style="font-weight: 600;" class="themed-text" id="lbl-wallpaper">Duvar Kağıdı (Wallpaper):</span>
       <div style="display: flex; gap: 0.5rem;">
         <input type="file" id="bg-upload" accept="image/*" style="display: none;" onchange="handleBgUpload(event)">
-        <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="document.getElementById('bg-upload').click()">Görsel Seç</button>
-        <button class="icon-btn" style="font-size: 0.85rem;" onclick="clearBg()">Kaldır</button>
+        <button class="btn-action" id="btn-select-bg" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="document.getElementById('bg-upload').click()">Görsel Seç</button>
+        <button class="icon-btn" id="btn-clear-bg" style="font-size: 0.85rem;" onclick="clearBg()">Kaldır</button>
       </div>
     </div>
     <div style="margin-top: 1rem;">
-      <span style="font-weight: 600;" class="themed-text">Yazı, Buton & Tema Rengi:</span>
+      <span style="font-weight: 600;" class="themed-text" id="lbl-palette-title">Yazı, Buton & Tema Rengi:</span>
       <div class="palette-grid" id="palette-container"></div>
     </div>
   </div>
@@ -1024,10 +1144,258 @@
     <button class="view-toggle-btn" id="item-view-toggle-btn" onclick="toggleItemViewMode()">⊞ Izgara Görünümü</button>
   </div>
 
+  <!-- "Sıralı Görünüm" Butonunun Altındaki Emoji Butonları -->
+  <div class="quick-actions-row">
+    <button class="quick-icon-btn" onclick="openFullScreenModal('modal-form')" title="Yeni Metin Ekle">➕</button>
+    <button class="quick-icon-btn" onclick="openFullScreenModal('modal-filter')" title="Filtrele & Ara">🔍</button>
+    <button class="quick-icon-btn" onclick="openFullScreenModal('modal-sort')" title="Sıralama Ölçütü">🔃</button>
+  </div>
+
   <div id="records-container"></div>
 </div>
 
 <script>
+  // ================= DİL VE ÇEVİRİ SÖZLÜĞÜ =================
+  const translations = {
+    tr: {
+      welcome: "Hoş geldin!",
+      welcomeSub: "Okuma listen ve metin arşivin yükleniyor...",
+      menuHeader: "Menü",
+      menuShelves: "📁 Kitaplık Rafları",
+      menuGoals: "🎯 Okuma Hedefleri",
+      menuExport: "📤 Dışa Aktar & Paylaş",
+      menuSettings: "⚙️ Ayarlar & Görünüm",
+      newText: "Yeni Metin Ekle",
+      editText: "Metni Düzenle: ",
+      textTitle: "Metin Adı *",
+      coverImg: "Kapak Görseli",
+      fromDevice: "📁 Cihazdan",
+      authors: "Yazar(lar)",
+      chooseOrAdd: "Seçiniz veya Ekleyiniz",
+      addAuthor: "➕ Yeni Yazar Ekle...",
+      type: "Metin Türü",
+      addType: "➕ Yeni Metin Türü Ekle...",
+      shelf: "Seri / Raf",
+      addShelf: "➕ Yeni Seri/Raf Ekle...",
+      status: "Okuma Durumu",
+      totalPages: "Toplam Sayfa Sayısı",
+      readPages: "Okunan Sayfa Sayısı",
+      progressPct: "Okuma Oranı (%)",
+      tags: "Etiketler",
+      addTag: "➕ Yeni Etiket Ekle...",
+      startDate: "Başlama Tarihi",
+      endDate: "Bitiş Tarihi",
+      notes: "Notlar / Alıntılar",
+      save: "Kaydet",
+      cancel: "Vazgeç",
+      filterModalTitle: "🔍 Kayıtları Filtrele & Ara",
+      searchTerm: "Kelime Bazlı Canlı Arama:",
+      searchPlaceholder: "Başlık, yazar, tür, etiket, raf veya notlarda ara...",
+      applyFilters: "Filtreleri Uygula ve Listeye Dön",
+      sortModalTitle: "🔃 Sıralama Ölçütü",
+      sortSelect: "Sıralama Seçeneği:",
+      confirmSort: "Sıralamayı Onayla ve Dön",
+      shelvesModalTitle: "📁 Kitaplık Rafları",
+      toggleGridList: "⊞ Izgara / ☰ Sıralı",
+      newShelf: "➕ Yeni Raf",
+      goalsModalTitle: "🎯 Okuma Hedefleri",
+      mCount: "Aylık Hedef (Metin Sayısı):",
+      yCount: "Yıllık Hedef (Metin Sayısı):",
+      mPages: "Aylık Hedef (Sayfa Sayısı):",
+      yPages: "Yıllık Hedef (Sayfa Sayısı):",
+      saveGoals: "Kaydet ve Dön",
+      exportModalTitle: "📤 Dışa Aktar & Paylaş",
+      exportFilterHeading: "🎯 Paylaşılacak Metinleri Filtrele (İsteğe Bağlı)",
+      byStatus: "Duruma Göre:",
+      byShelf: "Rafa Göre:",
+      exportFormatChoice: "Paylaşım Formatı Seçiniz:",
+      settingsModalTitle: "⚙️ Uygulama & Görünüm Ayarları",
+      themeMode: "Tema Modu:",
+      themeDesc: "Gündüz ve gece modu geçişi.",
+      streakGoalsToggle: "Streak ve Hedef Göstergesi:",
+      streakGoalsDesc: "Başlığın altındaki panoyu gizleyin ya da gösterin.",
+      username: "Kullanıcı Adı:",
+      splashSetting: "Açılış Karşılama Ekranı:",
+      wallpaper: "Duvar Kağıdı (Wallpaper):",
+      selectImg: "Görsel Seç",
+      clearImg: "Kaldır",
+      paletteTitle: "Yazı, Buton & Tema Rengi:",
+      viewList: "☰ Sıralı Görünüm",
+      viewGrid: "⊞ Izgara Görünümü",
+      countTexts: "kadar başlık sıralanıyor",
+      noRecords: "Kayıt bulunamadı.",
+      edit: "Düzenle",
+      delete: "Sil",
+      clearFilter: "Filtreyi Temizle",
+      imgDetailsHeading: "🖼️ Görselde Gösterilecek Ek Detaylar (Kapak, Başlık ve Yazar Varsayılandır):",
+      optShelf: "Raf / Seri",
+      optStatus: "Okuma Durumu",
+      optProgress: "İlerleme Oranı",
+      optPages: "Sayfa Sayısı",
+      optTags: "Etiketler",
+      optDates: "Tarihler",
+      optNotes: "Notlar"
+    },
+    en: {
+      welcome: "Welcome!",
+      welcomeSub: "Your reading list and library are loading...",
+      menuHeader: "Menu",
+      menuShelves: "📁 Bookshelves",
+      menuGoals: "🎯 Reading Goals",
+      menuExport: "📤 Export & Share",
+      menuSettings: "⚙️ Settings & Appearance",
+      newText: "Add New Item",
+      editText: "Edit Item: ",
+      textTitle: "Title *",
+      coverImg: "Cover Image",
+      fromDevice: "📁 Device",
+      authors: "Author(s)",
+      chooseOrAdd: "Choose or Add New",
+      addAuthor: "➕ Add New Author...",
+      type: "Type",
+      addType: "➕ Add New Type...",
+      shelf: "Shelf / Series",
+      addShelf: "➕ Add New Shelf...",
+      status: "Reading Status",
+      totalPages: "Total Pages",
+      readPages: "Pages Read",
+      progressPct: "Progress (%)",
+      tags: "Tags",
+      addTag: "➕ Add New Tag...",
+      startDate: "Start Date",
+      endDate: "Finish Date",
+      notes: "Notes / Quotes",
+      save: "Save",
+      cancel: "Cancel",
+      filterModalTitle: "🔍 Filter & Search",
+      searchTerm: "Live Keyword Search:",
+      searchPlaceholder: "Search titles, authors, shelves, notes...",
+      applyFilters: "Apply Filters & Return",
+      sortModalTitle: "🔃 Sorting Criteria",
+      sortSelect: "Sort Order:",
+      confirmSort: "Confirm & Return",
+      shelvesModalTitle: "📁 Bookshelves",
+      toggleGridList: "⊞ Grid / ☰ List",
+      newShelf: "➕ New Shelf",
+      goalsModalTitle: "🎯 Reading Goals",
+      mCount: "Monthly Goal (Items):",
+      yCount: "Yearly Goal (Items):",
+      mPages: "Monthly Goal (Pages):",
+      yPages: "Yearly Goal (Pages):",
+      saveGoals: "Save & Return",
+      exportModalTitle: "📤 Export & Share",
+      exportFilterHeading: "🎯 Filter Items to Export (Optional)",
+      byStatus: "By Status:",
+      byShelf: "By Shelf:",
+      exportFormatChoice: "Choose Export Format:",
+      settingsModalTitle: "⚙️ Settings & Appearance",
+      themeMode: "Theme Mode:",
+      themeDesc: "Toggle day and night mode.",
+      streakGoalsToggle: "Streak and Goal Bar:",
+      streakGoalsDesc: "Show or hide the indicators below header.",
+      username: "Username:",
+      splashSetting: "Splash Screen:",
+      wallpaper: "Wallpaper:",
+      selectImg: "Select Image",
+      clearImg: "Remove",
+      paletteTitle: "Font, Button & Theme Color:",
+      viewList: "☰ List View",
+      viewGrid: "⊞ Grid View",
+      countTexts: "items listed",
+      noRecords: "No records found.",
+      edit: "Edit",
+      delete: "Delete",
+      clearFilter: "Clear Filter",
+      imgDetailsHeading: "🖼️ Extra Details on Image (Cover, Title and Author are default):",
+      optShelf: "Shelf / Series",
+      optStatus: "Status",
+      optProgress: "Progress",
+      optPages: "Pages",
+      optTags: "Tags",
+      optDates: "Dates",
+      optNotes: "Notes"
+    },
+    es: {
+      welcome: "¡Bienvenido/a!",
+      welcomeSub: "Tu lista de lectura y biblioteca se están cargando...",
+      menuHeader: "Menú",
+      menuShelves: "📁 Estanterías",
+      menuGoals: "🎯 Metas de Lectura",
+      menuExport: "📤 Exportar y Compartir",
+      menuSettings: "⚙️ Ajustes y Apariencia",
+      newText: "Añadir Nuevo Texto",
+      editText: "Editar Texto: ",
+      textTitle: "Título *",
+      coverImg: "Portada",
+      fromDevice: "📁 Dispositivo",
+      authors: "Autor(es)",
+      chooseOrAdd: "Elige o añade",
+      addAuthor: "➕ Añadir Nuevo Autor...",
+      type: "Tipo",
+      addType: "➕ Añadir Nuevo Tipo...",
+      shelf: "Estantería / Serie",
+      addShelf: "➕ Añadir Nueva Estantería...",
+      status: "Estado de Lectura",
+      totalPages: "Total de Páginas",
+      readPages: "Páginas Leídas",
+      progressPct: "Progreso (%)",
+      tags: "Etiquetas",
+      addTag: "➕ Añadir Nueva Etiqueta...",
+      startDate: "Fecha de Inicio",
+      endDate: "Fecha de Fin",
+      notes: "Notas / Citas",
+      save: "Guardar",
+      cancel: "Cancelar",
+      filterModalTitle: "🔍 Filtrar y Buscar",
+      searchTerm: "Búsqueda en Vivo:",
+      searchPlaceholder: "Buscar por títulos, autores, notas...",
+      applyFilters: "Aplicar Filtros y Volver",
+      sortModalTitle: "🔃 Criterio de Orden",
+      sortSelect: "Ordenar Por:",
+      confirmSort: "Confirmar y Volver",
+      shelvesModalTitle: "📁 Estanterías",
+      toggleGridList: "⊞ Cuadrícula / ☰ Lista",
+      newShelf: "➕ Nueva Estantería",
+      goalsModalTitle: "🎯 Metas de Lectura",
+      mCount: "Meta Mensual (Textos):",
+      yCount: "Meta Anual (Textos):",
+      mPages: "Meta Mensual (Páginas):",
+      yPages: "Meta Anual (Páginas):",
+      saveGoals: "Guardar y Volver",
+      exportModalTitle: "📤 Exportar y Compartir",
+      exportFilterHeading: "🎯 Filtrar Textos a Exportar (Opcional)",
+      byStatus: "Por Estado:",
+      byShelf: "Por Estantería:",
+      exportFormatChoice: "Elegir Formato:",
+      settingsModalTitle: "⚙️ Ajustes y Apariencia",
+      themeMode: "Modo de Tema:",
+      themeDesc: "Cambiar entre modo día y noche.",
+      streakGoalsToggle: "Racha y Barra de Metas:",
+      streakGoalsDesc: "Mostrar u ocultar los indicadores superiores.",
+      username: "Nombre de Usuario:",
+      splashSetting: "Pantalla de Inicio:",
+      wallpaper: "Fondo de Pantalla:",
+      selectImg: "Elegir Imagen",
+      clearImg: "Eliminar",
+      paletteTitle: "Color de Texto, Botón y Tema:",
+      viewList: "☰ Vista de Lista",
+      viewGrid: "⊞ Vista de Cuadrícula",
+      countTexts: "títulos listados",
+      noRecords: "No se encontraron registros.",
+      edit: "Editar",
+      delete: "Eliminar",
+      clearFilter: "Limpiar Filtro",
+      imgDetailsHeading: "🖼️ Detalles Adicionales en la Imagen (Portada, Título y Autor son predeterminados):",
+      optShelf: "Estantería / Serie",
+      optStatus: "Estado",
+      optProgress: "Progreso",
+      optPages: "Páginas",
+      optTags: "Etiquetas",
+      optDates: "Fechas",
+      optNotes: "Notas"
+    }
+  };
+
   const colorPalette = [
     { name: "Açık Sarı", hex: "#eab308", bg: "#fefce8" },
     { name: "Koyu Sarı", hex: "#a16207", bg: "#fef9c3" },
@@ -1072,10 +1440,143 @@
 
   let itemViewMode = localStorage.getItem("reader_item_view_mode") || "list";
   let shelfViewMode = localStorage.getItem("reader_shelf_view_mode") || "grid";
-
   let activeClickFilters = { author: null, type: null, shelf: null, tag: null };
 
-  // ================= MODAL KONTROLLERİ =================
+  // Görselde Çıkacak Detay Tercihleri (Varsayılan: Sadece Kapak, Başlık ve Yazar)
+  let imageExportPrefs = JSON.parse(localStorage.getItem("reader_image_export_prefs")) || {
+    shelf: false,
+    status: false,
+    progress: false,
+    pages: false,
+    tags: false,
+    dates: false,
+    notes: false
+  };
+
+  // Dil Belirleme Mantığı
+  let currentLang = localStorage.getItem("reader_app_lang");
+  let needsInitialLangPrompt = false;
+
+  if (!currentLang) {
+    const navLang = (navigator.language || navigator.userLanguage || "tr").toLowerCase();
+    if (navLang.startsWith("tr")) currentLang = "tr";
+    else if (navLang.startsWith("en")) currentLang = "en";
+    else if (navLang.startsWith("es")) currentLang = "es";
+    else {
+      currentLang = "tr";
+      needsInitialLangPrompt = true;
+    }
+    localStorage.setItem("reader_app_lang", currentLang);
+  }
+
+  function setAppLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem("reader_app_lang", lang);
+    applyTranslations();
+  }
+
+  function selectLanguageInitial(lang) {
+    setAppLanguage(lang);
+    document.getElementById("splash-lang-box").style.display = "none";
+    proceedSplashExit();
+  }
+
+  function applyTranslations() {
+    const t = translations[currentLang] || translations.tr;
+    document.querySelectorAll(".lang-flag-btn").forEach(b => b.classList.remove("active"));
+    const activeFlag = document.getElementById(`flag-${currentLang}`);
+    if (activeFlag) activeFlag.classList.add("active");
+
+    const splashTitle = document.getElementById("splash-title");
+    splashTitle.textContent = currentUsername ? `${t.welcome.replace('!', '')} ${currentUsername}!` : t.welcome;
+    document.getElementById("splash-subtitle").textContent = t.welcomeSub;
+
+    document.getElementById("lbl-menu-header").textContent = t.menuHeader;
+    document.getElementById("btn-menu-shelves").textContent = t.menuShelves;
+    document.getElementById("btn-menu-goals").textContent = t.menuGoals;
+    document.getElementById("btn-menu-export").textContent = t.menuExport;
+    document.getElementById("btn-menu-settings").textContent = t.menuSettings;
+
+    document.getElementById("form-heading").textContent = t.newText;
+    document.getElementById("lbl-text-title").textContent = t.textTitle;
+    document.getElementById("lbl-cover-img").textContent = t.coverImg;
+    document.getElementById("btn-from-device").textContent = t.fromDevice;
+    document.getElementById("lbl-authors").textContent = t.authors;
+    document.getElementById("btn-add-author").textContent = t.addAuthor;
+    document.getElementById("lbl-type").textContent = t.type;
+    document.getElementById("btn-add-type").textContent = t.addType;
+    document.getElementById("lbl-shelf").textContent = t.shelf;
+    document.getElementById("btn-add-shelf").textContent = t.addShelf;
+    document.getElementById("lbl-status").textContent = t.status;
+    document.getElementById("lbl-total-pages").textContent = t.totalPages;
+    document.getElementById("lbl-read-pages").textContent = t.readPages;
+    document.getElementById("lbl-progress-pct").textContent = t.progressPct;
+    document.getElementById("lbl-tags").textContent = t.tags;
+    document.getElementById("btn-add-tag").textContent = t.addTag;
+    document.getElementById("lbl-start-date").textContent = t.startDate;
+    document.getElementById("lbl-end-date").textContent = t.endDate;
+    document.getElementById("lbl-notes").textContent = t.notes;
+    document.getElementById("save-button").textContent = t.save;
+    document.getElementById("cancel-edit-btn").textContent = t.cancel;
+
+    document.getElementById("lbl-filter-modal-title").textContent = t.filterModalTitle;
+    document.getElementById("lbl-search-term").textContent = t.searchTerm;
+    document.getElementById("search-input").placeholder = t.searchPlaceholder;
+    document.getElementById("lbl-filter-status").textContent = t.status;
+    document.getElementById("lbl-filter-author").textContent = t.authors;
+    document.getElementById("lbl-filter-type").textContent = t.type;
+    document.getElementById("lbl-filter-shelf").textContent = t.shelf;
+    document.getElementById("lbl-filter-tag").textContent = t.tags;
+    document.getElementById("btn-apply-filters").textContent = t.applyFilters;
+
+    document.getElementById("lbl-sort-modal-title").textContent = t.sortModalTitle;
+    document.getElementById("lbl-sort-select").textContent = t.sortSelect;
+    document.getElementById("btn-confirm-sort").textContent = t.confirmSort;
+
+    document.getElementById("lbl-shelves-modal-title").textContent = t.shelvesModalTitle;
+    document.getElementById("btn-new-shelf").textContent = t.newShelf;
+
+    document.getElementById("lbl-goals-modal-title").textContent = t.goalsModalTitle;
+    document.getElementById("lbl-m-count").textContent = t.mCount;
+    document.getElementById("lbl-y-count").textContent = t.yCount;
+    document.getElementById("lbl-m-pages").textContent = t.mPages;
+    document.getElementById("lbl-y-pages").textContent = t.yPages;
+    document.getElementById("btn-save-goals").textContent = t.saveGoals;
+
+    document.getElementById("lbl-export-modal-title").textContent = t.exportModalTitle;
+    document.getElementById("lbl-export-filter-heading").textContent = t.exportFilterHeading;
+    document.getElementById("lbl-exp-status").textContent = t.byStatus;
+    document.getElementById("lbl-exp-shelf").textContent = t.byShelf;
+    document.getElementById("lbl-export-format-choice").textContent = t.exportFormatChoice;
+    document.getElementById("lbl-image-export-details").textContent = t.imgDetailsHeading;
+    document.getElementById("lbl-opt-shelf").textContent = t.optShelf;
+    document.getElementById("lbl-opt-status").textContent = t.optStatus;
+    document.getElementById("lbl-opt-progress").textContent = t.optProgress;
+    document.getElementById("lbl-opt-pages").textContent = t.optPages;
+    document.getElementById("lbl-opt-tags").textContent = t.optTags;
+    document.getElementById("lbl-opt-dates").textContent = t.optDates;
+    document.getElementById("lbl-opt-notes").textContent = t.optNotes;
+
+    document.getElementById("lbl-settings-modal-title").textContent = t.settingsModalTitle;
+    document.getElementById("lbl-theme-mode").textContent = t.themeMode;
+    document.getElementById("lbl-theme-desc").textContent = t.themeDesc;
+    document.getElementById("lbl-streak-goals-toggle").textContent = t.streakGoalsToggle;
+    document.getElementById("lbl-streak-goals-desc").textContent = t.streakGoalsDesc;
+    document.getElementById("lbl-username").textContent = t.username;
+    document.getElementById("lbl-splash-setting").textContent = t.splashSetting;
+    document.getElementById("lbl-wallpaper").textContent = t.wallpaper;
+    document.getElementById("btn-select-bg").textContent = t.selectImg;
+    document.getElementById("btn-clear-bg").textContent = t.clearImg;
+    document.getElementById("lbl-palette-title").textContent = t.paletteTitle;
+
+    document.getElementById("item-view-toggle-btn").textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
+
+    renderItems();
+    renderShelvesContainer();
+    updateGoalsDisplay();
+  }
+
+  // ================= MODALLAR =================
   function openFullScreenModal(modalId) {
     closeDrawer();
     document.querySelectorAll(".full-page-view").forEach(m => m.style.display = "none");
@@ -1101,7 +1602,7 @@
     document.getElementById("drawer-overlay").classList.remove("open");
   }
 
-  // ================= GÖRSEL DOSYASI YÜKLEME (BASE64) =================
+  // ================= GÖRSEL DOSYASI YÜKLEME =================
   function handleCoverFileUpload(e, targetInputId) {
     const file = e.target.files[0];
     if (!file) return;
@@ -1112,11 +1613,11 @@
     reader.readAsDataURL(file);
   }
 
-  // ================= GÖRÜNÜM MODU GEÇİŞLERİ =================
   function toggleItemViewMode() {
+    const t = translations[currentLang] || translations.tr;
     itemViewMode = itemViewMode === "list" ? "grid" : "list";
     localStorage.setItem("reader_item_view_mode", itemViewMode);
-    document.getElementById("item-view-toggle-btn").textContent = itemViewMode === "list" ? "⊞ Izgara Görünümü" : "☰ Sıralı Görünüm";
+    document.getElementById("item-view-toggle-btn").textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
     renderItems();
   }
 
@@ -1129,6 +1630,7 @@
   // ================= RAFLAR YÖNETİMİ =================
   function renderShelvesContainer() {
     const container = document.getElementById("shelves-container");
+    const t = translations[currentLang] || translations.tr;
     container.innerHTML = "";
     container.className = shelfViewMode === "grid" ? "grid-view-container" : "list-view-container";
 
@@ -1143,8 +1645,8 @@
             ${!shelf.cover ? `<div class="cover-fallback-title">${escapeHtml(shelf.name)}</div>` : ''}
             <button class="shelf-menu-btn" onclick="toggleShelfMenu(event, ${idx})">⋮</button>
             <div class="shelf-popover-menu" id="shelf-menu-${idx}">
-              <button onclick="editShelf(${idx})">✏️ Düzenle</button>
-              <button class="delete" onclick="deleteShelf(${idx})">🗑️ Rafı Sil</button>
+              <button onclick="editShelf(${idx})">✏️ ${t.edit}</button>
+              <button class="delete" onclick="deleteShelf(${idx})">🗑️ ${t.delete}</button>
             </div>
           </div>
           <div class="card-basic-header">
@@ -1152,7 +1654,7 @@
             <button class="expand-toggle-btn" onclick="toggleDetails(this, 'shelf-det-${idx}')">▼</button>
           </div>
           <div class="card-expandable-details" id="shelf-det-${idx}">
-            <p><strong>Metin Sayısı:</strong> ${bookCount}</p>
+            <p><strong>${t.countTexts}:</strong> ${bookCount}</p>
             <div style="margin-top: 0.5rem;">
               <button class="view-toggle-btn" onclick="closeFullScreenModal('modal-shelves'); toggleClickFilter('shelf', '${escapeHtml(shelf.name)}')">Metinleri Listele</button>
             </div>
@@ -1169,7 +1671,7 @@
             <button class="expand-toggle-btn" onclick="toggleDetails(this, 'shelf-det-${idx}')">▼</button>
           </div>
           <div class="card-expandable-details" id="shelf-det-${idx}">
-            <p><strong>Metin Sayısı:</strong> ${bookCount}</p>
+            <p><strong>${t.countTexts}:</strong> ${bookCount}</p>
             <div class="card-actions" style="margin-top: 0.5rem;">
               <button class="view-toggle-btn" onclick="closeFullScreenModal('modal-shelves'); toggleClickFilter('shelf', '${escapeHtml(shelf.name)}')">Metinleri Listele</button>
               <button class="icon-btn" onclick="editShelf(${idx})">✏️</button>
@@ -1194,7 +1696,7 @@
   });
 
   function promptCreateNewShelf() {
-    const name = prompt("Yeni raf adını yazın:");
+    const name = prompt("Yeni raf adını yazın / New shelf name:");
     if (!name || !name.trim()) return;
     const cover = prompt("Raf kapak görseli bağlantısı (URL) - İsteğe bağlı:");
     shelvesList.push({ name: name.trim(), cover: cover ? cover.trim() : "" });
@@ -1231,13 +1733,36 @@
     updateCustomDropdowns();
   }
 
-  // ================= DETAYLARI AÇ/KAPA =================
   function toggleDetails(btn, detailsId) {
     const det = document.getElementById(detailsId);
     if (!det) return;
     const isShowing = det.style.display === "block";
     det.style.display = isShowing ? "none" : "block";
     btn.classList.toggle("expanded", !isShowing);
+  }
+
+  // ================= GÖRSEL PAYLAŞIM AYARLARI =================
+  function loadImageExportPrefs() {
+    document.getElementById("img-opt-shelf").checked = !!imageExportPrefs.shelf;
+    document.getElementById("img-opt-status").checked = !!imageExportPrefs.status;
+    document.getElementById("img-opt-progress").checked = !!imageExportPrefs.progress;
+    document.getElementById("img-opt-pages").checked = !!imageExportPrefs.pages;
+    document.getElementById("img-opt-tags").checked = !!imageExportPrefs.tags;
+    document.getElementById("img-opt-dates").checked = !!imageExportPrefs.dates;
+    document.getElementById("img-opt-notes").checked = !!imageExportPrefs.notes;
+  }
+
+  function saveImageExportPrefs() {
+    imageExportPrefs = {
+      shelf: document.getElementById("img-opt-shelf").checked,
+      status: document.getElementById("img-opt-status").checked,
+      progress: document.getElementById("img-opt-progress").checked,
+      pages: document.getElementById("img-opt-pages").checked,
+      tags: document.getElementById("img-opt-tags").checked,
+      dates: document.getElementById("img-opt-dates").checked,
+      notes: document.getElementById("img-opt-notes").checked
+    };
+    localStorage.setItem("reader_image_export_prefs", JSON.stringify(imageExportPrefs));
   }
 
   // ================= DIŞA AKTARMA VE PAYLAŞIM =================
@@ -1250,6 +1775,7 @@
       opt.textContent = s.name;
       shelfSel.appendChild(opt);
     });
+    loadImageExportPrefs();
     updateExportPreviewCount();
   }
 
@@ -1289,6 +1815,7 @@
   }
 
   function exportAsImage(targetData) {
+    saveImageExportPrefs();
     const exportBox = document.createElement("div");
     exportBox.style.padding = "1.5rem";
     exportBox.style.background = window.getComputedStyle(document.body).backgroundColor;
@@ -1299,17 +1826,37 @@
     exportBox.style.maxWidth = "800px";
 
     exportBox.innerHTML = `
-      <h2 style="color: var(--active-accent); margin-bottom: 0.5rem;">📚 ReaderTracker Okuma Listesi</h2>
+      <h2 style="color: var(--active-accent); margin-bottom: 0.5rem;">📚 ReaderTracker</h2>
       <p style="margin-bottom: 1rem; font-size: 0.85rem; opacity: 0.8;">Tarih: ${new Date().toLocaleDateString('tr-TR')} | Toplam: ${targetData.length} Eser</p>
-      ${targetData.map((r, i) => `
-        <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.5rem;">
-          <strong style="color: var(--active-text);">#${i + 1} ${escapeHtml(r.title)}</strong>
-          ${r.authors && r.authors.length ? ` - <span>✍️ ${escapeHtml(r.authors.join(', '))}</span>` : ''}
-          ${r.shelf ? ` • <span>📁 ${escapeHtml(r.shelf)}</span>` : ''}
-          ${r.status ? ` • <span style="font-weight:700;">[${r.status}]</span>` : ''}
-          ${r.progress !== null ? ` • <span>%${r.progress}</span>` : ''}
-        </div>
-      `).join("")}
+      ${targetData.map((r, i) => {
+        const authorText = r.authors && r.authors.length ? ` - <span>✍️ ${escapeHtml(r.authors.join(', '))}</span>` : '';
+        const shelfText = imageExportPrefs.shelf && r.shelf ? ` • <span>📁 ${escapeHtml(r.shelf)}</span>` : '';
+        const statusText = imageExportPrefs.status && r.status ? ` • <span style="font-weight:700;">[${escapeHtml(r.status)}]</span>` : '';
+        const progressText = imageExportPrefs.progress && (r.progress !== null) ? ` • <span>%${r.progress}</span>` : '';
+        const pagesText = imageExportPrefs.pages && r.totalPages ? ` • <span>📖 ${r.readPages || 0}/${r.totalPages} s.</span>` : '';
+        const datesText = imageExportPrefs.dates && (r.startDate || r.endDate) ? ` • <span>🗓️ ${[r.startDate, r.endDate].filter(Boolean).join(' - ')}</span>` : '';
+        const tagsText = imageExportPrefs.tags && r.tags && r.tags.length ? `<div style="margin-top:0.3rem; font-size:0.75rem; opacity:0.8;">#${escapeHtml(r.tags.join(' #'))}</div>` : '';
+        const notesText = imageExportPrefs.notes && r.notes ? `<div style="margin-top:0.35rem; font-size:0.8rem; background:rgba(0,0,0,0.04); padding:0.4rem; border-radius:4px;">${escapeHtml(r.notes)}</div>` : '';
+
+        const coverHtml = r.cover ? `<div style="width: 50px; height: 50px; border-radius: 6px; background-image: url('${r.cover}'); background-size: cover; background-position: center; flex-shrink: 0;"></div>` : '';
+
+        return `
+          <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.5rem; display: flex; gap: 0.75rem; align-items: flex-start;">
+            ${coverHtml}
+            <div style="flex: 1;">
+              <strong style="color: var(--active-text);">#${i + 1} ${escapeHtml(r.title)}</strong>
+              ${authorText}
+              ${shelfText}
+              ${statusText}
+              ${progressText}
+              ${pagesText}
+              ${datesText}
+              ${tagsText}
+              ${notesText}
+            </div>
+          </div>
+        `;
+      }).join("")}
     `;
 
     document.body.appendChild(exportBox);
@@ -1337,17 +1884,17 @@
   function exportToDocx(dataList) {
     let htmlContent = `
       <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-      <head><meta charset='utf-8'><title>Okuma Takip Listesi</title>
+      <head><meta charset='utf-8'><title>ReaderTracker</title>
       <style>
         body { font-family: Arial, sans-serif; font-size: 11pt; color: #1e293b; }
         table { border-collapse: collapse; width: 100%; margin-top: 15px; }
         th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
         th { background-color: #f1f5f9; }
       </style></head><body>
-      <h1>📚 ReaderTracker Okuma Listesi</h1>
+      <h1>📚 ReaderTracker</h1>
       <p>Tarih: ${new Date().toLocaleDateString('tr-TR')}</p>
       <table>
-        <thead><tr><th>#</th><th>Metin Adı</th><th>Yazar(lar)</th><th>Raf</th><th>Durum</th><th>İlerleme</th></tr></thead>
+        <thead><tr><th>#</th><th>Başlık</th><th>Yazar(lar)</th><th>Raf</th><th>Durum</th><th>İlerleme</th></tr></thead>
         <tbody>
           ${dataList.map((r, i) => `
             <tr>
@@ -1368,15 +1915,15 @@
   function exportToPDF() { window.print(); }
 
   function exportToClipboard(dataList) {
-    let text = `📚 ReaderTracker Okuma Listesi (${dataList.length} Metin)\n\n`;
+    let text = `📚 ReaderTracker (${dataList.length} Metin)\n\n`;
     dataList.forEach((r, i) => {
       text += `${i + 1}. ${r.title}`;
       if (r.authors && r.authors.length) text += ` - ${r.authors.join(", ")}`;
-      if (r.shelf) text += ` [Raf: ${r.shelf}]`;
+      if (r.shelf) text += ` [${r.shelf}]`;
       if (r.status) text += ` (${r.status})`;
       text += `\n`;
     });
-    navigator.clipboard.writeText(text).then(() => alert("Liste panoya kopyalandı!"));
+    navigator.clipboard.writeText(text).then(() => alert("Kopyalandı!"));
   }
 
   function downloadBlob(blob, filename) {
@@ -1389,7 +1936,7 @@
     document.body.removeChild(link);
   }
 
-  // ================= STREAK, HEDEFLER & SAYFALAR =================
+  // ================= STREAK, HEDEFLER & HESAPLAMALAR =================
   function calculateStreak() {
     const todayStr = new Date().toISOString().slice(0, 10);
     let streakCount = parseInt(localStorage.getItem("reader_streak_count") || "1", 10);
@@ -1523,7 +2070,7 @@
     return null;
   }
 
-  // ================= FORM & VERİ KAYIT İŞLEMLERİ =================
+  // ================= FORM & VERİ KAYIT =================
   function toggleCustomDropdown(dropdownId) {
     const dp = document.getElementById(dropdownId);
     const isShowing = dp.style.display === "block";
@@ -1538,13 +2085,14 @@
   });
 
   function selectOption(key, val) {
+    const t = translations[currentLang] || translations.tr;
     document.getElementById(`field-val-${key}`).value = val;
-    document.getElementById(`trigger-label-${key}`).textContent = val || "Seçiniz veya Ekleyiniz";
+    document.getElementById(`trigger-label-${key}`).textContent = val || t.chooseOrAdd;
     document.getElementById(`dropdown-${key}`).style.display = "none";
   }
 
   function promptAddNewOption(key) {
-    const val = prompt("Yeni seçeneğin adını yazın:");
+    const val = prompt("Yeni değer yazınız:");
     if (val && val.trim()) {
       if (key === "shelf") {
         shelvesList.push({ name: val.trim(), cover: "" });
@@ -1556,7 +2104,7 @@
   }
 
   function deleteOptionFromDropdown(key, valToDelete) {
-    if (!confirm(`"${valToDelete}" seçeneğini kalıcı olarak silmek istiyor musunuz?`)) return;
+    if (!confirm(`"${valToDelete}" silinsin mi?`)) return;
 
     if (key === "shelf") {
       shelvesList = shelvesList.filter(s => s.name !== valToDelete);
@@ -1657,15 +2205,17 @@
   });
 
   function resetForm() {
+    const t = translations[currentLang] || translations.tr;
     form.reset();
     document.getElementById("edit-id").value = "";
     document.getElementById("cover-url").value = "";
-    document.getElementById("form-heading").textContent = "Yeni Metin Ekle";
+    document.getElementById("form-heading").textContent = t.newText;
     document.getElementById("cancel-edit-btn").style.display = "none";
     ["author", "type", "shelf", "tags"].forEach(k => selectOption(k, ""));
   }
 
   function startEdit(id) {
+    const t = translations[currentLang] || translations.tr;
     const item = records.find(r => r.id == id);
     if (!item) return;
 
@@ -1685,13 +2235,13 @@
     document.getElementById("end-date").value = item.endDate || "";
     document.getElementById("notes").value = item.notes || "";
 
-    document.getElementById("form-heading").textContent = "Metni Düzenle: " + item.title;
+    document.getElementById("form-heading").textContent = t.editText + item.title;
     document.getElementById("cancel-edit-btn").style.display = "inline-block";
     openFullScreenModal("modal-form");
   }
 
   function deleteRecord(id) {
-    if (confirm("Bu kaydı silmek istediğinize emin misiniz?")) {
+    if (confirm("Bu metin kaydını silmek istediğinize emin misiniz?")) {
       records = records.filter(r => r.id != id);
       saveAndRender();
     }
@@ -1706,7 +2256,6 @@
     renderItems();
   }
 
-  // ================= FİLTRELEME & LİSTELEME =================
   function toggleClickFilter(type, value) {
     if (activeClickFilters[type] === value) activeClickFilters[type] = null;
     else activeClickFilters[type] = value;
@@ -1775,6 +2324,7 @@
 
   function renderItems() {
     const listContainer = document.getElementById("records-container");
+    const t = translations[currentLang] || translations.tr;
     listContainer.innerHTML = "";
     listContainer.className = itemViewMode === "grid" ? "grid-view-container" : "list-view-container";
 
@@ -1826,10 +2376,10 @@
       return 0;
     });
 
-    document.getElementById("count-display").textContent = `${filtered.length} kadar başlık sıralanıyor`;
+    document.getElementById("count-display").textContent = `${filtered.length} ${t.countTexts}`;
 
     if (filtered.length === 0) {
-      listContainer.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-muted); background: var(--panel-bg); border-radius: 12px; border: 1px solid var(--border-color);">Kayıt bulunamadı.</div>`;
+      listContainer.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-muted); background: var(--panel-bg); border-radius: 12px; border: 1px solid var(--border-color);">${t.noRecords}</div>`;
       return;
     }
 
@@ -1843,8 +2393,8 @@
       if (item.type) metaDetails.push(`<span class="clickable-badge" onclick="toggleClickFilter('type', '${escapeHtml(item.type)}')">🏷️ ${escapeHtml(item.type)}</span>`);
       if (item.shelf) metaDetails.push(`<span class="clickable-badge" onclick="toggleClickFilter('shelf', '${escapeHtml(item.shelf)}')">📁 <em>${escapeHtml(item.shelf)}</em></span>`);
       if (item.totalPages) metaDetails.push(`<span>📖 ${item.readPages || 0}/${item.totalPages} s.</span>`);
-      if (item.startDate) metaDetails.push(`<span>🗓️ Başlangıç: ${escapeHtml(item.startDate)}</span>`);
-      if (item.endDate) metaDetails.push(`<span>🏁 Bitiş: ${escapeHtml(item.endDate)}</span>`);
+      if (item.startDate) metaDetails.push(`<span>🗓️ ${escapeHtml(item.startDate)}</span>`);
+      if (item.endDate) metaDetails.push(`<span>🏁 ${escapeHtml(item.endDate)}</span>`);
 
       let progressHtml = item.progress !== null ? `<span class="progress-badge">%${item.progress} ${item.progress >= 50 ? '🔋' : '🪫'}</span>` : "";
       let statusHtml = item.status ? `<span class="status-badge status-${item.status.replace(/\s+/g, '-')}">${escapeHtml(item.status)}</span>` : "";
@@ -1866,8 +2416,8 @@
             ${tagsHtml}
             ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ''}
             <div class="card-actions">
-              <button class="icon-btn" onclick="startEdit(${item.id})">✏️ Düzenle</button>
-              <button class="icon-btn" onclick="deleteRecord(${item.id})">🗑️ Sil</button>
+              <button class="icon-btn" onclick="startEdit(${item.id})">✏️ ${t.edit}</button>
+              <button class="icon-btn" onclick="deleteRecord(${item.id})">🗑️ ${t.delete}</button>
             </div>
           </div>
         `;
@@ -1887,8 +2437,8 @@
             ${tagsHtml}
             ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ''}
             <div class="card-actions">
-              <button class="icon-btn" onclick="startEdit(${item.id})">✏️ Düzenle</button>
-              <button class="icon-btn" onclick="deleteRecord(${item.id})">🗑️ Sil</button>
+              <button class="icon-btn" onclick="startEdit(${item.id})">✏️ ${t.edit}</button>
+              <button class="icon-btn" onclick="deleteRecord(${item.id})">🗑️ ${t.delete}</button>
             </div>
           </div>
         `;
@@ -1897,7 +2447,7 @@
     });
   }
 
-  // ================= TEMA & GÖRÜNÜM =================
+  // ================= TEMA VE GÖRÜNÜM =================
   function applyThemeMode() {
     const btn = document.getElementById("theme-icon-btn");
     if (isDarkMode) {
@@ -1930,10 +2480,6 @@
       document.documentElement.style.setProperty("--active-bg-tint", bgToApply);
       document.body.style.backgroundColor = bgToApply;
     }
-
-    document.querySelectorAll(".color-btn").forEach(b => {
-      b.classList.toggle("selected", b.style.backgroundColor === colObj.hex);
-    });
   }
 
   const paletteContainer = document.getElementById("palette-container");
@@ -1983,6 +2529,7 @@
   function updateUsername(name) {
     currentUsername = name.trim();
     localStorage.setItem("reader_username", currentUsername);
+    applyTranslations();
   }
 
   function escapeHtml(str) {
@@ -1990,25 +2537,8 @@
     return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
   }
 
-  // ================= BAŞLANGIÇ =================
-  window.addEventListener("DOMContentLoaded", () => {
-    calculateStreak();
-    updateGoalsDisplay();
-    renderShelvesContainer();
-    loadBg(localStorage.getItem("reader_custom_bg"));
-    applyThemeMode();
-
-    document.getElementById("item-view-toggle-btn").textContent = itemViewMode === "list" ? "⊞ Izgara Görünümü" : "☰ Sıralı Görünüm";
-    document.getElementById("setting-username").value = currentUsername;
-    document.getElementById("goal-monthly-count").value = userGoals.mCount || "";
-    document.getElementById("goal-yearly-count").value = userGoals.yCount || "";
-    document.getElementById("goal-monthly-pages").value = userGoals.mPages || "";
-    document.getElementById("goal-yearly-pages").value = userGoals.yPages || "";
-
+  function proceedSplashExit() {
     const splash = document.getElementById("splash-screen");
-    const splashTitle = document.getElementById("splash-title");
-    splashTitle.textContent = currentUsername ? `Hoş geldin ${currentUsername}!` : `Hoş geldin!`;
-
     if (!splashEnabled) {
       splash.style.display = "none";
     } else {
@@ -2016,6 +2546,26 @@
         splash.classList.add(splashAnim === "water" ? "anim-water-out" : "anim-circle-out");
         setTimeout(() => { splash.style.display = "none"; }, splashAnim === "water" ? 4000 : 2000);
       }, 1000);
+    }
+  }
+
+  // ================= BAŞLANGIÇ =================
+  window.addEventListener("DOMContentLoaded", () => {
+    calculateStreak();
+    loadBg(localStorage.getItem("reader_custom_bg"));
+    applyThemeMode();
+    applyTranslations();
+
+    document.getElementById("setting-username").value = currentUsername;
+    document.getElementById("goal-monthly-count").value = userGoals.mCount || "";
+    document.getElementById("goal-yearly-count").value = userGoals.yCount || "";
+    document.getElementById("goal-monthly-pages").value = userGoals.mPages || "";
+    document.getElementById("goal-yearly-pages").value = userGoals.yPages || "";
+
+    if (needsInitialLangPrompt) {
+      document.getElementById("splash-lang-box").style.display = "block";
+    } else {
+      proceedSplashExit();
     }
 
     populateFilterDropdowns();
