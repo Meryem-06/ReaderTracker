@@ -56,9 +56,14 @@
       align-items: center;
       justify-content: center;
       z-index: 99999;
-      pointer-events: all;
       text-align: center;
       padding: 1.5rem;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    #splash-screen.hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
     }
     #splash-screen h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800; }
     #splash-screen p { font-size: 1.1rem; opacity: 0.9; }
@@ -84,23 +89,18 @@
       border-radius: 10px;
       cursor: pointer;
       padding: 0.3rem 0.6rem;
-      transition: transform 0.15s;
     }
-    .splash-lang-btn:active { transform: scale(0.9); }
 
-    .anim-circle-out { animation: circleShrink 2s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+    .anim-circle-out { animation: circleShrink 1.8s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
     @keyframes circleShrink {
       0% { clip-path: circle(150% at 50% 50%); opacity: 1; }
-      100% { clip-path: circle(0% at 50% 50%); opacity: 0; visibility: hidden; }
+      100% { clip-path: circle(0% at 50% 50%); opacity: 0; }
     }
 
-    .anim-water-out { animation: waterDrain 4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    .anim-water-out { animation: waterDrain 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
     @keyframes waterDrain {
       0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
-      25% { clip-path: polygon(0 25%, 100% 18%, 100% 100%, 0 100%); }
-      50% { clip-path: polygon(0 50%, 100% 58%, 100% 100%, 0 100%); }
-      75% { clip-path: polygon(0 80%, 100% 72%, 100% 100%, 0 100%); }
-      100% { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); opacity: 0; visibility: hidden; }
+      100% { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); opacity: 0; }
     }
 
     .container {
@@ -115,13 +115,11 @@
       justify-content: space-between;
       margin-bottom: 0.6rem;
     }
-
     .top-header-left {
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
-
     .hamburger-btn {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -136,7 +134,6 @@
       justify-content: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
-    .hamburger-btn:active { transform: scale(0.95); }
     .app-title { font-size: 1.45rem; font-weight: 800; }
 
     /* Streak & Hedef Şeridi */
@@ -147,7 +144,6 @@
       gap: 0.5rem;
       margin-bottom: 0.85rem;
     }
-
     .streak-badge {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -159,9 +155,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.25rem;
-      user-select: none;
     }
-
     .goals-display {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -175,7 +169,7 @@
       gap: 0.5rem;
     }
 
-    /* Kontroller ve Sayım Şeridi */
+    /* Kontroller */
     .controls-strip {
       display: flex;
       justify-content: space-between;
@@ -183,7 +177,6 @@
       margin-bottom: 0.5rem;
       padding: 0 0.2rem;
     }
-
     .view-toggle-btn {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -193,19 +186,13 @@
       font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
     }
-
-    /* Hızlı Emoji Butonları */
     .quick-actions-row {
       display: flex;
       gap: 0.6rem;
       margin-bottom: 1rem;
       padding: 0 0.2rem;
     }
-
     .quick-icon-btn {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -219,12 +206,9 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-      transition: transform 0.1s, background 0.15s;
     }
-    .quick-icon-btn:active { transform: scale(0.92); }
-    .quick-icon-btn:hover { background: var(--card-bg); }
 
-    /* Çekmece Menü (Drawer) */
+    /* Çekmece Menü */
     .drawer-overlay {
       position: fixed;
       inset: 0;
@@ -236,7 +220,6 @@
       transition: opacity 0.25s ease, visibility 0.25s ease;
     }
     .drawer-overlay.open { opacity: 1; visibility: visible; }
-
     .side-drawer {
       position: fixed;
       top: 0; bottom: 0; left: 0;
@@ -254,7 +237,6 @@
       gap: 0.5rem;
     }
     .side-drawer.open { transform: translateX(0); }
-
     .drawer-header {
       display: flex;
       justify-content: space-between;
@@ -263,7 +245,6 @@
       padding-bottom: 0.75rem;
       border-bottom: 1px solid var(--border-color);
     }
-
     .drawer-item-btn {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -277,10 +258,7 @@
       align-items: center;
       gap: 0.6rem;
       text-align: left;
-      transition: background 0.15s;
     }
-    .drawer-item-btn:hover { background: rgba(0,0,0,0.04); color: var(--active-accent); }
-
     .drawer-lang-row {
       margin-top: auto;
       padding-top: 1rem;
@@ -289,7 +267,6 @@
       justify-content: space-around;
       align-items: center;
     }
-
     .lang-flag-btn {
       background: none;
       border: none;
@@ -297,10 +274,7 @@
       cursor: pointer;
       padding: 0.3rem;
       border-radius: 6px;
-      transition: transform 0.15s, background 0.15s;
-      line-height: 1;
     }
-    .lang-flag-btn:hover { background: var(--badge-bg); transform: scale(1.15); }
     .lang-flag-btn.active {
       background: var(--badge-bg);
       outline: 2px solid var(--active-accent);
@@ -318,14 +292,7 @@
       z-index: 10000;
       overflow-y: auto;
       padding: 1.5rem 1rem;
-      animation: modalFadeIn 0.2s ease-out;
     }
-
-    @keyframes modalFadeIn {
-      from { opacity: 0; transform: scale(0.98); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
     .modal-content-container {
       max-width: 850px;
       margin: 0 auto;
@@ -336,7 +303,6 @@
       padding: 1.5rem;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
-
     .modal-top-bar {
       display: flex;
       justify-content: space-between;
@@ -345,7 +311,6 @@
       padding-bottom: 0.75rem;
       border-bottom: 1px solid var(--border-color);
     }
-
     .modal-close-btn {
       background: var(--badge-bg);
       border: 1px solid var(--border-color);
@@ -358,9 +323,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.15s;
     }
-    .modal-close-btn:hover { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
 
     .form-grid {
       display: grid;
@@ -368,21 +331,18 @@
       gap: 1rem;
       margin-bottom: 1rem;
     }
-
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 0.35rem;
       position: relative;
     }
-
     .form-group label {
       font-size: 0.85rem;
       font-weight: 600;
       color: var(--active-text);
     }
     .form-group.full-width { grid-column: 1 / -1; }
-
     input, textarea, select {
       width: 100%;
       padding: 0.65rem 0.85rem;
@@ -392,10 +352,6 @@
       background: var(--input-bg);
       color: var(--text-main);
       outline: none;
-    }
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--active-accent);
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
     }
     textarea { resize: vertical; min-height: 70px; }
 
@@ -412,7 +368,6 @@
       justify-content: space-between;
       align-items: center;
     }
-
     .custom-dropdown-panel {
       display: none;
       position: absolute;
@@ -426,7 +381,6 @@
       overflow-y: auto;
       margin-top: 4px;
     }
-
     .dropdown-item-row {
       display: flex;
       justify-content: space-between;
@@ -434,13 +388,11 @@
       padding: 0.65rem 0.85rem;
       border-bottom: 1px solid var(--border-color);
     }
-    .dropdown-item-row:hover { background: rgba(0,0,0,0.04); }
     .dropdown-item-name { cursor: pointer; flex: 1; font-size: 0.9rem; }
     .dropdown-item-del {
       background: none; border: none; color: #ef4444;
       font-size: 1.1rem; font-weight: bold; cursor: pointer; padding: 0 0.35rem;
     }
-
     .dropdown-add-new-btn {
       padding: 0.65rem 0.85rem;
       color: var(--active-accent);
@@ -449,13 +401,12 @@
       cursor: pointer;
     }
 
-    /* 2'li Kare Izgara */
+    /* Izgara & Liste */
     .grid-view-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 0.85rem;
     }
-
     .grid-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -464,9 +415,7 @@
       display: flex;
       flex-direction: column;
       box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      position: relative;
     }
-
     .card-cover-box {
       width: 100%;
       aspect-ratio: 1 / 1;
@@ -480,15 +429,12 @@
       text-align: center;
       position: relative;
     }
-
     .cover-fallback-title {
       font-size: 0.95rem;
       font-weight: 700;
       color: var(--active-text);
-      line-height: 1.3;
       word-break: break-word;
     }
-
     .card-basic-header {
       padding: 0.65rem 0.75rem;
       display: flex;
@@ -497,7 +443,6 @@
       gap: 0.5rem;
       background: var(--card-bg);
     }
-
     .card-basic-title {
       font-size: 0.92rem;
       font-weight: 700;
@@ -507,7 +452,6 @@
       white-space: nowrap;
       flex: 1;
     }
-
     .expand-toggle-btn {
       background: none;
       border: none;
@@ -518,7 +462,6 @@
       transition: transform 0.2s ease;
     }
     .expand-toggle-btn.expanded { transform: rotate(180deg); }
-
     .card-expandable-details {
       display: none;
       padding: 0.75rem;
@@ -527,13 +470,11 @@
       background: var(--panel-bg);
     }
 
-    /* Sıralı Görünüm */
     .list-view-container {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
     }
-
     .list-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -543,13 +484,11 @@
       flex-direction: column;
       box-shadow: 0 2px 4px rgba(0,0,0,0.04);
     }
-
     .list-card-main-row {
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
-
     .list-thumb {
       width: 48px;
       height: 48px;
@@ -565,10 +504,7 @@
       color: var(--active-text);
       text-align: center;
       flex-shrink: 0;
-      padding: 2px;
-      overflow: hidden;
     }
-
     .list-card-title {
       font-size: 1rem;
       font-weight: 700;
@@ -576,16 +512,11 @@
       flex: 1;
     }
 
-    .clickable-badge { cursor: pointer; display: inline-block; }
-    .clickable-badge:hover { opacity: 0.8; }
-    .clickable-badge.active-filter { outline: 2px solid var(--active-accent); }
-
     .tags-container { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.4rem; }
     .tag-badge {
       background: var(--badge-bg); color: var(--active-text); font-size: 0.75rem;
       font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 4px; border: 1px solid var(--border-color);
     }
-
     .status-badge { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px; margin-right: 0.4rem; }
     .status-Okunuyor { background: #dbeafe; color: #1d4ed8; }
     .status-Bitti { background: #dcfce7; color: #15803d; }
@@ -597,35 +528,6 @@
     .card-actions { display: flex; gap: 0.4rem; margin-top: 0.5rem; }
     .icon-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.4rem 0.65rem; font-size: 1rem; border-radius: 6px; cursor: pointer; }
 
-    /* Raf Menüsü */
-    .shelf-menu-btn {
-      position: absolute;
-      top: 0.4rem; right: 0.4rem; z-index: 3;
-      background: rgba(0,0,0,0.5); color: #ffffff;
-      border: none; width: 26px; height: 26px;
-      border-radius: 6px; font-size: 1rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .shelf-popover-menu {
-      display: none;
-      position: absolute;
-      top: 2rem; right: 0.4rem;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 10;
-      min-width: 120px;
-    }
-    .shelf-popover-menu button {
-      width: 100%; text-align: left; padding: 0.5rem 0.75rem;
-      background: none; border: none; font-size: 0.82rem; color: var(--text-main); cursor: pointer;
-    }
-    .shelf-popover-menu button:hover { background: rgba(0,0,0,0.06); }
-    .shelf-popover-menu button.delete { color: #ef4444; }
-
-    /* Renk Paleti Izgarası */
     .palette-grid {
       display: grid !important;
       grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)) !important;
@@ -633,7 +535,6 @@
       width: 100% !important;
       margin-top: 0.6rem !important;
     }
-
     .color-btn {
       width: 100% !important;
       min-height: 38px !important;
@@ -641,16 +542,11 @@
       border-radius: 8px !important;
       border: 2px solid transparent !important;
       cursor: pointer !important;
-      transition: transform 0.15s, border-color 0.15s !important;
-      outline: none !important;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
-    .color-btn:hover { transform: scale(1.1); }
     .color-btn.selected {
       border-color: #ffffff !important;
       box-shadow: 0 0 0 3px var(--text-main) !important;
     }
-
     .settings-row {
       display: flex;
       flex-wrap: wrap;
@@ -661,32 +557,6 @@
       padding-bottom: 0.75rem;
       border-bottom: 1px solid var(--border-color);
     }
-    .settings-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-
-    .image-export-options-box {
-      background: var(--panel-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 0.85rem;
-      margin-top: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .image-export-options-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .image-export-options-grid label {
-      font-size: 0.82rem;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      cursor: pointer;
-    }
-
     .themed-text { color: var(--active-text) !important; }
     .btn-action { background-color: var(--active-accent) !important; color: #ffffff; border: none; padding: 0.65rem 1.4rem; border-radius: 8px; cursor: pointer; font-weight: 600; }
   </style>
@@ -707,10 +577,8 @@
   </div>
 </div>
 
-<!-- Çekmece Menü Karartması -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 
-<!-- Sol Çekmece Menü -->
 <div class="side-drawer" id="side-drawer">
   <div class="drawer-header">
     <span class="themed-text" id="lbl-menu-header" style="font-weight: 800; font-size: 1.15rem;">Menü</span>
@@ -727,8 +595,6 @@
     <button class="lang-flag-btn" id="flag-es" onclick="setAppLanguage('es')" title="Español">🇪🇸</button>
   </div>
 </div>
-
-<!-- ================= TAM EKRAN MODALLAR ================= -->
 
 <!-- 1. YENİ METİN EKLE MODALI -->
 <div class="full-page-view" id="modal-form">
@@ -871,40 +737,31 @@
       </div>
       <div class="form-group">
         <label id="lbl-filter-status">Okuma Durumu:</label>
-        <select id="filter-status" onchange="renderItems()">
-          <option value="all">Tüm Durumlar</option>
-          <option value="Okunuyor">Okunuyor</option>
-          <option value="Bitti">Bitti</option>
-          <option value="Yarım Kaldı">Yarım Kaldı</option>
-          <option value="Yarıda Bırakıldı">Yarıda Bırakıldı</option>
-          <option value="Okumak İstenilenlerde">Okumak İstenilenlerde</option>
-        </select>
+        <select id="filter-status" onchange="renderItems()"></select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-author">Yazar:</label>
-        <select id="filter-author" onchange="renderItems()"><option value="all">Tüm Yazarlar</option></select>
+        <select id="filter-author" onchange="renderItems()"></select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-type">Metin Türü:</label>
-        <select id="filter-type" onchange="renderItems()"><option value="all">Tüm Türler</option></select>
+        <select id="filter-type" onchange="renderItems()"></select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-shelf">Seri / Raf:</label>
-        <select id="filter-shelf" onchange="renderItems()"><option value="all">Tüm Seri ve Raflar</option></select>
+        <select id="filter-shelf" onchange="renderItems()"></select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-tag">Etiket:</label>
-        <select id="filter-tag" onchange="renderItems()"><option value="all">Tüm Etiketler</option></select>
+        <select id="filter-tag" onchange="renderItems()"></select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-year">Yıla Göre:</label>
-        <select id="filter-year" onchange="renderItems()"><option value="all">Tüm Yıllar</option></select>
+        <select id="filter-year" onchange="renderItems()"></select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-month">Aya Göre:</label>
-        <select id="filter-month" onchange="renderItems()">
-          <option value="all">Tüm Aylar</option>
-        </select>
+        <select id="filter-month" onchange="renderItems()"></select>
       </div>
     </div>
     <div style="margin-top: 1.25rem;">
@@ -922,8 +779,7 @@
     </div>
     <div class="form-group">
       <label id="lbl-sort-select">Sıralama Seçeneği:</label>
-      <select id="sort-order" onchange="renderItems()">
-      </select>
+      <select id="sort-order" onchange="renderItems()"></select>
     </div>
     <div style="margin-top: 1.5rem;">
       <button class="btn-action" id="btn-confirm-sort" style="width: 100%;" onclick="closeFullScreenModal('modal-sort')">Sıralamayı Onayla ve Dön</button>
@@ -990,13 +846,11 @@
       <div class="form-grid" style="margin-bottom: 0;">
         <div class="form-group">
           <label id="lbl-exp-status">Duruma Göre:</label>
-          <select id="export-filter-status" onchange="updateExportPreviewCount()">
-          </select>
+          <select id="export-filter-status" onchange="updateExportPreviewCount()"></select>
         </div>
         <div class="form-group">
           <label id="lbl-exp-shelf">Rafa Göre:</label>
-          <select id="export-filter-shelf" onchange="updateExportPreviewCount()">
-          </select>
+          <select id="export-filter-shelf" onchange="updateExportPreviewCount()"></select>
         </div>
       </div>
       <div style="margin-top: 0.6rem; font-size: 0.85rem; color: var(--active-accent); font-weight: 600;" id="export-preview-text">
@@ -1117,7 +971,6 @@
     <button class="view-toggle-btn" id="item-view-toggle-btn" onclick="toggleItemViewMode()">⊞ Izgara Görünümü</button>
   </div>
 
-  <!-- Sıralı Görünümün Altındaki Hızlı Emoji Butonları -->
   <div class="quick-actions-row">
     <button class="quick-icon-btn" onclick="openNewRecordModal()" title="Yeni Metin Ekle">➕</button>
     <button class="quick-icon-btn" onclick="openFullScreenModal('modal-filter')" title="Filtrele & Ara">🔍</button>
@@ -1128,7 +981,6 @@
 </div>
 
 <script>
-  // ================= ÇOK DİLLİ SÖZLÜK VE SABİTLER =================
   const canonicalStatuses = ["Okunuyor", "Bitti", "Yarım Kaldı", "Yarıda Bırakıldı", "Okumak İstenilenlerde"];
   const canonicalTypes = ["Kitap", "Makale", "Rapor", "Karar", "Tez"];
   const canonicalShelves = ["Macera", "Aşk", "Bilim Kurgu", "Klasikler", "Felsefe"];
@@ -1520,29 +1372,10 @@
   let activeClickFilters = { author: null, type: null, shelf: null, tag: null };
 
   let imageExportPrefs = JSON.parse(localStorage.getItem("reader_image_export_prefs")) || {
-    shelf: false,
-    status: false,
-    progress: false,
-    pages: false,
-    tags: false,
-    dates: false,
-    notes: false
+    shelf: false, status: false, progress: false, pages: false, tags: false, dates: false, notes: false
   };
 
-  let currentLang = localStorage.getItem("reader_app_lang");
-  let needsInitialLangPrompt = false;
-
-  if (!currentLang) {
-    const navLang = (navigator.language || navigator.userLanguage || "tr").toLowerCase();
-    if (navLang.startsWith("tr")) currentLang = "tr";
-    else if (navLang.startsWith("en")) currentLang = "en";
-    else if (navLang.startsWith("es")) currentLang = "es";
-    else {
-      currentLang = "tr";
-      needsInitialLangPrompt = true;
-    }
-    localStorage.setItem("reader_app_lang", currentLang);
-  }
+  let currentLang = localStorage.getItem("reader_app_lang") || "tr";
 
   function setAppLanguage(lang) {
     currentLang = lang;
@@ -1552,172 +1385,165 @@
 
   function selectLanguageInitial(lang) {
     setAppLanguage(lang);
-    document.getElementById("splash-lang-box").style.display = "none";
-    proceedSplashExit();
+    const box = document.getElementById("splash-lang-box");
+    if (box) box.style.display = "none";
+    forceDismissSplash();
   }
 
   function applyTranslations() {
-    const t = translations[currentLang] || translations.tr;
-    document.querySelectorAll(".lang-flag-btn").forEach(b => b.classList.remove("active"));
-    const activeFlag = document.getElementById(`flag-${currentLang}`);
-    if (activeFlag) activeFlag.classList.add("active");
+    try {
+      const t = translations[currentLang] || translations.tr;
+      document.querySelectorAll(".lang-flag-btn").forEach(b => b.classList.remove("active"));
+      const activeFlag = document.getElementById(`flag-${currentLang}`);
+      if (activeFlag) activeFlag.classList.add("active");
 
-    const splashTitle = document.getElementById("splash-title");
-    if (splashTitle) splashTitle.textContent = currentUsername ? `${t.welcome.replace('!', '')} ${currentUsername}!` : t.welcome;
-    const splashSubtitle = document.getElementById("splash-subtitle");
-    if (splashSubtitle) splashSubtitle.textContent = t.welcomeSub;
+      const setText = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
 
-    const setText = (id, text) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = text;
-    };
+      setText("lbl-menu-header", t.menuHeader);
+      setText("btn-menu-shelves", t.menuShelves);
+      setText("btn-menu-goals", t.menuGoals);
+      setText("btn-menu-export", t.menuExport);
+      setText("btn-menu-settings", t.menuSettings);
 
-    setText("lbl-menu-header", t.menuHeader);
-    setText("btn-menu-shelves", t.menuShelves);
-    setText("btn-menu-goals", t.menuGoals);
-    setText("btn-menu-export", t.menuExport);
-    setText("btn-menu-settings", t.menuSettings);
+      const editIdEl = document.getElementById("edit-id");
+      if (editIdEl && !editIdEl.value) setText("form-heading", t.newText);
 
-    const editIdEl = document.getElementById("edit-id");
-    if (editIdEl && !editIdEl.value) {
-      setText("form-heading", t.newText);
+      setText("lbl-text-title", t.textTitle);
+      setText("lbl-cover-img", t.coverImg);
+      setText("btn-from-device", t.fromDevice);
+      setText("lbl-authors", t.authors);
+      setText("btn-add-author", t.addAuthor);
+      setText("lbl-type", t.type);
+      setText("btn-add-type", t.addType);
+      setText("lbl-shelf", t.shelf);
+      setText("btn-add-shelf", t.addShelf);
+      setText("lbl-status", t.status);
+      setText("lbl-total-pages", t.totalPages);
+      setText("lbl-read-pages", t.readPages);
+      setText("lbl-progress-pct", t.progressPct);
+      setText("lbl-tags", t.tags);
+      setText("btn-add-tag", t.addTag);
+      setText("lbl-start-date", t.startDate);
+      setText("lbl-end-date", t.endDate);
+      setText("lbl-notes", t.notes);
+      setText("save-button", t.save);
+      setText("cancel-edit-btn", t.cancel);
+
+      setText("lbl-filter-modal-title", t.filterModalTitle);
+      setText("lbl-search-term", t.searchTerm);
+      const searchInput = document.getElementById("search-input");
+      if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+      setText("lbl-filter-status", t.status);
+      setText("lbl-filter-author", t.authors);
+      setText("lbl-filter-type", t.type);
+      setText("lbl-filter-shelf", t.shelf);
+      setText("lbl-filter-tag", t.tags);
+      setText("btn-apply-filters", t.applyFilters);
+
+      setText("lbl-sort-modal-title", t.sortModalTitle);
+      setText("lbl-sort-select", t.sortSelect);
+      setText("btn-confirm-sort", t.confirmSort);
+
+      setText("lbl-shelves-modal-title", t.shelvesModalTitle);
+      setText("btn-new-shelf", t.newShelf);
+
+      setText("lbl-goals-modal-title", t.goalsModalTitle);
+      setText("lbl-m-count", t.mCount);
+      setText("lbl-y-count", t.yCount);
+      setText("lbl-m-pages", t.mPages);
+      setText("lbl-y-pages", t.yPages);
+      setText("btn-save-goals", t.saveGoals);
+
+      setText("lbl-export-modal-title", t.exportModalTitle);
+      setText("lbl-export-filter-heading", t.exportFilterHeading);
+      setText("lbl-exp-status", t.byStatus);
+      setText("lbl-exp-shelf", t.byShelf);
+      setText("lbl-export-format-choice", t.exportFormatChoice);
+      setText("lbl-image-export-details", t.imgDetailsHeading);
+      setText("lbl-opt-shelf", t.optShelf);
+      setText("lbl-opt-status", t.optStatus);
+      setText("lbl-opt-progress", t.optProgress);
+      setText("lbl-opt-pages", t.optPages);
+      setText("lbl-opt-tags", t.optTags);
+      setText("lbl-opt-dates", t.optDates);
+      setText("lbl-opt-notes", t.optNotes);
+
+      setText("lbl-settings-modal-title", t.settingsModalTitle);
+      setText("lbl-theme-mode", t.themeMode);
+      setText("lbl-theme-desc", t.themeDesc);
+      setText("lbl-streak-goals-toggle", t.streakGoalsToggle);
+      setText("lbl-streak-goals-desc", t.streakGoalsDesc);
+      setText("lbl-username", t.username);
+      setText("lbl-splash-setting", t.splashSetting);
+      setText("lbl-wallpaper", t.wallpaper);
+      setText("btn-select-bg", t.selectImg);
+      setText("btn-clear-bg", t.clearImg);
+      setText("lbl-palette-title", t.paletteTitle);
+
+      const toggleBtn = document.getElementById("item-view-toggle-btn");
+      if (toggleBtn) toggleBtn.textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
+
+      const statusSelect = document.getElementById("status");
+      if (statusSelect) {
+        const curVal = statusSelect.value;
+        statusSelect.innerHTML = `<option value="">${t.notSpecified}</option>` +
+          canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("");
+        statusSelect.value = curVal;
+      }
+
+      const filterStatusSelect = document.getElementById("filter-status");
+      if (filterStatusSelect) {
+        const curVal = filterStatusSelect.value;
+        filterStatusSelect.innerHTML = `<option value="all">${t.allStatuses}</option>` +
+          canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("");
+        filterStatusSelect.value = curVal;
+      }
+
+      const expStatusSelect = document.getElementById("export-filter-status");
+      if (expStatusSelect) {
+        const curVal = expStatusSelect.value;
+        expStatusSelect.innerHTML = `<option value="all">${t.allStatuses}</option>` +
+          canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("");
+        expStatusSelect.value = curVal;
+      }
+
+      const sortSelect = document.getElementById("sort-order");
+      if (sortSelect) {
+        const curVal = sortSelect.value || "newest";
+        sortSelect.innerHTML = `
+          <option value="newest">${t.sortNewest}</option>
+          <option value="oldest">${t.sortOldest}</option>
+          <option value="title-asc">${t.sortTitleAsc}</option>
+          <option value="author-asc">${t.sortAuthorAsc}</option>
+          <option value="prog-desc">${t.sortProgDesc}</option>
+          <option value="prog-asc">${t.sortProgAsc}</option>
+          <option value="pages-desc">${t.sortPagesDesc}</option>
+          <option value="pages-asc">${t.sortPagesAsc}</option>
+          <option value="end-desc">${t.sortEndDesc}</option>
+          <option value="end-asc">${t.sortEndAsc}</option>
+        `;
+        sortSelect.value = curVal;
+      }
+
+      const filterMonthSelect = document.getElementById("filter-month");
+      if (filterMonthSelect) {
+        const curVal = filterMonthSelect.value || "all";
+        filterMonthSelect.innerHTML = `<option value="all">${t.allMonths}</option>` +
+          t.months.map((mName, i) => `<option value="${String(i + 1).padStart(2, '0')}">${mName}</option>`).join("");
+        filterMonthSelect.value = curVal;
+      }
+
+      updateCustomDropdowns();
+      populateFilterDropdowns();
+      renderShelvesContainer();
+      renderItems();
+      updateGoalsDisplay();
+    } catch (e) {
+      console.error(e);
     }
-    setText("lbl-text-title", t.textTitle);
-    setText("lbl-cover-img", t.coverImg);
-    setText("btn-from-device", t.fromDevice);
-    setText("lbl-authors", t.authors);
-    setText("btn-add-author", t.addAuthor);
-    setText("lbl-type", t.type);
-    setText("btn-add-type", t.addType);
-    setText("lbl-shelf", t.shelf);
-    setText("btn-add-shelf", t.addShelf);
-    setText("lbl-status", t.status);
-    setText("lbl-total-pages", t.totalPages);
-    setText("lbl-read-pages", t.readPages);
-    setText("lbl-progress-pct", t.progressPct);
-    setText("lbl-tags", t.tags);
-    setText("btn-add-tag", t.addTag);
-    setText("lbl-start-date", t.startDate);
-    setText("lbl-end-date", t.endDate);
-    setText("lbl-notes", t.notes);
-    setText("save-button", t.save);
-    setText("cancel-edit-btn", t.cancel);
-
-    setText("lbl-filter-modal-title", t.filterModalTitle);
-    setText("lbl-search-term", t.searchTerm);
-    const searchInput = document.getElementById("search-input");
-    if (searchInput) searchInput.placeholder = t.searchPlaceholder;
-    setText("lbl-filter-status", t.status);
-    setText("lbl-filter-author", t.authors);
-    setText("lbl-filter-type", t.type);
-    setText("lbl-filter-shelf", t.shelf);
-    setText("lbl-filter-tag", t.tags);
-    setText("btn-apply-filters", t.applyFilters);
-
-    setText("lbl-sort-modal-title", t.sortModalTitle);
-    setText("lbl-sort-select", t.sortSelect);
-    setText("btn-confirm-sort", t.confirmSort);
-
-    setText("lbl-shelves-modal-title", t.shelvesModalTitle);
-    setText("btn-new-shelf", t.newShelf);
-
-    setText("lbl-goals-modal-title", t.goalsModalTitle);
-    setText("lbl-m-count", t.mCount);
-    setText("lbl-y-count", t.yCount);
-    setText("lbl-m-pages", t.mPages);
-    setText("lbl-y-pages", t.yPages);
-    setText("btn-save-goals", t.saveGoals);
-
-    setText("lbl-export-modal-title", t.exportModalTitle);
-    setText("lbl-export-filter-heading", t.exportFilterHeading);
-    setText("lbl-exp-status", t.byStatus);
-    setText("lbl-exp-shelf", t.byShelf);
-    setText("lbl-export-format-choice", t.exportFormatChoice);
-    setText("lbl-image-export-details", t.imgDetailsHeading);
-    setText("lbl-opt-shelf", t.optShelf);
-    setText("lbl-opt-status", t.optStatus);
-    setText("lbl-opt-progress", t.optProgress);
-    setText("lbl-opt-pages", t.optPages);
-    setText("lbl-opt-tags", t.optTags);
-    setText("lbl-opt-dates", t.optDates);
-    setText("lbl-opt-notes", t.optNotes);
-
-    setText("lbl-settings-modal-title", t.settingsModalTitle);
-    setText("lbl-theme-mode", t.themeMode);
-    setText("lbl-theme-desc", t.themeDesc);
-    setText("lbl-streak-goals-toggle", t.streakGoalsToggle);
-    setText("lbl-streak-goals-desc", t.streakGoalsDesc);
-    setText("lbl-username", t.username);
-    setText("lbl-splash-setting", t.splashSetting);
-    setText("lbl-wallpaper", t.wallpaper);
-    setText("btn-select-bg", t.selectImg);
-    setText("btn-clear-bg", t.clearImg);
-    setText("lbl-palette-title", t.paletteTitle);
-
-    const toggleBtn = document.getElementById("item-view-toggle-btn");
-    if (toggleBtn) toggleBtn.textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
-
-    const statusSelect = document.getElementById("status");
-    if (statusSelect) {
-      const currentStatusVal = statusSelect.value;
-      statusSelect.innerHTML = `
-        <option value="">${t.notSpecified}</option>
-        ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
-      `;
-      statusSelect.value = currentStatusVal;
-    }
-
-    const filterStatusSelect = document.getElementById("filter-status");
-    if (filterStatusSelect) {
-      const curFilterStatusVal = filterStatusSelect.value;
-      filterStatusSelect.innerHTML = `
-        <option value="all">${t.allStatuses}</option>
-        ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
-      `;
-      filterStatusSelect.value = curFilterStatusVal;
-    }
-
-    const expStatusSelect = document.getElementById("export-filter-status");
-    if (expStatusSelect) {
-      const curExpStatusVal = expStatusSelect.value;
-      expStatusSelect.innerHTML = `
-        <option value="all">${t.allStatuses}</option>
-        ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
-      `;
-      expStatusSelect.value = curExpStatusVal;
-    }
-
-    const sortSelect = document.getElementById("sort-order");
-    if (sortSelect) {
-      const curSortVal = sortSelect.value || "newest";
-      sortSelect.innerHTML = `
-        <option value="newest">${t.sortNewest}</option>
-        <option value="oldest">${t.sortOldest}</option>
-        <option value="title-asc">${t.sortTitleAsc}</option>
-        <option value="author-asc">${t.sortAuthorAsc}</option>
-        <option value="prog-desc">${t.sortProgDesc}</option>
-        <option value="prog-asc">${t.sortProgAsc}</option>
-        <option value="pages-desc">${t.sortPagesDesc}</option>
-        <option value="pages-asc">${t.sortPagesAsc}</option>
-        <option value="end-desc">${t.sortEndDesc}</option>
-        <option value="end-asc">${t.sortEndAsc}</option>
-      `;
-      sortSelect.value = curSortVal;
-    }
-
-    const filterMonthSelect = document.getElementById("filter-month");
-    if (filterMonthSelect) {
-      const curMonthVal = filterMonthSelect.value || "all";
-      filterMonthSelect.innerHTML = `<option value="all">${t.allMonths}</option>` +
-        t.months.map((mName, i) => `<option value="${String(i + 1).padStart(2, '0')}">${mName}</option>`).join("");
-      filterMonthSelect.value = curMonthVal;
-    }
-
-    updateCustomDropdowns();
-    populateFilterDropdowns();
-    renderShelvesContainer();
-    renderItems();
-    updateGoalsDisplay();
   }
 
   // ================= MODALLAR =================
@@ -1740,27 +1566,29 @@
   function closeFullScreenModal(modalId) {
     const m = document.getElementById(modalId);
     if (m) m.style.display = "none";
-    if (modalId === 'modal-form') {
-      resetForm();
-    }
+    if (modalId === 'modal-form') resetForm();
   }
 
   function openDrawer() {
-    document.getElementById("side-drawer").classList.add("open");
-    document.getElementById("drawer-overlay").classList.add("open");
+    const d = document.getElementById("side-drawer");
+    const o = document.getElementById("drawer-overlay");
+    if (d) d.classList.add("open");
+    if (o) o.classList.add("open");
   }
   function closeDrawer() {
-    document.getElementById("side-drawer").classList.remove("open");
-    document.getElementById("drawer-overlay").classList.remove("open");
+    const d = document.getElementById("side-drawer");
+    const o = document.getElementById("drawer-overlay");
+    if (d) d.classList.remove("open");
+    if (o) o.classList.remove("open");
   }
 
-  // ================= GÖRSEL DOSYASI YÜKLEME =================
   function handleCoverFileUpload(e, targetInputId) {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = function(evt) {
-      document.getElementById(targetInputId).value = evt.target.result;
+      const el = document.getElementById(targetInputId);
+      if (el) el.value = evt.target.result;
     };
     reader.readAsDataURL(file);
   }
@@ -1769,7 +1597,8 @@
     const t = translations[currentLang] || translations.tr;
     itemViewMode = itemViewMode === "list" ? "grid" : "list";
     localStorage.setItem("reader_item_view_mode", itemViewMode);
-    document.getElementById("item-view-toggle-btn").textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
+    const btn = document.getElementById("item-view-toggle-btn");
+    if (btn) btn.textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
     renderItems();
   }
 
@@ -1779,7 +1608,6 @@
     renderShelvesContainer();
   }
 
-  // ================= RAFLAR YÖNETİMİ =================
   function renderShelvesContainer() {
     const container = document.getElementById("shelves-container");
     if (!container) return;
@@ -1850,7 +1678,7 @@
   });
 
   function promptCreateNewShelf() {
-    const name = prompt("Yeni raf adını yazın / New shelf name:");
+    const name = prompt("Yeni raf adını yazın:");
     if (!name || !name.trim()) return;
     const cover = prompt("Raf kapak görseli bağlantısı (URL) - İsteğe bağlı:");
     shelvesList.push({ name: name.trim(), cover: cover ? cover.trim() : "" });
@@ -1895,7 +1723,6 @@
     btn.classList.toggle("expanded", !isShowing);
   }
 
-  // ================= GÖRSEL PAYLAŞIM AYARLARI =================
   function loadImageExportPrefs() {
     const setChk = (id, val) => {
       const el = document.getElementById(id);
@@ -1927,7 +1754,6 @@
     localStorage.setItem("reader_image_export_prefs", JSON.stringify(imageExportPrefs));
   }
 
-  // ================= DIŞA AKTARMA VE PAYLAŞIM =================
   function populateExportFilterOptions() {
     const t = translations[currentLang] || translations.tr;
     const shelfSel = document.getElementById("export-filter-shelf");
@@ -2007,7 +1833,6 @@
         const datesText = imageExportPrefs.dates && (r.startDate || r.endDate) ? ` • <span>🗓️ ${[r.startDate, r.endDate].filter(Boolean).join(' - ')}</span>` : '';
         const tagsText = imageExportPrefs.tags && r.tags && r.tags.length ? `<div style="margin-top:0.3rem; font-size:0.75rem; opacity:0.8;">#${escapeHtml(r.tags.join(' #'))}</div>` : '';
         const notesText = imageExportPrefs.notes && r.notes ? `<div style="margin-top:0.35rem; font-size:0.8rem; background:rgba(0,0,0,0.04); padding:0.4rem; border-radius:4px;">${escapeHtml(r.notes)}</div>` : '';
-
         const coverHtml = r.cover ? `<div style="width: 50px; height: 50px; border-radius: 6px; background-image: url('${r.cover}'); background-size: cover; background-position: center; flex-shrink: 0;"></div>` : '';
 
         return `
@@ -2015,14 +1840,7 @@
             ${coverHtml}
             <div style="flex: 1;">
               <strong style="color: var(--active-text);">#${i + 1} ${escapeHtml(r.title)}</strong>
-              ${authorText}
-              ${shelfText}
-              ${statusText}
-              ${progressText}
-              ${pagesText}
-              ${datesText}
-              ${tagsText}
-              ${notesText}
+              ${authorText}${shelfText}${statusText}${progressText}${pagesText}${datesText}${tagsText}${notesText}
             </div>
           </div>
         `;
@@ -2106,7 +1924,6 @@
     document.body.removeChild(link);
   }
 
-  // ================= STREAK & HEDEFLER =================
   function calculateStreak() {
     const todayStr = new Date().toISOString().slice(0, 10);
     let streakCount = parseInt(localStorage.getItem("reader_streak_count") || "1", 10);
@@ -2243,7 +2060,6 @@
     return null;
   }
 
-  // ================= FORM & VERİ KAYIT =================
   function toggleCustomDropdown(dropdownId) {
     const dp = document.getElementById(dropdownId);
     if (!dp) return;
@@ -2446,7 +2262,6 @@
     renderItems();
   }
 
-  // ================= FİLTRELEME & LİSTELEME =================
   function toggleClickFilter(type, value) {
     if (activeClickFilters[type] === value) activeClickFilters[type] = null;
     else activeClickFilters[type] = value;
@@ -2749,47 +2564,61 @@
     return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
   }
 
-  function proceedSplashExit() {
+  // Zorunlu ve Güvenli Açılış Çıkışı (Donmayı tamamen engeller)
+  function forceDismissSplash() {
     const splash = document.getElementById("splash-screen");
     if (!splash) return;
     if (!splashEnabled) {
       splash.style.display = "none";
-    } else {
-      setTimeout(() => {
-        splash.classList.add(splashAnim === "water" ? "anim-water-out" : "anim-circle-out");
-        setTimeout(() => { 
-          splash.style.display = "none"; 
-        }, splashAnim === "water" ? 4000 : 2000);
-      }, 1000);
+      return;
     }
+    splash.classList.add(splashAnim === "water" ? "anim-water-out" : "anim-circle-out");
+    setTimeout(() => {
+      splash.classList.add("hidden");
+      splash.style.display = "none";
+    }, splashAnim === "water" ? 2500 : 1800);
   }
 
   // ================= BAŞLANGIÇ =================
   window.addEventListener("DOMContentLoaded", () => {
-    calculateStreak();
-    loadBg(localStorage.getItem("reader_custom_bg"));
-    applyThemeMode();
+    try {
+      calculateStreak();
+      loadBg(localStorage.getItem("reader_custom_bg"));
+      applyThemeMode();
 
-    const usernameInp = document.getElementById("setting-username");
-    if (usernameInp) usernameInp.value = currentUsername;
-    const mCountInp = document.getElementById("goal-monthly-count");
-    if (mCountInp) mCountInp.value = userGoals.mCount || "";
-    const yCountInp = document.getElementById("goal-yearly-count");
-    if (yCountInp) yCountInp.value = userGoals.yCount || "";
-    const mPagesInp = document.getElementById("goal-monthly-pages");
-    if (mPagesInp) mPagesInp.value = userGoals.mPages || "";
-    const yPagesInp = document.getElementById("goal-yearly-pages");
-    if (yPagesInp) yPagesInp.value = userGoals.yPages || "";
+      const usernameInp = document.getElementById("setting-username");
+      if (usernameInp) usernameInp.value = currentUsername;
+      const mCountInp = document.getElementById("goal-monthly-count");
+      if (mCountInp) mCountInp.value = userGoals.mCount || "";
+      const yCountInp = document.getElementById("goal-yearly-count");
+      if (yCountInp) yCountInp.value = userGoals.yCount || "";
+      const mPagesInp = document.getElementById("goal-monthly-pages");
+      if (mPagesInp) mPagesInp.value = userGoals.mPages || "";
+      const yPagesInp = document.getElementById("goal-yearly-pages");
+      if (yPagesInp) yPagesInp.value = userGoals.yPages || "";
 
-    applyTranslations();
+      applyTranslations();
 
-    if (needsInitialLangPrompt) {
-      const langBox = document.getElementById("splash-lang-box");
-      if (langBox) langBox.style.display = "block";
-    } else {
-      proceedSplashExit();
+      if (localStorage.getItem("reader_app_lang")) {
+        forceDismissSplash();
+      } else {
+        const langBox = document.getElementById("splash-lang-box");
+        if (langBox) langBox.style.display = "block";
+        setTimeout(forceDismissSplash, 4000);
+      }
+    } catch (err) {
+      console.error("Başlangıç hatası:", err);
+      forceDismissSplash();
     }
   });
+
+  // Kesin Kurtarıcı Güvenlik Zamanlayıcısı (Her koşulda açılışı zorlar)
+  setTimeout(() => {
+    const splash = document.getElementById("splash-screen");
+    if (splash && splash.style.display !== "none" && !document.getElementById("splash-lang-box")?.style.display.includes("block")) {
+      splash.style.display = "none";
+    }
+  }, 3500);
 </script>
 
 </body>
