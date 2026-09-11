@@ -721,7 +721,6 @@
   <button class="drawer-item-btn" id="btn-menu-export" onclick="openFullScreenModal('modal-export')">📤 Dışa Aktar & Paylaş</button>
   <button class="drawer-item-btn" id="btn-menu-settings" onclick="openFullScreenModal('modal-settings')">⚙️ Ayarlar & Görünüm</button>
 
-  <!-- En Alttaki Metinsiz Bayrak Butonları -->
   <div class="drawer-lang-row">
     <button class="lang-flag-btn" id="flag-tr" onclick="setAppLanguage('tr')" title="Türkçe">🇹🇷</button>
     <button class="lang-flag-btn" id="flag-en" onclick="setAppLanguage('en')" title="English">🇬🇧</button>
@@ -852,7 +851,7 @@
 
       <div style="display: flex; gap: 0.5rem;">
         <button type="submit" class="btn-action" id="save-button">Kaydet</button>
-        <button type="button" class="icon-btn" id="cancel-edit-btn" style="display: none; padding: 0.65rem 1rem;" onclick="resetForm()">Vazgeç</button>
+        <button type="button" class="icon-btn" id="cancel-edit-btn" style="display: none; padding: 0.65rem 1rem;" onclick="resetForm(); closeFullScreenModal('modal-form');">Vazgeç</button>
       </div>
     </form>
   </div>
@@ -905,10 +904,6 @@
         <label id="lbl-filter-month">Aya Göre:</label>
         <select id="filter-month" onchange="renderItems()">
           <option value="all">Tüm Aylar</option>
-          <option value="01">Ocak</option><option value="02">Şubat</option><option value="03">Mart</option>
-          <option value="04">Nisan</option><option value="05">Mayıs</option><option value="06">Haziran</option>
-          <option value="07">Temmuz</option><option value="08">Ağustos</option><option value="09">Eylül</option>
-          <option value="10">Ekim</option><option value="11">Kasım</option><option value="12">Aralık</option>
         </select>
       </div>
     </div>
@@ -928,16 +923,6 @@
     <div class="form-group">
       <label id="lbl-sort-select">Sıralama Seçeneği:</label>
       <select id="sort-order" onchange="renderItems()">
-        <option value="newest">Son Eklenenler (Varsayılan)</option>
-        <option value="oldest">İlk Eklenenler</option>
-        <option value="title-asc">Başlık (A → Z)</option>
-        <option value="author-asc">Yazar (A → Z)</option>
-        <option value="prog-desc">İlerleme: En Yüksek → En Düşük</option>
-        <option value="prog-asc">İlerleme: En Düşük → En Yüksek</option>
-        <option value="pages-desc">Sayfa Sayısı: En Çok → En Az</option>
-        <option value="pages-asc">Sayfa Sayısı: En Az → En Çok</option>
-        <option value="end-desc">Bitiş Tarihi: En Yeni → En Eski</option>
-        <option value="end-asc">Bitiş Tarihi: En Eski → En Yeni</option>
       </select>
     </div>
     <div style="margin-top: 1.5rem;">
@@ -1006,18 +991,11 @@
         <div class="form-group">
           <label id="lbl-exp-status">Duruma Göre:</label>
           <select id="export-filter-status" onchange="updateExportPreviewCount()">
-            <option value="all">Tüm Durumlar</option>
-            <option value="Okunuyor">Okunuyor</option>
-            <option value="Bitti">Bitti</option>
-            <option value="Yarım Kaldı">Yarım Kaldı</option>
-            <option value="Yarıda Bırakıldı">Yarıda Bırakıldı</option>
-            <option value="Okumak İstenilenlerde">Okumak İstenilenlerde</option>
           </select>
         </div>
         <div class="form-group">
           <label id="lbl-exp-shelf">Rafa Göre:</label>
           <select id="export-filter-shelf" onchange="updateExportPreviewCount()">
-            <option value="all">Tüm Raflar</option>
           </select>
         </div>
       </div>
@@ -1139,8 +1117,9 @@
     <button class="view-toggle-btn" id="item-view-toggle-btn" onclick="toggleItemViewMode()">⊞ Izgara Görünümü</button>
   </div>
 
+  <!-- Sıralı Görünümün Altındaki Hızlı Emoji Butonları -->
   <div class="quick-actions-row">
-    <button class="quick-icon-btn" onclick="openFullScreenModal('modal-form')" title="Yeni Metin Ekle">➕</button>
+    <button class="quick-icon-btn" onclick="openNewRecordModal()" title="Yeni Metin Ekle">➕</button>
     <button class="quick-icon-btn" onclick="openFullScreenModal('modal-filter')" title="Filtrele & Ara">🔍</button>
     <button class="quick-icon-btn" onclick="openFullScreenModal('modal-sort')" title="Sıralama Ölçütü">🔃</button>
   </div>
@@ -1622,7 +1601,9 @@
     document.getElementById("btn-menu-export").textContent = t.menuExport;
     document.getElementById("btn-menu-settings").textContent = t.menuSettings;
 
-    document.getElementById("form-heading").textContent = t.newText;
+    if (!document.getElementById("edit-id").value) {
+      document.getElementById("form-heading").textContent = t.newText;
+    }
     document.getElementById("lbl-text-title").textContent = t.textTitle;
     document.getElementById("lbl-cover-img").textContent = t.coverImg;
     document.getElementById("btn-from-device").textContent = t.fromDevice;
@@ -1696,7 +1677,6 @@
 
     document.getElementById("item-view-toggle-btn").textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
 
-    // Durum Seçim Kutusu (Form İçi) Çevirisi
     const statusSelect = document.getElementById("status");
     const currentStatusVal = statusSelect.value;
     statusSelect.innerHTML = `
@@ -1705,7 +1685,6 @@
     `;
     statusSelect.value = currentStatusVal;
 
-    // Filtreleme Durum Kutusu Çevirisi
     const filterStatusSelect = document.getElementById("filter-status");
     const curFilterStatusVal = filterStatusSelect.value;
     filterStatusSelect.innerHTML = `
@@ -1714,7 +1693,6 @@
     `;
     filterStatusSelect.value = curFilterStatusVal;
 
-    // Dışa Aktar Durum Kutusu Çevirisi
     const expStatusSelect = document.getElementById("export-filter-status");
     const curExpStatusVal = expStatusSelect.value;
     expStatusSelect.innerHTML = `
@@ -1723,7 +1701,6 @@
     `;
     expStatusSelect.value = curExpStatusVal;
 
-    // Sıralama Seçenekleri Çevirisi
     const sortSelect = document.getElementById("sort-order");
     const curSortVal = sortSelect.value;
     sortSelect.innerHTML = `
@@ -1740,14 +1717,12 @@
     `;
     sortSelect.value = curSortVal;
 
-    // Filtreleme Ay Seçenekleri
     const filterMonthSelect = document.getElementById("filter-month");
     const curMonthVal = filterMonthSelect.value;
     filterMonthSelect.innerHTML = `<option value="all">${t.allMonths}</option>` +
       t.months.map((mName, i) => `<option value="${String(i + 1).padStart(2, '0')}">${mName}</option>`).join("");
     filterMonthSelect.value = curMonthVal;
 
-    // Seçim kutularını ve listeleri güncelle
     updateCustomDropdowns();
     populateFilterDropdowns();
     renderShelvesContainer();
@@ -1767,9 +1742,18 @@
     }
   }
 
+  // YENİ METİN EKLEME EKRANINI SIFIRLAYARAK AÇMA (Düzenleme çakışmasını çözer)
+  function openNewRecordModal() {
+    resetForm();
+    openFullScreenModal('modal-form');
+  }
+
   function closeFullScreenModal(modalId) {
     const m = document.getElementById(modalId);
     if (m) m.style.display = "none";
+    if (modalId === 'modal-form') {
+      resetForm();
+    }
   }
 
   function openDrawer() {
@@ -2117,7 +2101,7 @@
     document.body.removeChild(link);
   }
 
-  // ================= STREAK & HEDEFLER =================
+  // ================= STREAK, HEDEFLER & HESAPLAMALAR =================
   function calculateStreak() {
     const todayStr = new Date().toISOString().slice(0, 10);
     let streakCount = parseInt(localStorage.getItem("reader_streak_count") || "1", 10);
