@@ -1201,8 +1201,6 @@
       viewGrid: "⊞ Izgara Görünümü",
       countTexts: "kadar başlık sıralanıyor",
       noRecords: "Kayıt bulunamadı.",
-      edit: "Düzenle",
-      delete: "Sil",
       clearFilter: "Filtreyi Temizle",
       notSpecified: "(Belirtilmedi)",
       allStatuses: "Tüm Durumlar",
@@ -1320,8 +1318,6 @@
       viewGrid: "⊞ Grid View",
       countTexts: "items listed",
       noRecords: "No records found.",
-      edit: "Edit",
-      delete: "Delete",
       clearFilter: "Clear Filter",
       notSpecified: "(Not Specified)",
       allStatuses: "All Statuses",
@@ -1439,8 +1435,6 @@
       viewGrid: "⊞ Vista de Cuadrícula",
       countTexts: "títulos listados",
       noRecords: "No se encontraron registros.",
-      edit: "Editar",
-      delete: "Eliminar",
       clearFilter: "Limpiar Filtro",
       notSpecified: "(No especificado)",
       allStatuses: "Todos los estados",
@@ -1501,29 +1495,6 @@
     }
     return val;
   }
-
-  const colorPalette = [
-    { name: "Açık Sarı", hex: "#eab308", bg: "#fefce8" },
-    { name: "Koyu Sarı", hex: "#a16207", bg: "#fef9c3" },
-    { name: "Açık Turuncu", hex: "#fb923c", bg: "#fff7ed" },
-    { name: "Koyu Turuncu", hex: "#c2410c", bg: "#ffedd5" },
-    { name: "Açık Pembe", hex: "#f472b6", bg: "#fdf2f8" },
-    { name: "Koyu Pembe", hex: "#be185d", bg: "#fce7f3" },
-    { name: "Açık Kırmızı", hex: "#f87171", bg: "#fef2f2" },
-    { name: "Koyu Kırmızı", hex: "#b91c1c", bg: "#fee2e2" },
-    { name: "Açık Mor", hex: "#c084fc", bg: "#faf5ff" },
-    { name: "Koyu Mor", hex: "#6b21a8", bg: "#f3e8ff" },
-    { name: "Açık Mavi", hex: "#60a5fa", bg: "#eff6ff" },
-    { name: "Koyu Mavi", hex: "#1d4ed8", bg: "#dbeafe" },
-    { name: "Açık Yeşil", hex: "#4ade80", bg: "#f0fdf4" },
-    { name: "Koyu Yeşil", hex: "#15803d", bg: "#dcfce7" },
-    { name: "Açık Gri", hex: "#94a3b8", bg: "#f8fafc" },
-    { name: "Koyu Gri", hex: "#475569", bg: "#f1f5f9" },
-    { name: "Kemik / Beyaz", hex: "#64748b", bg: "#ffffff" },
-    { name: "Taş / Açık", hex: "#475569", bg: "#f8fafc" },
-    { name: "Füme / Açık Siyah", hex: "#334155", bg: "#e2e8f0" },
-    { name: "Siyah", hex: "#0f172a", bg: "#cbd5e1" }
-  ];
 
   const defaultShelves = [
     { name: "Macera", cover: "" },
@@ -1742,7 +1713,6 @@
     }
   }
 
-  // YENİ METİN EKLEME EKRANINI SIFIRLAYARAK AÇMA (Düzenleme çakışmasını çözer)
   function openNewRecordModal() {
     resetForm();
     openFullScreenModal('modal-form');
@@ -1809,8 +1779,8 @@
             ${!shelf.cover ? `<div class="cover-fallback-title">${escapeHtml(displayedShelfName)}</div>` : ''}
             <button class="shelf-menu-btn" onclick="toggleShelfMenu(event, ${idx})">⋮</button>
             <div class="shelf-popover-menu" id="shelf-menu-${idx}">
-              <button onclick="editShelf(${idx})">✏️ ${t.edit}</button>
-              <button class="delete" onclick="deleteShelf(${idx})">🗑️ ${t.delete}</button>
+              <button onclick="editShelf(${idx})">✏️</button>
+              <button class="delete" onclick="deleteShelf(${idx})">🗑️</button>
             </div>
           </div>
           <div class="card-basic-header">
@@ -1838,8 +1808,8 @@
             <p><strong>${t.countTexts}:</strong> ${bookCount}</p>
             <div class="card-actions" style="margin-top: 0.5rem;">
               <button class="view-toggle-btn" onclick="closeFullScreenModal('modal-shelves'); toggleClickFilter('shelf', '${escapeHtml(shelf.name)}')">Metinleri Listele</button>
-              <button class="icon-btn" onclick="editShelf(${idx})">✏️</button>
-              <button class="icon-btn" onclick="deleteShelf(${idx})">🗑️</button>
+              <button class="icon-btn" onclick="editShelf(${idx})" title="Düzenle">✏️</button>
+              <button class="icon-btn" onclick="deleteShelf(${idx})" title="Sil">🗑️</button>
             </div>
           </div>
         `;
@@ -2586,8 +2556,8 @@
             ${tagsHtml}
             ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ''}
             <div class="card-actions">
-              <button class="icon-btn" onclick="startEdit(${item.id})">✏️ ${t.edit}</button>
-              <button class="icon-btn" onclick="deleteRecord(${item.id})">🗑️ ${t.delete}</button>
+              <button class="icon-btn" onclick="startEdit(${item.id})" title="Düzenle">✏️</button>
+              <button class="icon-btn" onclick="deleteRecord(${item.id})" title="Sil">🗑️</button>
             </div>
           </div>
         `;
@@ -2607,8 +2577,8 @@
             ${tagsHtml}
             ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ''}
             <div class="card-actions">
-              <button class="icon-btn" onclick="startEdit(${item.id})">✏️ ${t.edit}</button>
-              <button class="icon-btn" onclick="deleteRecord(${item.id})">🗑️ ${t.delete}</button>
+              <button class="icon-btn" onclick="startEdit(${item.id})" title="Düzenle">✏️</button>
+              <button class="icon-btn" onclick="deleteRecord(${item.id})" title="Sil">🗑️</button>
             </div>
           </div>
         `;
@@ -2650,6 +2620,10 @@
       document.documentElement.style.setProperty("--active-bg-tint", bgToApply);
       document.body.style.backgroundColor = bgToApply;
     }
+
+    document.querySelectorAll(".color-btn").forEach(b => {
+      b.classList.toggle("selected", b.style.backgroundColor === colObj.hex);
+    });
   }
 
   const paletteContainer = document.getElementById("palette-container");
