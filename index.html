@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kişisel Metin & Okuma Takipçisi</title>
+  <!-- Görsel (PNG) Dışa Aktarma Kütüphanesi -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     :root {
       --active-accent: #1d4ed8;
@@ -106,10 +108,7 @@
     }
     .hamburger-btn:active { transform: scale(0.95); }
 
-    .app-title {
-      font-size: 1.45rem;
-      font-weight: 800;
-    }
+    .app-title { font-size: 1.45rem; font-weight: 800; }
 
     /* Streak & Hedefler Şeridi */
     .status-strip {
@@ -149,7 +148,7 @@
       gap: 0.5rem;
     }
 
-    /* Soldan Açılan Çekmece Menü (Drawer) */
+    /* Çekmece Menü */
     .drawer-overlay {
       position: fixed;
       inset: 0;
@@ -330,7 +329,7 @@
     }
     textarea { resize: vertical; min-height: 70px; }
 
-    /* Çarpılı Seçim Menüleri */
+    /* Çarpılı Özel Açılır Menüler */
     .custom-select-trigger {
       width: 100%;
       padding: 0.65rem 0.85rem;
@@ -519,6 +518,16 @@
       cursor: pointer;
     }
 
+    /* Dışa Aktarma / Paylaşım Alanı */
+    .export-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
     @media (max-width: 600px) {
       .palette-grid { grid-template-columns: repeat(5, 1fr); }
     }
@@ -534,7 +543,7 @@
 <!-- Çekmece Menü Karartması -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 
-<!-- Sol Çekmece Menü (Drawer) -->
+<!-- Sol Çekmece Menü -->
 <div class="side-drawer" id="side-drawer">
   <div class="drawer-header">
     <span class="themed-text" style="font-weight: 800; font-size: 1.15rem;">Menü</span>
@@ -544,6 +553,7 @@
   <button class="drawer-item-btn" onclick="handleDrawerAction('filter-panel')">🔍 Filtrele & Ara</button>
   <button class="drawer-item-btn" onclick="handleDrawerAction('sort-panel')">🔃 Sıralama Ölçütü</button>
   <button class="drawer-item-btn" onclick="handleDrawerAction('goals-panel')">🎯 Okuma Hedefleri</button>
+  <button class="drawer-item-btn" onclick="handleDrawerAction('export-panel')">📤 Dışa Aktar & Paylaş</button>
   <button class="drawer-item-btn" onclick="handleDrawerAction('settings-panel')">⚙️ Ayarlar & Görünüm</button>
 </div>
 
@@ -561,7 +571,7 @@
     <div class="goals-display" id="goals-display" style="display: none;"></div>
   </div>
 
-  <!-- Hedefler Paneli (Drawer'dan Açılır) -->
+  <!-- Hedefler Paneli -->
   <div class="collapsible-panel" id="goals-panel">
     <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">🎯 Okuma Hedeflerini Belirle</h3>
     <div class="filter-grid">
@@ -583,6 +593,25 @@
       </div>
     </div>
     <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">İstediğiniz alanları boş bırakabilirsiniz. Belirttiğiniz hedefler ana sayfada özetlenir.</small>
+  </div>
+
+  <!-- Paylaş & Dışa Aktar Paneli -->
+  <div class="collapsible-panel" id="export-panel">
+    <h3 class="themed-text" style="margin-bottom: 0.75rem; font-size: 1.05rem;">📤 Metinleri Dışa Aktar & Paylaş</h3>
+    <div class="form-group" style="max-width: 380px;">
+      <label>Paylaşım Formatını Seçin:</label>
+      <select id="export-format-choice" onchange="handleExportSelection(this.value)">
+        <option value="">Format seçiniz...</option>
+        <option value="png">🖼️ Görsel Olarak İndir (PNG / Kart Tablosu)</option>
+        <option value="csv">📊 Excel Tablosu (.csv)</option>
+        <option value="docx">📝 Word Belgesi (.docx)</option>
+        <option value="pdf">📄 Yazdır / PDF Olarak Kaydet</option>
+        <option value="copy">📋 Metin / Liste Olarak Kopyala</option>
+      </select>
+    </div>
+    <div class="export-note" id="export-filter-status-note">
+      ℹ️ Ekranda aktif bir filtre varsa yalnızca filtrelenen metinler paylaşım formatına aktarılır.
+    </div>
   </div>
 
   <!-- Sıralama Paneli -->
@@ -696,15 +725,15 @@
       </div>
     </div>
 
+    <!-- Yedekten CSV Geri Yükleme -->
     <div class="settings-row">
       <div>
-        <div style="font-weight: 600;" class="themed-text">Veri Yönetimi (Excel / CSV):</div>
-        <small style="color: var(--text-muted);">Kayıtlarını Excel tablosu olarak yedekle ya da yükle.</small>
+        <div style="font-weight: 600;" class="themed-text">Yedek Yükle (CSV):</div>
+        <small style="color: var(--text-muted);">Önceden indirdiğiniz bir yedek dosyasını içeri aktarın.</small>
       </div>
       <div class="settings-controls-group">
-        <button class="btn-action" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;" onclick="exportToCSV()">Excel Olarak İndir</button>
         <input type="file" id="csv-upload" accept=".csv" style="display: none;" onchange="importFromCSV(event)">
-        <button class="icon-btn" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;" onclick="document.getElementById('csv-upload').click()">Excel Yükle</button>
+        <button class="icon-btn" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;" onclick="document.getElementById('csv-upload').click()">Dosyadan Geri Yükle</button>
       </div>
     </div>
 
@@ -849,7 +878,7 @@
 
         <div class="form-group">
           <label>Okuma Durumu</label>
-          <select id="status">
+          <select id="status" onchange="handleStatusChange(this.value)">
             <option value="">Belirtilmedi</option>
             <option value="Okunuyor">Okunuyor</option>
             <option value="Bitti">Bitti</option>
@@ -871,7 +900,7 @@
 
         <div class="form-group">
           <label>Okuma Oranı (%)</label>
-          <input type="number" id="progress-percent" min="0" max="100" step="1" placeholder="Örn: 50" onchange="sanitizeProgressInput(this)">
+          <input type="number" id="progress-percent" min="0" max="100" step="1" placeholder="Örn: 50" oninput="calculatePagesFromPercent()">
         </div>
 
         <div class="form-group">
@@ -911,6 +940,8 @@
   </div>
 
   <div class="count-bar themed-text" id="count-display">0 kadar başlık sıralanıyor</div>
+  
+  <!-- Kayıtlar Listesi (Görsel Yakalama Alanı) -->
   <div id="records-list"></div>
 
 </div>
@@ -953,8 +984,8 @@
   let userGoals = JSON.parse(localStorage.getItem("reader_user_goals")) || { mCount: "", yCount: "", mPages: "", yPages: "" };
 
   let activeClickFilters = { author: null, type: null, shelf: null, tag: null };
+  let currentFilteredRecords = [];
 
-  // Çekmece Menü Kontrolü
   function openDrawer() {
     document.getElementById("side-drawer").classList.add("open");
     document.getElementById("drawer-overlay").classList.add("open");
@@ -974,7 +1005,6 @@
     }
   }
 
-  // Streak (Seri) Hesaplama
   function calculateStreak() {
     const todayStr = new Date().toISOString().slice(0, 10);
     let streakCount = parseInt(localStorage.getItem("reader_streak_count") || "1", 10);
@@ -1000,7 +1030,6 @@
     document.getElementById("streak-badge").textContent = `${streakCount} 🔥`;
   }
 
-  // Hedef Göstergesi Hesaplama
   function updateGoalsDisplay() {
     const displayEl = document.getElementById("goals-display");
     const now = new Date();
@@ -1013,18 +1042,27 @@
     let yearReadPages = 0;
 
     records.forEach(r => {
+      const isFinished = r.status === "Bitti" || r.progress === 100;
       const dStr = r.endDate || r.startDate;
       const comp = parseDateComponents(dStr);
-      const isFinished = r.status === "Bitti";
 
-      if (comp) {
-        if (comp.year === curYear) {
-          if (isFinished) yearReadCount++;
-          if (r.readPages) yearReadPages += r.readPages;
+      if (isFinished) {
+        if (!comp) {
+          monthReadCount++;
+          yearReadCount++;
+          if (r.readPages) {
+            monthReadPages += r.readPages;
+            yearReadPages += r.readPages;
+          }
+        } else {
+          if (comp.year === curYear) {
+            yearReadCount++;
+            if (r.readPages) yearReadPages += r.readPages;
 
-          if (comp.month === curMonth) {
-            if (isFinished) monthReadCount++;
-            if (r.readPages) monthReadPages += r.readPages;
+            if (comp.month === curMonth) {
+              monthReadCount++;
+              if (r.readPages) monthReadPages += r.readPages;
+            }
           }
         }
       }
@@ -1065,7 +1103,6 @@
     updateGoalsDisplay();
   }
 
-  // Karşılama Ekranı
   window.addEventListener("DOMContentLoaded", () => {
     calculateStreak();
     updateGoalsDisplay();
@@ -1134,6 +1171,19 @@
     isDarkMode = !isDarkMode;
     localStorage.setItem("reader_dark_mode", isDarkMode);
     applyThemeMode();
+  }
+
+  function togglePanel(panelId) {
+    const p = document.getElementById(panelId);
+    p.style.display = p.style.display === "block" ? "none" : "block";
+  }
+
+  function toggleFormPanel() {
+    const f = document.getElementById("form-panel");
+    f.style.display = f.style.display === "block" ? "none" : "block";
+    if (f.style.display === "block") {
+      f.scrollIntoView({ behavior: "smooth" });
+    }
   }
 
   function changeDateFormat(format) {
@@ -1244,12 +1294,45 @@
     }
   }
 
-  function sanitizeProgressInput(input) {
-    if (input.value !== "") {
-      let val = Math.round(parseFloat(input.value));
-      if (isNaN(val)) val = 0;
-      val = Math.min(100, Math.max(0, val));
-      input.value = val;
+  function calculatePagesFromPercent() {
+    const total = parseFloat(document.getElementById("total-pages").value);
+    const percentInput = document.getElementById("progress-percent");
+    const readPagesInput = document.getElementById("read-pages");
+
+    if (percentInput.value !== "") {
+      let pct = Math.round(parseFloat(percentInput.value));
+      if (isNaN(pct)) pct = 0;
+      pct = Math.min(100, Math.max(0, pct));
+      percentInput.value = pct;
+
+      if (!isNaN(total) && total > 0) {
+        const calculatedRead = Math.floor((total * pct) / 100);
+        readPagesInput.value = calculatedRead;
+      }
+    }
+  }
+
+  function getFormattedToday() {
+    const now = new Date();
+    const d = String(now.getDate()).padStart(2, "0");
+    const m = String(now.getMonth() + 1).padStart(2, "0");
+    const y = String(now.getFullYear());
+    if (dateFormat === "yyyy-mm-dd") {
+      return `${y}-${m}-${d}`;
+    }
+    return `${d}.${m}.${y}`;
+  }
+
+  function handleStatusChange(statusVal) {
+    const startInp = document.getElementById("start-date");
+    const endInp = document.getElementById("end-date");
+    const today = getFormattedToday();
+
+    if (statusVal === "Okunuyor") {
+      if (!startInp.value.trim()) startInp.value = today;
+    } else if (statusVal === "Bitti") {
+      if (!endInp.value.trim()) endInp.value = today;
+      if (!startInp.value.trim()) startInp.value = today;
     }
   }
 
@@ -1288,7 +1371,6 @@
     return parseInt(`${comp.year}${comp.month}${comp.day}`, 10);
   }
 
-  // Özel Sayfa İçi Açılır Menü Kontrolü
   function toggleCustomDropdown(dropdownId) {
     const dp = document.getElementById(dropdownId);
     const isShowing = dp.style.display === "block";
@@ -1633,10 +1715,13 @@
       if (order === "oldest") return a.id - b.id;
       if (order === "title-asc") return (a.title || "").localeCompare(b.title || "", "tr");
       if (order === "author-asc") return ((a.authors && a.authors[0]) || "").localeCompare(((b.authors && b.authors[0]) || ""), "tr");
+      
       if (order === "prog-desc") return (b.progress ?? -1) - (a.progress ?? -1);
       if (order === "prog-asc") return (a.progress ?? 999) - (b.progress ?? 999);
+      
       if (order === "pages-desc") return (b.totalPages ?? -1) - (a.totalPages ?? -1);
       if (order === "pages-asc") return (a.totalPages ?? 999999) - (b.totalPages ?? 999999);
+      
       if (order === "end-desc") return dateToComparableNumber(b.endDate) - dateToComparableNumber(a.endDate);
       if (order === "end-asc") {
         const dateA = dateToComparableNumber(a.endDate) || 99999999;
@@ -1646,7 +1731,18 @@
       return 0;
     });
 
+    currentFilteredRecords = filtered;
     countDisplay.textContent = `${filtered.length} kadar başlık sıralanıyor`;
+
+    // Paylaşım panelindeki filtre bilgilendirme metnini güncelle
+    const filterNoteEl = document.getElementById("export-filter-status-note");
+    if (filterNoteEl) {
+      if (filtered.length !== records.length) {
+        filterNoteEl.innerHTML = `ℹ️ <strong>Aktif filtre devrede:</strong> Yalnızca listelenen <strong>${filtered.length}</strong> adet metin paylaşılacak.`;
+      } else {
+        filterNoteEl.innerHTML = `ℹ️ Ekranda aktif bir filtre yok; toplam <strong>${records.length}</strong> adet metin paylaşılacak.`;
+      }
+    }
 
     if (filtered.length === 0) {
       listContainer.innerHTML = `<div style="text-align: center; padding: 2rem; color: var(--text-muted); background: var(--panel-bg); border-radius: 10px; border: 1px solid var(--border-color);">Kayıt bulunamadı.</div>`;
@@ -1730,13 +1826,71 @@
     });
   }
 
-  function exportToCSV() {
-    if (records.length === 0) {
-      alert("Dışa aktarılacak kayıt bulunmuyor.");
+  // ==========================================
+  // ÇOKLU FORMATTA DIŞA AKTARMA VE PAYLAŞIM
+  // ==========================================
+  function handleExportSelection(format) {
+    if (!format) return;
+    const targetData = (currentFilteredRecords && currentFilteredRecords.length > 0) ? currentFilteredRecords : records;
+
+    if (targetData.length === 0) {
+      alert("Paylaşılacak veya dışa aktarılacak kayıt bulunmuyor.");
+      document.getElementById("export-format-choice").value = "";
       return;
     }
+
+    if (format === "png") {
+      exportAsImage();
+    } else if (format === "csv") {
+      exportToCSV(targetData);
+    } else if (format === "docx") {
+      exportToDocx(targetData);
+    } else if (format === "pdf") {
+      exportToPDF();
+    } else if (format === "copy") {
+      exportToClipboard(targetData);
+    }
+
+    document.getElementById("export-format-choice").value = "";
+  }
+
+  // 1. Görsel Olarak İndir (Kullanıcının Seçtiği Tema Rengi ve Duvar Kağıdı ile Birebir)
+  function exportAsImage() {
+    const listElement = document.getElementById("records-list");
+    if (!listElement) return;
+
+    alert("Görsel hazırlanıyor, lütfen birkaç saniye bekleyin...");
+
+    // Görselde düzenleme/silme butonlarının çıkmaması için geçici gizle
+    const actionButtons = listElement.querySelectorAll(".card-actions");
+    actionButtons.forEach(b => b.style.display = "none");
+
+    const activeBg = window.getComputedStyle(document.body).backgroundColor;
+
+    html2canvas(listElement, {
+      backgroundColor: activeBg,
+      scale: 2, // Yüksek çözünürlük
+      useCORS: true,
+      logging: false
+    }).then(canvas => {
+      actionButtons.forEach(b => b.style.display = "flex");
+      const imgData = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.download = `ReaderTracker_OkumaListesi_${new Date().toISOString().slice(0,10)}.png`;
+      link.href = imgData;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }).catch(err => {
+      actionButtons.forEach(b => b.style.display = "flex");
+      alert("Görsel oluşturulurken bir sorun oluştu: " + err.message);
+    });
+  }
+
+  // 2. Excel CSV Olarak İndir
+  function exportToCSV(dataList) {
     const headers = ["Sıra No", "Metin Adı", "Yazar(lar)", "Tür", "Seri/Raf", "Durum", "Toplam Sayfa", "Okunan Sayfa", "İlerleme (%)", "Etiketler", "Başlangıç Tarihi", "Bitiş Tarihi", "Notlar"];
-    const rows = records.map((r, i) => [
+    const rows = dataList.map((r, i) => [
       `"${i + 1}"`,
       `"${(r.title || '').replace(/"/g, '""')}"`,
       `"${(r.authors ? r.authors.join(', ') : '').replace(/"/g, '""')}"`,
@@ -1754,15 +1908,100 @@
 
     const csvContent = "\uFEFF" + [headers.join(";"), ...rows.map(e => e.join(";"))].join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    downloadBlob(blob, `okuma_listesi_${new Date().toISOString().slice(0,10)}.csv`);
+  }
+
+  // 3. Word (.docx) Formatında İndir
+  function exportToDocx(dataList) {
+    let htmlContent = `
+      <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+      <head><meta charset='utf-8'><title>Okuma Takip Listesi</title>
+      <style>
+        body { font-family: Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+        h1 { color: #1d4ed8; }
+        table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
+        th { background-color: #f1f5f9; color: #0f172a; }
+      </style>
+      </head>
+      <body>
+        <h1>📚 ReaderTracker - Okuma ve İnceleme Listesi</h1>
+        <p><strong>Tarih:</strong> ${new Date().toLocaleDateString('tr-TR')}</p>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Metin Adı</th>
+              <th>Yazar(lar)</th>
+              <th>Tür</th>
+              <th>Seri/Raf</th>
+              <th>Durum</th>
+              <th>Sayfa / İlerleme</th>
+              <th>Tarihler</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+
+    dataList.forEach((r, i) => {
+      const pageInfo = r.totalPages ? `${r.readPages || 0}/${r.totalPages} (%${r.progress || 0})` : `-%${r.progress || 0}`;
+      const dateInfo = [r.startDate, r.endDate].filter(Boolean).join(" - ") || "-";
+      htmlContent += `
+        <tr>
+          <td>${i + 1}</td>
+          <td><strong>${escapeHtml(r.title)}</strong></td>
+          <td>${escapeHtml((r.authors || []).join(", ")) || "-"}</td>
+          <td>${escapeHtml(r.type) || "-"}</td>
+          <td>${escapeHtml(r.shelf) || "-"}</td>
+          <td>${escapeHtml(r.status) || "-"}</td>
+          <td>${pageInfo}</td>
+          <td>${dateInfo}</td>
+        </tr>
+      `;
+    });
+
+    htmlContent += `</tbody></table></body></html>`;
+
+    const blob = new Blob(['\ufeff' + htmlContent], {
+      type: 'application/msword'
+    });
+    downloadBlob(blob, `okuma_listesi_${new Date().toISOString().slice(0,10)}.doc`);
+  }
+
+  // 4. Yazdır / PDF
+  function exportToPDF() {
+    window.print();
+  }
+
+  // 5. Metin Olarak Panoya Kopyala
+  function exportToClipboard(dataList) {
+    let text = `📚 ReaderTracker Okuma Listesi (${dataList.length} Metin)\n\n`;
+    dataList.forEach((r, i) => {
+      text += `${i + 1}. ${r.title}`;
+      if (r.authors && r.authors.length > 0) text += ` - ${r.authors.join(", ")}`;
+      if (r.status) text += ` [${r.status}]`;
+      if (r.progress !== null && r.progress !== undefined) text += ` (%${r.progress})`;
+      text += `\n`;
+    });
+
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Filtrelenmiş liste panoya kopyalandı! İstediğiniz yere yapıştırıp paylaşabilirsiniz.");
+    }).catch(() => {
+      alert("Panoya kopyalama başarısız oldu.");
+    });
+  }
+
+  function downloadBlob(blob, filename) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", `okuma_kayitlari_${new Date().toISOString().slice(0,10)}.csv`);
+    link.setAttribute("download", filename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   }
 
+  // CSV İçe Aktarma
   function importFromCSV(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -1813,7 +2052,6 @@
     );
   }
 
-  // İlk Kurulum
   populateFilterDropdowns();
   updateCustomDropdowns();
   renderItems();
