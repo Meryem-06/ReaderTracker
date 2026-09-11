@@ -56,14 +56,9 @@
       align-items: center;
       justify-content: center;
       z-index: 99999;
+      pointer-events: all;
       text-align: center;
       padding: 1.5rem;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
-    }
-    #splash-screen.hidden {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
     }
     #splash-screen h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800; }
     #splash-screen p { font-size: 1.1rem; opacity: 0.9; }
@@ -89,18 +84,23 @@
       border-radius: 10px;
       cursor: pointer;
       padding: 0.3rem 0.6rem;
+      transition: transform 0.15s;
     }
+    .splash-lang-btn:active { transform: scale(0.9); }
 
-    .anim-circle-out { animation: circleShrink 1.8s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+    .anim-circle-out { animation: circleShrink 2s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
     @keyframes circleShrink {
       0% { clip-path: circle(150% at 50% 50%); opacity: 1; }
-      100% { clip-path: circle(0% at 50% 50%); opacity: 0; }
+      100% { clip-path: circle(0% at 50% 50%); opacity: 0; visibility: hidden; }
     }
 
-    .anim-water-out { animation: waterDrain 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    .anim-water-out { animation: waterDrain 4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
     @keyframes waterDrain {
       0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
-      100% { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); opacity: 0; }
+      25% { clip-path: polygon(0 25%, 100% 18%, 100% 100%, 0 100%); }
+      50% { clip-path: polygon(0 50%, 100% 58%, 100% 100%, 0 100%); }
+      75% { clip-path: polygon(0 80%, 100% 72%, 100% 100%, 0 100%); }
+      100% { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); opacity: 0; visibility: hidden; }
     }
 
     .container {
@@ -115,11 +115,13 @@
       justify-content: space-between;
       margin-bottom: 0.6rem;
     }
+
     .top-header-left {
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
+
     .hamburger-btn {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -134,6 +136,7 @@
       justify-content: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
+    .hamburger-btn:active { transform: scale(0.95); }
     .app-title { font-size: 1.45rem; font-weight: 800; }
 
     /* Streak & Hedef Şeridi */
@@ -144,6 +147,7 @@
       gap: 0.5rem;
       margin-bottom: 0.85rem;
     }
+
     .streak-badge {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -155,7 +159,9 @@
       display: inline-flex;
       align-items: center;
       gap: 0.25rem;
+      user-select: none;
     }
+
     .goals-display {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -169,7 +175,7 @@
       gap: 0.5rem;
     }
 
-    /* Kontroller */
+    /* Kontroller ve Sayım Şeridi */
     .controls-strip {
       display: flex;
       justify-content: space-between;
@@ -177,6 +183,7 @@
       margin-bottom: 0.5rem;
       padding: 0 0.2rem;
     }
+
     .view-toggle-btn {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -186,13 +193,19 @@
       font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
     }
+
+    /* Hızlı Emoji Butonları */
     .quick-actions-row {
       display: flex;
       gap: 0.6rem;
       margin-bottom: 1rem;
       padding: 0 0.2rem;
     }
+
     .quick-icon-btn {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -206,9 +219,12 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      transition: transform 0.1s, background 0.15s;
     }
+    .quick-icon-btn:active { transform: scale(0.92); }
+    .quick-icon-btn:hover { background: var(--card-bg); }
 
-    /* Çekmece Menü */
+    /* Çekmece Menü (Drawer) */
     .drawer-overlay {
       position: fixed;
       inset: 0;
@@ -220,6 +236,7 @@
       transition: opacity 0.25s ease, visibility 0.25s ease;
     }
     .drawer-overlay.open { opacity: 1; visibility: visible; }
+
     .side-drawer {
       position: fixed;
       top: 0; bottom: 0; left: 0;
@@ -237,6 +254,7 @@
       gap: 0.5rem;
     }
     .side-drawer.open { transform: translateX(0); }
+
     .drawer-header {
       display: flex;
       justify-content: space-between;
@@ -245,6 +263,7 @@
       padding-bottom: 0.75rem;
       border-bottom: 1px solid var(--border-color);
     }
+
     .drawer-item-btn {
       background: var(--panel-bg);
       border: 1px solid var(--border-color);
@@ -258,7 +277,10 @@
       align-items: center;
       gap: 0.6rem;
       text-align: left;
+      transition: background 0.15s;
     }
+    .drawer-item-btn:hover { background: rgba(0,0,0,0.04); color: var(--active-accent); }
+
     .drawer-lang-row {
       margin-top: auto;
       padding-top: 1rem;
@@ -267,6 +289,7 @@
       justify-content: space-around;
       align-items: center;
     }
+
     .lang-flag-btn {
       background: none;
       border: none;
@@ -274,7 +297,10 @@
       cursor: pointer;
       padding: 0.3rem;
       border-radius: 6px;
+      transition: transform 0.15s, background 0.15s;
+      line-height: 1;
     }
+    .lang-flag-btn:hover { background: var(--badge-bg); transform: scale(1.15); }
     .lang-flag-btn.active {
       background: var(--badge-bg);
       outline: 2px solid var(--active-accent);
@@ -292,7 +318,14 @@
       z-index: 10000;
       overflow-y: auto;
       padding: 1.5rem 1rem;
+      animation: modalFadeIn 0.2s ease-out;
     }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
     .modal-content-container {
       max-width: 850px;
       margin: 0 auto;
@@ -303,6 +336,7 @@
       padding: 1.5rem;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
+
     .modal-top-bar {
       display: flex;
       justify-content: space-between;
@@ -311,6 +345,7 @@
       padding-bottom: 0.75rem;
       border-bottom: 1px solid var(--border-color);
     }
+
     .modal-close-btn {
       background: var(--badge-bg);
       border: 1px solid var(--border-color);
@@ -323,7 +358,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: background 0.15s;
     }
+    .modal-close-btn:hover { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
 
     .form-grid {
       display: grid;
@@ -331,18 +368,21 @@
       gap: 1rem;
       margin-bottom: 1rem;
     }
+
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 0.35rem;
       position: relative;
     }
+
     .form-group label {
       font-size: 0.85rem;
       font-weight: 600;
       color: var(--active-text);
     }
     .form-group.full-width { grid-column: 1 / -1; }
+
     input, textarea, select {
       width: 100%;
       padding: 0.65rem 0.85rem;
@@ -352,6 +392,10 @@
       background: var(--input-bg);
       color: var(--text-main);
       outline: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--active-accent);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
     }
     textarea { resize: vertical; min-height: 70px; }
 
@@ -368,6 +412,7 @@
       justify-content: space-between;
       align-items: center;
     }
+
     .custom-dropdown-panel {
       display: none;
       position: absolute;
@@ -381,6 +426,7 @@
       overflow-y: auto;
       margin-top: 4px;
     }
+
     .dropdown-item-row {
       display: flex;
       justify-content: space-between;
@@ -388,11 +434,13 @@
       padding: 0.65rem 0.85rem;
       border-bottom: 1px solid var(--border-color);
     }
+    .dropdown-item-row:hover { background: rgba(0,0,0,0.04); }
     .dropdown-item-name { cursor: pointer; flex: 1; font-size: 0.9rem; }
     .dropdown-item-del {
       background: none; border: none; color: #ef4444;
       font-size: 1.1rem; font-weight: bold; cursor: pointer; padding: 0 0.35rem;
     }
+
     .dropdown-add-new-btn {
       padding: 0.65rem 0.85rem;
       color: var(--active-accent);
@@ -401,12 +449,13 @@
       cursor: pointer;
     }
 
-    /* Izgara & Liste */
+    /* 2'li Kare Izgara */
     .grid-view-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 0.85rem;
     }
+
     .grid-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -415,7 +464,9 @@
       display: flex;
       flex-direction: column;
       box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      position: relative;
     }
+
     .card-cover-box {
       width: 100%;
       aspect-ratio: 1 / 1;
@@ -429,12 +480,15 @@
       text-align: center;
       position: relative;
     }
+
     .cover-fallback-title {
       font-size: 0.95rem;
       font-weight: 700;
       color: var(--active-text);
+      line-height: 1.3;
       word-break: break-word;
     }
+
     .card-basic-header {
       padding: 0.65rem 0.75rem;
       display: flex;
@@ -443,6 +497,7 @@
       gap: 0.5rem;
       background: var(--card-bg);
     }
+
     .card-basic-title {
       font-size: 0.92rem;
       font-weight: 700;
@@ -452,6 +507,7 @@
       white-space: nowrap;
       flex: 1;
     }
+
     .expand-toggle-btn {
       background: none;
       border: none;
@@ -462,6 +518,7 @@
       transition: transform 0.2s ease;
     }
     .expand-toggle-btn.expanded { transform: rotate(180deg); }
+
     .card-expandable-details {
       display: none;
       padding: 0.75rem;
@@ -470,11 +527,13 @@
       background: var(--panel-bg);
     }
 
+    /* Sıralı Görünüm */
     .list-view-container {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
     }
+
     .list-card {
       background: var(--card-bg);
       border: 1px solid var(--border-color);
@@ -484,11 +543,13 @@
       flex-direction: column;
       box-shadow: 0 2px 4px rgba(0,0,0,0.04);
     }
+
     .list-card-main-row {
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
+
     .list-thumb {
       width: 48px;
       height: 48px;
@@ -504,7 +565,10 @@
       color: var(--active-text);
       text-align: center;
       flex-shrink: 0;
+      padding: 2px;
+      overflow: hidden;
     }
+
     .list-card-title {
       font-size: 1rem;
       font-weight: 700;
@@ -512,11 +576,16 @@
       flex: 1;
     }
 
+    .clickable-badge { cursor: pointer; display: inline-block; }
+    .clickable-badge:hover { opacity: 0.8; }
+    .clickable-badge.active-filter { outline: 2px solid var(--active-accent); }
+
     .tags-container { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.4rem; }
     .tag-badge {
       background: var(--badge-bg); color: var(--active-text); font-size: 0.75rem;
       font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 4px; border: 1px solid var(--border-color);
     }
+
     .status-badge { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px; margin-right: 0.4rem; }
     .status-Okunuyor { background: #dbeafe; color: #1d4ed8; }
     .status-Bitti { background: #dcfce7; color: #15803d; }
@@ -528,6 +597,35 @@
     .card-actions { display: flex; gap: 0.4rem; margin-top: 0.5rem; }
     .icon-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.4rem 0.65rem; font-size: 1rem; border-radius: 6px; cursor: pointer; }
 
+    /* Raf Menüsü */
+    .shelf-menu-btn {
+      position: absolute;
+      top: 0.4rem; right: 0.4rem; z-index: 3;
+      background: rgba(0,0,0,0.5); color: #ffffff;
+      border: none; width: 26px; height: 26px;
+      border-radius: 6px; font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .shelf-popover-menu {
+      display: none;
+      position: absolute;
+      top: 2rem; right: 0.4rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 10;
+      min-width: 120px;
+    }
+    .shelf-popover-menu button {
+      width: 100%; text-align: left; padding: 0.5rem 0.75rem;
+      background: none; border: none; font-size: 0.82rem; color: var(--text-main); cursor: pointer;
+    }
+    .shelf-popover-menu button:hover { background: rgba(0,0,0,0.06); }
+    .shelf-popover-menu button.delete { color: #ef4444; }
+
+    /* Renk Paleti Izgarası */
     .palette-grid {
       display: grid !important;
       grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)) !important;
@@ -535,6 +633,7 @@
       width: 100% !important;
       margin-top: 0.6rem !important;
     }
+
     .color-btn {
       width: 100% !important;
       min-height: 38px !important;
@@ -542,11 +641,16 @@
       border-radius: 8px !important;
       border: 2px solid transparent !important;
       cursor: pointer !important;
+      transition: transform 0.15s, border-color 0.15s !important;
+      outline: none !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
     }
+    .color-btn:hover { transform: scale(1.1); }
     .color-btn.selected {
       border-color: #ffffff !important;
       box-shadow: 0 0 0 3px var(--text-main) !important;
     }
+
     .settings-row {
       display: flex;
       flex-wrap: wrap;
@@ -557,6 +661,32 @@
       padding-bottom: 0.75rem;
       border-bottom: 1px solid var(--border-color);
     }
+    .settings-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+    .image-export-options-box {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.85rem;
+      margin-top: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .image-export-options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .image-export-options-grid label {
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+    }
+
     .themed-text { color: var(--active-text) !important; }
     .btn-action { background-color: var(--active-accent) !important; color: #ffffff; border: none; padding: 0.65rem 1.4rem; border-radius: 8px; cursor: pointer; font-weight: 600; }
   </style>
@@ -577,8 +707,10 @@
   </div>
 </div>
 
+<!-- Çekmece Menü Karartması -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 
+<!-- Sol Çekmece Menü -->
 <div class="side-drawer" id="side-drawer">
   <div class="drawer-header">
     <span class="themed-text" id="lbl-menu-header" style="font-weight: 800; font-size: 1.15rem;">Menü</span>
@@ -595,6 +727,8 @@
     <button class="lang-flag-btn" id="flag-es" onclick="setAppLanguage('es')" title="Español">🇪🇸</button>
   </div>
 </div>
+
+<!-- ================= TAM EKRAN MODALLAR ================= -->
 
 <!-- 1. YENİ METİN EKLE MODALI -->
 <div class="full-page-view" id="modal-form">
@@ -737,31 +871,40 @@
       </div>
       <div class="form-group">
         <label id="lbl-filter-status">Okuma Durumu:</label>
-        <select id="filter-status" onchange="renderItems()"></select>
+        <select id="filter-status" onchange="renderItems()">
+          <option value="all">Tüm Durumlar</option>
+          <option value="Okunuyor">Okunuyor</option>
+          <option value="Bitti">Bitti</option>
+          <option value="Yarım Kaldı">Yarım Kaldı</option>
+          <option value="Yarıda Bırakıldı">Yarıda Bırakıldı</option>
+          <option value="Okumak İstenilenlerde">Okumak İstenilenlerde</option>
+        </select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-author">Yazar:</label>
-        <select id="filter-author" onchange="renderItems()"></select>
+        <select id="filter-author" onchange="renderItems()"><option value="all">Tüm Yazarlar</option></select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-type">Metin Türü:</label>
-        <select id="filter-type" onchange="renderItems()"></select>
+        <select id="filter-type" onchange="renderItems()"><option value="all">Tüm Türler</option></select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-shelf">Seri / Raf:</label>
-        <select id="filter-shelf" onchange="renderItems()"></select>
+        <select id="filter-shelf" onchange="renderItems()"><option value="all">Tüm Seri ve Raflar</option></select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-tag">Etiket:</label>
-        <select id="filter-tag" onchange="renderItems()"></select>
+        <select id="filter-tag" onchange="renderItems()"><option value="all">Tüm Etiketler</option></select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-year">Yıla Göre:</label>
-        <select id="filter-year" onchange="renderItems()"></select>
+        <select id="filter-year" onchange="renderItems()"><option value="all">Tüm Yıllar</option></select>
       </div>
       <div class="form-group">
         <label id="lbl-filter-month">Aya Göre:</label>
-        <select id="filter-month" onchange="renderItems()"></select>
+        <select id="filter-month" onchange="renderItems()">
+          <option value="all">Tüm Aylar</option>
+        </select>
       </div>
     </div>
     <div style="margin-top: 1.25rem;">
@@ -779,7 +922,8 @@
     </div>
     <div class="form-group">
       <label id="lbl-sort-select">Sıralama Seçeneği:</label>
-      <select id="sort-order" onchange="renderItems()"></select>
+      <select id="sort-order" onchange="renderItems()">
+      </select>
     </div>
     <div style="margin-top: 1.5rem;">
       <button class="btn-action" id="btn-confirm-sort" style="width: 100%;" onclick="closeFullScreenModal('modal-sort')">Sıralamayı Onayla ve Dön</button>
@@ -846,11 +990,13 @@
       <div class="form-grid" style="margin-bottom: 0;">
         <div class="form-group">
           <label id="lbl-exp-status">Duruma Göre:</label>
-          <select id="export-filter-status" onchange="updateExportPreviewCount()"></select>
+          <select id="export-filter-status" onchange="updateExportPreviewCount()">
+          </select>
         </div>
         <div class="form-group">
           <label id="lbl-exp-shelf">Rafa Göre:</label>
-          <select id="export-filter-shelf" onchange="updateExportPreviewCount()"></select>
+          <select id="export-filter-shelf" onchange="updateExportPreviewCount()">
+          </select>
         </div>
       </div>
       <div style="margin-top: 0.6rem; font-size: 0.85rem; color: var(--active-accent); font-weight: 600;" id="export-preview-text">
@@ -971,6 +1117,7 @@
     <button class="view-toggle-btn" id="item-view-toggle-btn" onclick="toggleItemViewMode()">⊞ Izgara Görünümü</button>
   </div>
 
+  <!-- Sıralı Görünümün Altındaki Hızlı Emoji Butonları -->
   <div class="quick-actions-row">
     <button class="quick-icon-btn" onclick="openNewRecordModal()" title="Yeni Metin Ekle">➕</button>
     <button class="quick-icon-btn" onclick="openFullScreenModal('modal-filter')" title="Filtrele & Ara">🔍</button>
@@ -981,55 +1128,1619 @@
 </div>
 
 <script>
-  function forceDismissSplash() {
-    const splash = document.getElementById("splash-screen");
-    if (!splash) return;
-    splash.classList.add(splashAnim === "water" ? "anim-water-out" : "anim-circle-out");
-    setTimeout(() => {
-      splash.classList.add("hidden");
-      splash.style.display = "none";
-    }, splashAnim === "water" ? 2500 : 1800);
+  // ================= ÇOK DİLLİ SÖZLÜK VE SABİTLER =================
+  const canonicalStatuses = ["Okunuyor", "Bitti", "Yarım Kaldı", "Yarıda Bırakıldı", "Okumak İstenilenlerde"];
+  const canonicalTypes = ["Kitap", "Makale", "Rapor", "Karar", "Tez"];
+  const canonicalShelves = ["Macera", "Aşk", "Bilim Kurgu", "Klasikler", "Felsefe"];
+
+  const translations = {
+    tr: {
+      welcome: "Hoş geldin!",
+      welcomeSub: "Okuma listen ve metin arşivin yükleniyor...",
+      menuHeader: "Menü",
+      menuShelves: "📁 Kitaplık Rafları",
+      menuGoals: "🎯 Okuma Hedefleri",
+      menuExport: "📤 Dışa Aktar & Paylaş",
+      menuSettings: "⚙️ Ayarlar & Görünüm",
+      newText: "Yeni Metin Ekle",
+      editText: "Metni Düzenle: ",
+      textTitle: "Metin Adı *",
+      coverImg: "Kapak Görseli",
+      fromDevice: "📁 Cihazdan",
+      authors: "Yazar(lar)",
+      chooseOrAdd: "Seçiniz veya Ekleyiniz",
+      addAuthor: "➕ Yeni Yazar Ekle...",
+      type: "Metin Türü",
+      addType: "➕ Yeni Metin Türü Ekle...",
+      shelf: "Seri / Raf",
+      addShelf: "➕ Yeni Seri/Raf Ekle...",
+      status: "Okuma Durumu",
+      totalPages: "Toplam Sayfa Sayısı",
+      readPages: "Okunan Sayfa Sayısı",
+      progressPct: "Okuma Oranı (%)",
+      tags: "Etiketler",
+      addTag: "➕ Yeni Etiket Ekle...",
+      startDate: "Başlama Tarihi",
+      endDate: "Bitiş Tarihi",
+      notes: "Notlar / Alıntılar",
+      save: "Kaydet",
+      cancel: "Vazgeç",
+      filterModalTitle: "🔍 Kayıtları Filtrele & Ara",
+      searchTerm: "Kelime Bazlı Canlı Arama:",
+      searchPlaceholder: "Başlık, yazar, tür, etiket, raf veya notlarda ara...",
+      applyFilters: "Filtreleri Uygula ve Listeye Dön",
+      sortModalTitle: "🔃 Sıralama Ölçütü",
+      sortSelect: "Sıralama Seçeneği:",
+      confirmSort: "Sıralamayı Onayla ve Dön",
+      shelvesModalTitle: "📁 Kitaplık Rafları",
+      toggleGridList: "⊞ Izgara / ☰ Sıralı",
+      newShelf: "➕ Yeni Raf",
+      goalsModalTitle: "🎯 Okuma Hedefleri",
+      mCount: "Aylık Hedef (Metin Sayısı):",
+      yCount: "Yıllık Hedef (Metin Sayısı):",
+      mPages: "Aylık Hedef (Sayfa Sayısı):",
+      yPages: "Yıllık Hedef (Sayfa Sayısı):",
+      saveGoals: "Kaydet ve Dön",
+      exportModalTitle: "📤 Dışa Aktar & Paylaş",
+      exportFilterHeading: "🎯 Paylaşılacak Metinleri Filtrele (İsteğe Bağlı)",
+      byStatus: "Duruma Göre:",
+      byShelf: "Rafa Göre:",
+      exportFormatChoice: "Paylaşım Formatı Seçiniz:",
+      settingsModalTitle: "⚙️ Uygulama & Görünüm Ayarları",
+      themeMode: "Tema Modu:",
+      themeDesc: "Gündüz ve gece modu geçişi.",
+      streakGoalsToggle: "Streak ve Hedef Göstergesi:",
+      streakGoalsDesc: "Başlığın altındaki panoyu gizleyin ya da gösterin.",
+      username: "Kullanıcı Adı:",
+      splashSetting: "Açılış Karşılama Ekranı:",
+      wallpaper: "Duvar Kağıdı (Wallpaper):",
+      selectImg: "Görsel Seç",
+      clearImg: "Kaldır",
+      paletteTitle: "Yazı, Buton & Tema Rengi:",
+      viewList: "☰ Sıralı Görünüm",
+      viewGrid: "⊞ Izgara Görünümü",
+      countTexts: "kadar başlık sıralanıyor",
+      noRecords: "Kayıt bulunamadı.",
+      edit: "Düzenle",
+      delete: "Sil",
+      clearFilter: "Filtreyi Temizle",
+      notSpecified: "(Belirtilmedi)",
+      allStatuses: "Tüm Durumlar",
+      allShelves: "Tüm Raflar",
+      allTypes: "Tüm Türler",
+      allAuthors: "Tüm Yazarlar",
+      allTags: "Tüm Etiketler",
+      allYears: "Tüm Yıllar",
+      allMonths: "Tüm Aylar",
+      sortNewest: "Son Eklenenler (Varsayılan)",
+      sortOldest: "İlk Eklenenler",
+      sortTitleAsc: "Başlık (A → Z)",
+      sortAuthorAsc: "Yazar (A → Z)",
+      sortProgDesc: "İlerleme: En Yüksek → En Düşük",
+      sortProgAsc: "İlerleme: En Düşük → En Yüksek",
+      sortPagesDesc: "Sayfa Sayısı: En Çok → En Az",
+      sortPagesAsc: "Sayfa Sayısı: En Az → En Çok",
+      sortEndDesc: "Bitiş Tarihi: En Yeni → En Eski",
+      sortEndAsc: "Bitiş Tarihi: En Eski → En Yeni",
+      statuses: {
+        "Okunuyor": "Okunuyor",
+        "Bitti": "Bitti",
+        "Yarım Kaldı": "Yarım Kaldı",
+        "Yarıda Bırakıldı": "Yarıda Bırakıldı",
+        "Okumak İstenilenlerde": "Okumak İstenilenlerde"
+      },
+      types: {
+        "Kitap": "Kitap",
+        "Makale": "Makale",
+        "Rapor": "Rapor",
+        "Karar": "Karar",
+        "Tez": "Tez"
+      },
+      shelves: {
+        "Macera": "Macera",
+        "Aşk": "Aşk",
+        "Bilim Kurgu": "Bilim Kurgu",
+        "Klasikler": "Klasikler",
+        "Felsefe": "Felsefe"
+      },
+      months: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+      imgDetailsHeading: "🖼️ Görselde Gösterilecek Ek Detaylar (Kapak, Başlık ve Yazar Varsayılandır):",
+      optShelf: "Raf / Seri",
+      optStatus: "Okuma Durumu",
+      optProgress: "İlerleme Oranı",
+      optPages: "Sayfa Sayısı",
+      optTags: "Etiketler",
+      optDates: "Tarihler",
+      optNotes: "Notlar"
+    },
+    en: {
+      welcome: "Welcome!",
+      welcomeSub: "Your reading list and library are loading...",
+      menuHeader: "Menu",
+      menuShelves: "📁 Bookshelves",
+      menuGoals: "🎯 Reading Goals",
+      menuExport: "📤 Export & Share",
+      menuSettings: "⚙️ Settings & Appearance",
+      newText: "Add New Item",
+      editText: "Edit Item: ",
+      textTitle: "Title *",
+      coverImg: "Cover Image",
+      fromDevice: "📁 Device",
+      authors: "Author(s)",
+      chooseOrAdd: "Choose or Add New",
+      addAuthor: "➕ Add New Author...",
+      type: "Type",
+      addType: "➕ Add New Type...",
+      shelf: "Shelf / Series",
+      addShelf: "➕ Add New Shelf...",
+      status: "Reading Status",
+      totalPages: "Total Pages",
+      readPages: "Pages Read",
+      progressPct: "Progress (%)",
+      tags: "Tags",
+      addTag: "➕ Add New Tag...",
+      startDate: "Start Date",
+      endDate: "Finish Date",
+      notes: "Notes / Quotes",
+      save: "Save",
+      cancel: "Cancel",
+      filterModalTitle: "🔍 Filter & Search",
+      searchTerm: "Live Keyword Search:",
+      searchPlaceholder: "Search titles, authors, shelves, notes...",
+      applyFilters: "Apply Filters & Return",
+      sortModalTitle: "🔃 Sorting Criteria",
+      sortSelect: "Sort Order:",
+      confirmSort: "Confirm & Return",
+      shelvesModalTitle: "📁 Bookshelves",
+      toggleGridList: "⊞ Grid / ☰ List",
+      newShelf: "➕ New Shelf",
+      goalsModalTitle: "🎯 Reading Goals",
+      mCount: "Monthly Goal (Items):",
+      yCount: "Yearly Goal (Items):",
+      mPages: "Monthly Goal (Pages):",
+      yPages: "Yearly Goal (Pages):",
+      saveGoals: "Save & Return",
+      exportModalTitle: "📤 Export & Share",
+      exportFilterHeading: "🎯 Filter Items to Export (Optional)",
+      byStatus: "By Status:",
+      byShelf: "By Shelf:",
+      exportFormatChoice: "Choose Export Format:",
+      settingsModalTitle: "⚙️ Settings & Appearance",
+      themeMode: "Theme Mode:",
+      themeDesc: "Toggle day and night mode.",
+      streakGoalsToggle: "Streak and Goal Bar:",
+      streakGoalsDesc: "Show or hide the indicators below header.",
+      username: "Username:",
+      splashSetting: "Splash Screen:",
+      wallpaper: "Wallpaper:",
+      selectImg: "Select Image",
+      clearImg: "Remove",
+      paletteTitle: "Font, Button & Theme Color:",
+      viewList: "☰ List View",
+      viewGrid: "⊞ Grid View",
+      countTexts: "items listed",
+      noRecords: "No records found.",
+      edit: "Edit",
+      delete: "Delete",
+      clearFilter: "Clear Filter",
+      notSpecified: "(Not Specified)",
+      allStatuses: "All Statuses",
+      allShelves: "All Shelves",
+      allTypes: "All Types",
+      allAuthors: "All Authors",
+      allTags: "All Tags",
+      allYears: "All Years",
+      allMonths: "All Months",
+      sortNewest: "Newest (Default)",
+      sortOldest: "Oldest",
+      sortTitleAsc: "Title (A → Z)",
+      sortAuthorAsc: "Author (A → Z)",
+      sortProgDesc: "Progress: High → Low",
+      sortProgAsc: "Progress: Low → High",
+      sortPagesDesc: "Pages: Most → Least",
+      sortPagesAsc: "Pages: Least → Most",
+      sortEndDesc: "Finish Date: Newest → Oldest",
+      sortEndAsc: "Finish Date: Oldest → Newest",
+      statuses: {
+        "Okunuyor": "Reading",
+        "Bitti": "Finished",
+        "Yarım Kaldı": "On Hold",
+        "Yarıda Bırakıldı": "Dropped",
+        "Okumak İstenilenlerde": "Want to Read"
+      },
+      types: {
+        "Kitap": "Book",
+        "Makale": "Article",
+        "Rapor": "Report",
+        "Karar": "Decision",
+        "Tez": "Thesis"
+      },
+      shelves: {
+        "Macera": "Adventure",
+        "Aşk": "Romance",
+        "Bilim Kurgu": "Sci-Fi",
+        "Klasikler": "Classics",
+        "Felsefe": "Philosophy"
+      },
+      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      imgDetailsHeading: "🖼️ Extra Details on Image (Cover, Title and Author are default):",
+      optShelf: "Shelf / Series",
+      optStatus: "Status",
+      optProgress: "Progress",
+      optPages: "Pages",
+      optTags: "Tags",
+      optDates: "Dates",
+      optNotes: "Notes"
+    },
+    es: {
+      welcome: "¡Bienvenido/a!",
+      welcomeSub: "Tu lista de lectura y biblioteca se están cargando...",
+      menuHeader: "Menú",
+      menuShelves: "📁 Estanterías",
+      menuGoals: "🎯 Metas de Lectura",
+      menuExport: "📤 Exportar y Compartir",
+      menuSettings: "⚙️ Ajustes y Apariencia",
+      newText: "Añadir Nuevo Texto",
+      editText: "Editar Texto: ",
+      textTitle: "Título *",
+      coverImg: "Portada",
+      fromDevice: "📁 Dispositivo",
+      authors: "Autor(es)",
+      chooseOrAdd: "Elige o añade",
+      addAuthor: "➕ Añadir Nuevo Autor...",
+      type: "Tipo",
+      addType: "➕ Añadir Nuevo Tipo...",
+      shelf: "Estantería / Serie",
+      addShelf: "➕ Añadir Nueva Estantería...",
+      status: "Estado de Lectura",
+      totalPages: "Total de Páginas",
+      readPages: "Páginas Leídas",
+      progressPct: "Progreso (%)",
+      tags: "Etiquetas",
+      addTag: "➕ Añadir Nueva Etiqueta...",
+      startDate: "Fecha de Inicio",
+      endDate: "Fecha de Fin",
+      notes: "Notas / Citas",
+      save: "Guardar",
+      cancel: "Cancelar",
+      filterModalTitle: "🔍 Filtrar y Buscar",
+      searchTerm: "Búsqueda en Vivo:",
+      searchPlaceholder: "Buscar por títulos, autores, notas...",
+      applyFilters: "Aplicar Filtros y Volver",
+      sortModalTitle: "🔃 Criterio de Orden",
+      sortSelect: "Ordenar Por:",
+      confirmSort: "Confirmar y Volver",
+      shelvesModalTitle: "📁 Estanterías",
+      toggleGridList: "⊞ Cuadrícula / ☰ Lista",
+      newShelf: "➕ Nueva Estantería",
+      goalsModalTitle: "🎯 Metas de Lectura",
+      mCount: "Meta Mensual (Textos):",
+      yCount: "Meta Anual (Textos):",
+      mPages: "Meta Mensual (Páginas):",
+      yPages: "Meta Anual (Páginas):",
+      saveGoals: "Guardar y Volver",
+      exportModalTitle: "📤 Exportar y Compartir",
+      exportFilterHeading: "🎯 Filtrar Textos a Exportar (Opcional)",
+      byStatus: "Por Estado:",
+      byShelf: "Por Estantería:",
+      exportFormatChoice: "Elegir Formato:",
+      settingsModalTitle: "⚙️ Ajustes y Apariencia",
+      themeMode: "Modo de Tema:",
+      themeDesc: "Cambiar entre modo día y noche.",
+      streakGoalsToggle: "Racha y Barra de Metas:",
+      streakGoalsDesc: "Mostrar u ocultar los indicadores superiores.",
+      username: "Nombre de Usuario:",
+      splashSetting: "Pantalla de Inicio:",
+      wallpaper: "Fondo de Pantalla:",
+      selectImg: "Elegir Imagen",
+      clearImg: "Eliminar",
+      paletteTitle: "Color de Texto, Botón y Tema:",
+      viewList: "☰ Vista de Lista",
+      viewGrid: "⊞ Vista de Cuadrícula",
+      countTexts: "títulos listados",
+      noRecords: "No se encontraron registros.",
+      edit: "Editar",
+      delete: "Eliminar",
+      clearFilter: "Limpiar Filtro",
+      notSpecified: "(No especificado)",
+      allStatuses: "Todos los estados",
+      allShelves: "Todas las estanterías",
+      allTypes: "Todos los tipos",
+      allAuthors: "Todos los autores",
+      allTags: "Todas las etiquetas",
+      allYears: "Todos los años",
+      allMonths: "Todos los meses",
+      sortNewest: "Más recientes (Predeterminado)",
+      sortOldest: "Más antiguos",
+      sortTitleAsc: "Título (A → Z)",
+      sortAuthorAsc: "Autor (A → Z)",
+      sortProgDesc: "Progreso: Alto → Bajo",
+      sortProgAsc: "Progreso: Bajo → Alto",
+      sortPagesDesc: "Páginas: Más → Menos",
+      sortPagesAsc: "Páginas: Menos → Más",
+      sortEndDesc: "Fecha de fin: Más reciente → Más antigua",
+      sortEndAsc: "Fecha de fin: Más antigua → Más reciente",
+      statuses: {
+        "Okunuyor": "Leyendo",
+        "Bitti": "Terminado",
+        "Yarım Kaldı": "Pausado",
+        "Yarıda Bırakıldı": "Abandonado",
+        "Okumak İstenilenlerde": "Quiero Leer"
+      },
+      types: {
+        "Kitap": "Libro",
+        "Makale": "Artículo",
+        "Rapor": "Informe",
+        "Karar": "Sentencia",
+        "Tez": "Tesis"
+      },
+      shelves: {
+        "Macera": "Aventura",
+        "Aşk": "Romance",
+        "Bilim Kurgu": "Ciencia Ficción",
+        "Klasikler": "Clásicos",
+        "Felsefe": "Filosofía"
+      },
+      months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+      imgDetailsHeading: "🖼️ Detalles Adicionales en la Imagen (Portada, Título y Autor son predeterminados):",
+      optShelf: "Estantería / Serie",
+      optStatus: "Estado",
+      optProgress: "Progreso",
+      optPages: "Páginas",
+      optTags: "Etiquetas",
+      optDates: "Fechas",
+      optNotes: "Notas"
+    }
+  };
+
+  function translateValue(category, val) {
+    if (!val) return "";
+    const t = translations[currentLang] || translations.tr;
+    if (t[category] && t[category][val]) {
+      return t[category][val];
+    }
+    return val;
   }
 
-  // Güvenlik zamanlayıcısı: 1.5 sn sonra ekranı mutlaka kaldırır
-  setTimeout(() => {
-    const splash = document.getElementById("splash-screen");
-    const langBox = document.getElementById("splash-lang-box");
-    if (splash && (!langBox || langBox.style.display !== "block")) {
-      splash.classList.add("hidden");
-      splash.style.display = "none";
+  const colorPalette = [
+    { name: "Açık Sarı", hex: "#eab308", bg: "#fefce8" },
+    { name: "Koyu Sarı", hex: "#a16207", bg: "#fef9c3" },
+    { name: "Açık Turuncu", hex: "#fb923c", bg: "#fff7ed" },
+    { name: "Koyu Turuncu", hex: "#c2410c", bg: "#ffedd5" },
+    { name: "Açık Pembe", hex: "#f472b6", bg: "#fdf2f8" },
+    { name: "Koyu Pembe", hex: "#be185d", bg: "#fce7f3" },
+    { name: "Açık Kırmızı", hex: "#f87171", bg: "#fef2f2" },
+    { name: "Koyu Kırmızı", hex: "#b91c1c", bg: "#fee2e2" },
+    { name: "Açık Mor", hex: "#c084fc", bg: "#faf5ff" },
+    { name: "Koyu Mor", hex: "#6b21a8", bg: "#f3e8ff" },
+    { name: "Açık Mavi", hex: "#60a5fa", bg: "#eff6ff" },
+    { name: "Koyu Mavi", hex: "#1d4ed8", bg: "#dbeafe" },
+    { name: "Açık Yeşil", hex: "#4ade80", bg: "#f0fdf4" },
+    { name: "Koyu Yeşil", hex: "#15803d", bg: "#dcfce7" },
+    { name: "Açık Gri", hex: "#94a3b8", bg: "#f8fafc" },
+    { name: "Koyu Gri", hex: "#475569", bg: "#f1f5f9" },
+    { name: "Kemik / Beyaz", hex: "#64748b", bg: "#ffffff" },
+    { name: "Taş / Açık", hex: "#475569", bg: "#f8fafc" },
+    { name: "Füme / Açık Siyah", hex: "#334155", bg: "#e2e8f0" },
+    { name: "Siyah", hex: "#0f172a", bg: "#cbd5e1" }
+  ];
+
+  const defaultShelves = [
+    { name: "Macera", cover: "" },
+    { name: "Aşk", cover: "" },
+    { name: "Bilim Kurgu", cover: "" },
+    { name: "Klasikler", cover: "" },
+    { name: "Felsefe", cover: "" }
+  ];
+
+  let records = JSON.parse(localStorage.getItem("reader_records_v5")) || [];
+  let shelvesList = JSON.parse(localStorage.getItem("reader_shelves_v2")) || defaultShelves;
+  let currentColorHex = localStorage.getItem("reader_custom_color") || "#1d4ed8";
+  let isDarkMode = localStorage.getItem("reader_dark_mode") === "true";
+  let currentUsername = localStorage.getItem("reader_username") || "";
+  let splashEnabled = localStorage.getItem("reader_splash_enabled") !== "false";
+  let splashAnim = localStorage.getItem("reader_splash_anim") || "circle";
+  let showStreak = localStorage.getItem("reader_show_streak") !== "false";
+  let showGoals = localStorage.getItem("reader_show_goals") !== "false";
+  let userGoals = JSON.parse(localStorage.getItem("reader_user_goals")) || { mCount: "", yCount: "", mPages: "", yPages: "" };
+
+  let itemViewMode = localStorage.getItem("reader_item_view_mode") || "list";
+  let shelfViewMode = localStorage.getItem("reader_shelf_view_mode") || "grid";
+  let activeClickFilters = { author: null, type: null, shelf: null, tag: null };
+
+  let imageExportPrefs = JSON.parse(localStorage.getItem("reader_image_export_prefs")) || {
+    shelf: false,
+    status: false,
+    progress: false,
+    pages: false,
+    tags: false,
+    dates: false,
+    notes: false
+  };
+
+  let currentLang = localStorage.getItem("reader_app_lang");
+  let needsInitialLangPrompt = false;
+
+  if (!currentLang) {
+    const navLang = (navigator.language || navigator.userLanguage || "tr").toLowerCase();
+    if (navLang.startsWith("tr")) currentLang = "tr";
+    else if (navLang.startsWith("en")) currentLang = "en";
+    else if (navLang.startsWith("es")) currentLang = "es";
+    else {
+      currentLang = "tr";
+      needsInitialLangPrompt = true;
     }
-  }, 1500);
+    localStorage.setItem("reader_app_lang", currentLang);
+  }
 
-  window.addEventListener("DOMContentLoaded", () => {
-    try {
-      calculateStreak();
-      loadBg(localStorage.getItem("reader_custom_bg"));
-      applyThemeMode();
+  function setAppLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem("reader_app_lang", lang);
+    applyTranslations();
+  }
 
-      const usernameInp = document.getElementById("setting-username");
-      if (usernameInp) usernameInp.value = currentUsername;
-      const mCountInp = document.getElementById("goal-monthly-count");
-      if (mCountInp) mCountInp.value = userGoals.mCount || "";
-      const yCountInp = document.getElementById("goal-yearly-count");
-      if (yCountInp) yCountInp.value = userGoals.yCount || "";
-      const mPagesInp = document.getElementById("goal-monthly-pages");
-      if (mPagesInp) mPagesInp.value = userGoals.mPages || "";
-      const yPagesInp = document.getElementById("goal-yearly-pages");
-      if (yPagesInp) yPagesInp.value = userGoals.yPages || "";
+  function selectLanguageInitial(lang) {
+    setAppLanguage(lang);
+    document.getElementById("splash-lang-box").style.display = "none";
+    proceedSplashExit();
+  }
 
-      applyTranslations();
+  function applyTranslations() {
+    const t = translations[currentLang] || translations.tr;
+    document.querySelectorAll(".lang-flag-btn").forEach(b => b.classList.remove("active"));
+    const activeFlag = document.getElementById(`flag-${currentLang}`);
+    if (activeFlag) activeFlag.classList.add("active");
 
-      if (!splashEnabled) {
-        const splash = document.getElementById("splash-screen");
-        if (splash) splash.style.display = "none";
+    const splashTitle = document.getElementById("splash-title");
+    splashTitle.textContent = currentUsername ? `${t.welcome.replace('!', '')} ${currentUsername}!` : t.welcome;
+    document.getElementById("splash-subtitle").textContent = t.welcomeSub;
+
+    document.getElementById("lbl-menu-header").textContent = t.menuHeader;
+    document.getElementById("btn-menu-shelves").textContent = t.menuShelves;
+    document.getElementById("btn-menu-goals").textContent = t.menuGoals;
+    document.getElementById("btn-menu-export").textContent = t.menuExport;
+    document.getElementById("btn-menu-settings").textContent = t.menuSettings;
+
+    if (!document.getElementById("edit-id").value) {
+      document.getElementById("form-heading").textContent = t.newText;
+    }
+    document.getElementById("lbl-text-title").textContent = t.textTitle;
+    document.getElementById("lbl-cover-img").textContent = t.coverImg;
+    document.getElementById("btn-from-device").textContent = t.fromDevice;
+    document.getElementById("lbl-authors").textContent = t.authors;
+    document.getElementById("btn-add-author").textContent = t.addAuthor;
+    document.getElementById("lbl-type").textContent = t.type;
+    document.getElementById("btn-add-type").textContent = t.addType;
+    document.getElementById("lbl-shelf").textContent = t.shelf;
+    document.getElementById("btn-add-shelf").textContent = t.addShelf;
+    document.getElementById("lbl-status").textContent = t.status;
+    document.getElementById("lbl-total-pages").textContent = t.totalPages;
+    document.getElementById("lbl-read-pages").textContent = t.readPages;
+    document.getElementById("lbl-progress-pct").textContent = t.progressPct;
+    document.getElementById("lbl-tags").textContent = t.tags;
+    document.getElementById("btn-add-tag").textContent = t.addTag;
+    document.getElementById("lbl-start-date").textContent = t.startDate;
+    document.getElementById("lbl-end-date").textContent = t.endDate;
+    document.getElementById("lbl-notes").textContent = t.notes;
+    document.getElementById("save-button").textContent = t.save;
+    document.getElementById("cancel-edit-btn").textContent = t.cancel;
+
+    document.getElementById("lbl-filter-modal-title").textContent = t.filterModalTitle;
+    document.getElementById("lbl-search-term").textContent = t.searchTerm;
+    document.getElementById("search-input").placeholder = t.searchPlaceholder;
+    document.getElementById("lbl-filter-status").textContent = t.status;
+    document.getElementById("lbl-filter-author").textContent = t.authors;
+    document.getElementById("lbl-filter-type").textContent = t.type;
+    document.getElementById("lbl-filter-shelf").textContent = t.shelf;
+    document.getElementById("lbl-filter-tag").textContent = t.tags;
+    document.getElementById("btn-apply-filters").textContent = t.applyFilters;
+
+    document.getElementById("lbl-sort-modal-title").textContent = t.sortModalTitle;
+    document.getElementById("lbl-sort-select").textContent = t.sortSelect;
+    document.getElementById("btn-confirm-sort").textContent = t.confirmSort;
+
+    document.getElementById("lbl-shelves-modal-title").textContent = t.shelvesModalTitle;
+    document.getElementById("btn-new-shelf").textContent = t.newShelf;
+
+    document.getElementById("lbl-goals-modal-title").textContent = t.goalsModalTitle;
+    document.getElementById("lbl-m-count").textContent = t.mCount;
+    document.getElementById("lbl-y-count").textContent = t.yCount;
+    document.getElementById("lbl-m-pages").textContent = t.mPages;
+    document.getElementById("lbl-y-pages").textContent = t.yPages;
+    document.getElementById("btn-save-goals").textContent = t.saveGoals;
+
+    document.getElementById("lbl-export-modal-title").textContent = t.exportModalTitle;
+    document.getElementById("lbl-export-filter-heading").textContent = t.exportFilterHeading;
+    document.getElementById("lbl-exp-status").textContent = t.byStatus;
+    document.getElementById("lbl-exp-shelf").textContent = t.byShelf;
+    document.getElementById("lbl-export-format-choice").textContent = t.exportFormatChoice;
+    document.getElementById("lbl-image-export-details").textContent = t.imgDetailsHeading;
+    document.getElementById("lbl-opt-shelf").textContent = t.optShelf;
+    document.getElementById("lbl-opt-status").textContent = t.optStatus;
+    document.getElementById("lbl-opt-progress").textContent = t.optProgress;
+    document.getElementById("lbl-opt-pages").textContent = t.optPages;
+    document.getElementById("lbl-opt-tags").textContent = t.optTags;
+    document.getElementById("lbl-opt-dates").textContent = t.optDates;
+    document.getElementById("lbl-opt-notes").textContent = t.optNotes;
+
+    document.getElementById("lbl-settings-modal-title").textContent = t.settingsModalTitle;
+    document.getElementById("lbl-theme-mode").textContent = t.themeMode;
+    document.getElementById("lbl-theme-desc").textContent = t.themeDesc;
+    document.getElementById("lbl-streak-goals-toggle").textContent = t.streakGoalsToggle;
+    document.getElementById("lbl-streak-goals-desc").textContent = t.streakGoalsDesc;
+    document.getElementById("lbl-username").textContent = t.username;
+    document.getElementById("lbl-splash-setting").textContent = t.splashSetting;
+    document.getElementById("lbl-wallpaper").textContent = t.wallpaper;
+    document.getElementById("btn-select-bg").textContent = t.selectImg;
+    document.getElementById("btn-clear-bg").textContent = t.clearImg;
+    document.getElementById("lbl-palette-title").textContent = t.paletteTitle;
+
+    document.getElementById("item-view-toggle-btn").textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
+
+    const statusSelect = document.getElementById("status");
+    const currentStatusVal = statusSelect.value;
+    statusSelect.innerHTML = `
+      <option value="">${t.notSpecified}</option>
+      ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
+    `;
+    statusSelect.value = currentStatusVal;
+
+    const filterStatusSelect = document.getElementById("filter-status");
+    const curFilterStatusVal = filterStatusSelect.value;
+    filterStatusSelect.innerHTML = `
+      <option value="all">${t.allStatuses}</option>
+      ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
+    `;
+    filterStatusSelect.value = curFilterStatusVal;
+
+    const expStatusSelect = document.getElementById("export-filter-status");
+    const curExpStatusVal = expStatusSelect.value;
+    expStatusSelect.innerHTML = `
+      <option value="all">${t.allStatuses}</option>
+      ${canonicalStatuses.map(st => `<option value="${st}">${translateValue("statuses", st)}</option>`).join("")}
+    `;
+    expStatusSelect.value = curExpStatusVal;
+
+    const sortSelect = document.getElementById("sort-order");
+    const curSortVal = sortSelect.value;
+    sortSelect.innerHTML = `
+      <option value="newest">${t.sortNewest}</option>
+      <option value="oldest">${t.sortOldest}</option>
+      <option value="title-asc">${t.sortTitleAsc}</option>
+      <option value="author-asc">${t.sortAuthorAsc}</option>
+      <option value="prog-desc">${t.sortProgDesc}</option>
+      <option value="prog-asc">${t.sortProgAsc}</option>
+      <option value="pages-desc">${t.sortPagesDesc}</option>
+      <option value="pages-asc">${t.sortPagesAsc}</option>
+      <option value="end-desc">${t.sortEndDesc}</option>
+      <option value="end-asc">${t.sortEndAsc}</option>
+    `;
+    sortSelect.value = curSortVal;
+
+    const filterMonthSelect = document.getElementById("filter-month");
+    const curMonthVal = filterMonthSelect.value;
+    filterMonthSelect.innerHTML = `<option value="all">${t.allMonths}</option>` +
+      t.months.map((mName, i) => `<option value="${String(i + 1).padStart(2, '0')}">${mName}</option>`).join("");
+    filterMonthSelect.value = curMonthVal;
+
+    updateCustomDropdowns();
+    populateFilterDropdowns();
+    renderShelvesContainer();
+    renderItems();
+    updateGoalsDisplay();
+  }
+
+  // ================= MODALLAR =================
+  function openFullScreenModal(modalId) {
+    closeDrawer();
+    document.querySelectorAll(".full-page-view").forEach(m => m.style.display = "none");
+    const m = document.getElementById(modalId);
+    if (m) {
+      m.style.display = "block";
+      if (modalId === "modal-shelves") renderShelvesContainer();
+      if (modalId === "modal-export") populateExportFilterOptions();
+    }
+  }
+
+  // YENİ METİN EKLEME EKRANINI SIFIRLAYARAK AÇMA (Düzenleme çakışmasını çözer)
+  function openNewRecordModal() {
+    resetForm();
+    openFullScreenModal('modal-form');
+  }
+
+  function closeFullScreenModal(modalId) {
+    const m = document.getElementById(modalId);
+    if (m) m.style.display = "none";
+    if (modalId === 'modal-form') {
+      resetForm();
+    }
+  }
+
+  function openDrawer() {
+    document.getElementById("side-drawer").classList.add("open");
+    document.getElementById("drawer-overlay").classList.add("open");
+  }
+  function closeDrawer() {
+    document.getElementById("side-drawer").classList.remove("open");
+    document.getElementById("drawer-overlay").classList.remove("open");
+  }
+
+  // ================= GÖRSEL DOSYASI YÜKLEME =================
+  function handleCoverFileUpload(e, targetInputId) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      document.getElementById(targetInputId).value = evt.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function toggleItemViewMode() {
+    const t = translations[currentLang] || translations.tr;
+    itemViewMode = itemViewMode === "list" ? "grid" : "list";
+    localStorage.setItem("reader_item_view_mode", itemViewMode);
+    document.getElementById("item-view-toggle-btn").textContent = itemViewMode === "list" ? t.viewGrid : t.viewList;
+    renderItems();
+  }
+
+  function toggleShelfViewMode() {
+    shelfViewMode = shelfViewMode === "grid" ? "list" : "grid";
+    localStorage.setItem("reader_shelf_view_mode", shelfViewMode);
+    renderShelvesContainer();
+  }
+
+  // ================= RAFLAR YÖNETİMİ =================
+  function renderShelvesContainer() {
+    const container = document.getElementById("shelves-container");
+    const t = translations[currentLang] || translations.tr;
+    container.innerHTML = "";
+    container.className = shelfViewMode === "grid" ? "grid-view-container" : "list-view-container";
+
+    shelvesList.forEach((shelf, idx) => {
+      const bookCount = records.filter(r => r.shelf === shelf.name).length;
+      const shelfItem = document.createElement("div");
+      const displayedShelfName = translateValue("shelves", shelf.name);
+
+      if (shelfViewMode === "grid") {
+        shelfItem.className = "grid-card";
+        shelfItem.innerHTML = `
+          <div class="card-cover-box" style="${shelf.cover ? `background-image: url('${shelf.cover}');` : ''}">
+            ${!shelf.cover ? `<div class="cover-fallback-title">${escapeHtml(displayedShelfName)}</div>` : ''}
+            <button class="shelf-menu-btn" onclick="toggleShelfMenu(event, ${idx})">⋮</button>
+            <div class="shelf-popover-menu" id="shelf-menu-${idx}">
+              <button onclick="editShelf(${idx})">✏️ ${t.edit}</button>
+              <button class="delete" onclick="deleteShelf(${idx})">🗑️ ${t.delete}</button>
+            </div>
+          </div>
+          <div class="card-basic-header">
+            <span class="card-basic-title">${escapeHtml(displayedShelfName)}</span>
+            <button class="expand-toggle-btn" onclick="toggleDetails(this, 'shelf-det-${idx}')">▼</button>
+          </div>
+          <div class="card-expandable-details" id="shelf-det-${idx}">
+            <p><strong>${t.countTexts}:</strong> ${bookCount}</p>
+            <div style="margin-top: 0.5rem;">
+              <button class="view-toggle-btn" onclick="closeFullScreenModal('modal-shelves'); toggleClickFilter('shelf', '${escapeHtml(shelf.name)}')">Metinleri Listele</button>
+            </div>
+          </div>
+        `;
       } else {
-        forceDismissSplash();
+        shelfItem.className = "list-card";
+        shelfItem.innerHTML = `
+          <div class="list-card-main-row">
+            <div class="list-thumb" style="${shelf.cover ? `background-image: url('${shelf.cover}');` : ''}">
+              ${!shelf.cover ? escapeHtml(displayedShelfName.slice(0, 5)) : ''}
+            </div>
+            <div class="list-card-title">${escapeHtml(displayedShelfName)}</div>
+            <button class="expand-toggle-btn" onclick="toggleDetails(this, 'shelf-det-${idx}')">▼</button>
+          </div>
+          <div class="card-expandable-details" id="shelf-det-${idx}">
+            <p><strong>${t.countTexts}:</strong> ${bookCount}</p>
+            <div class="card-actions" style="margin-top: 0.5rem;">
+              <button class="view-toggle-btn" onclick="closeFullScreenModal('modal-shelves'); toggleClickFilter('shelf', '${escapeHtml(shelf.name)}')">Metinleri Listele</button>
+              <button class="icon-btn" onclick="editShelf(${idx})">✏️</button>
+              <button class="icon-btn" onclick="deleteShelf(${idx})">🗑️</button>
+            </div>
+          </div>
+        `;
       }
-    } catch (err) {
-      console.error(err);
-      forceDismissSplash();
+      container.appendChild(shelfItem);
+    });
+  }
+
+  function toggleShelfMenu(e, idx) {
+    e.stopPropagation();
+    document.querySelectorAll(".shelf-popover-menu").forEach(m => m.style.display = "none");
+    const m = document.getElementById(`shelf-menu-${idx}`);
+    if (m) m.style.display = "block";
+  }
+
+  document.addEventListener("click", () => {
+    document.querySelectorAll(".shelf-popover-menu").forEach(m => m.style.display = "none");
+  });
+
+  function promptCreateNewShelf() {
+    const name = prompt("Yeni raf adını yazın / New shelf name:");
+    if (!name || !name.trim()) return;
+    const cover = prompt("Raf kapak görseli bağlantısı (URL) - İsteğe bağlı:");
+    shelvesList.push({ name: name.trim(), cover: cover ? cover.trim() : "" });
+    saveShelvesAndRender();
+  }
+
+  function editShelf(idx) {
+    const s = shelvesList[idx];
+    const newName = prompt("Raf adını düzenle:", s.name);
+    if (!newName || !newName.trim()) return;
+    const newCover = prompt("Kapak görseli bağlantısı (URL):", s.cover || "");
+
+    const oldName = s.name;
+    s.name = newName.trim();
+    s.cover = newCover ? newCover.trim() : "";
+
+    records.forEach(r => { if (r.shelf === oldName) r.shelf = s.name; });
+    saveShelvesAndRender();
+    saveAndRender();
+  }
+
+  function deleteShelf(idx) {
+    const s = shelvesList[idx];
+    if (!confirm(`"${translateValue('shelves', s.name)}" silinsin mi?`)) return;
+    records.forEach(r => { if (r.shelf === s.name) r.shelf = ""; });
+    shelvesList.splice(idx, 1);
+    saveShelvesAndRender();
+    saveAndRender();
+  }
+
+  function saveShelvesAndRender() {
+    localStorage.setItem("reader_shelves_v2", JSON.stringify(shelvesList));
+    renderShelvesContainer();
+    updateCustomDropdowns();
+  }
+
+  function toggleDetails(btn, detailsId) {
+    const det = document.getElementById(detailsId);
+    if (!det) return;
+    const isShowing = det.style.display === "block";
+    det.style.display = isShowing ? "none" : "block";
+    btn.classList.toggle("expanded", !isShowing);
+  }
+
+  // ================= GÖRSEL PAYLAŞIM AYARLARI =================
+  function loadImageExportPrefs() {
+    document.getElementById("img-opt-shelf").checked = !!imageExportPrefs.shelf;
+    document.getElementById("img-opt-status").checked = !!imageExportPrefs.status;
+    document.getElementById("img-opt-progress").checked = !!imageExportPrefs.progress;
+    document.getElementById("img-opt-pages").checked = !!imageExportPrefs.pages;
+    document.getElementById("img-opt-tags").checked = !!imageExportPrefs.tags;
+    document.getElementById("img-opt-dates").checked = !!imageExportPrefs.dates;
+    document.getElementById("img-opt-notes").checked = !!imageExportPrefs.notes;
+  }
+
+  function saveImageExportPrefs() {
+    imageExportPrefs = {
+      shelf: document.getElementById("img-opt-shelf").checked,
+      status: document.getElementById("img-opt-status").checked,
+      progress: document.getElementById("img-opt-progress").checked,
+      pages: document.getElementById("img-opt-pages").checked,
+      tags: document.getElementById("img-opt-tags").checked,
+      dates: document.getElementById("img-opt-dates").checked,
+      notes: document.getElementById("img-opt-notes").checked
+    };
+    localStorage.setItem("reader_image_export_prefs", JSON.stringify(imageExportPrefs));
+  }
+
+  // ================= DIŞA AKTARMA VE PAYLAŞIM =================
+  function populateExportFilterOptions() {
+    const t = translations[currentLang] || translations.tr;
+    const shelfSel = document.getElementById("export-filter-shelf");
+    shelfSel.innerHTML = `<option value="all">${t.allShelves}</option>`;
+    shelvesList.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s.name;
+      opt.textContent = translateValue("shelves", s.name);
+      shelfSel.appendChild(opt);
+    });
+    loadImageExportPrefs();
+    updateExportPreviewCount();
+  }
+
+  function getExportFilteredRecords() {
+    const selStatus = document.getElementById("export-filter-status").value;
+    const selShelf = document.getElementById("export-filter-shelf").value;
+
+    return records.filter(r => {
+      if (selStatus !== "all" && r.status !== selStatus) return false;
+      if (selShelf !== "all" && r.shelf !== selShelf) return false;
+      return true;
+    });
+  }
+
+  function updateExportPreviewCount() {
+    const count = getExportFilteredRecords().length;
+    document.getElementById("export-preview-text").textContent = `Seçilen filtreye göre toplam ${count} metin paylaşılacak.`;
+  }
+
+  function executeExport(format) {
+    if (!format) return;
+    const targetData = getExportFilteredRecords();
+
+    if (targetData.length === 0) {
+      alert("Seçilen filtreye uygun paylaşılacak metin bulunamadı.");
+      document.getElementById("export-format-choice").value = "";
+      return;
     }
+
+    if (format === "png") exportAsImage(targetData);
+    else if (format === "csv") exportToCSV(targetData);
+    else if (format === "docx") exportToDocx(targetData);
+    else if (format === "pdf") exportToPDF();
+    else if (format === "copy") exportToClipboard(targetData);
+
+    document.getElementById("export-format-choice").value = "";
+  }
+
+  function exportAsImage(targetData) {
+    saveImageExportPrefs();
+    const exportBox = document.createElement("div");
+    exportBox.style.padding = "1.5rem";
+    exportBox.style.background = window.getComputedStyle(document.body).backgroundColor;
+    exportBox.style.backgroundImage = window.getComputedStyle(document.body).backgroundImage;
+    exportBox.style.backgroundSize = "cover";
+    exportBox.style.color = "var(--text-main)";
+    exportBox.style.borderRadius = "12px";
+    exportBox.style.maxWidth = "800px";
+
+    exportBox.innerHTML = `
+      <h2 style="color: var(--active-accent); margin-bottom: 0.5rem;">📚 ReaderTracker</h2>
+      <p style="margin-bottom: 1rem; font-size: 0.85rem; opacity: 0.8;">Tarih: ${new Date().toLocaleDateString('tr-TR')} | Toplam: ${targetData.length} Eser</p>
+      ${targetData.map((r, i) => {
+        const authorText = r.authors && r.authors.length ? ` - <span>✍️ ${escapeHtml(r.authors.join(', '))}</span>` : '';
+        const shelfText = imageExportPrefs.shelf && r.shelf ? ` • <span>📁 ${escapeHtml(translateValue("shelves", r.shelf))}</span>` : '';
+        const statusText = imageExportPrefs.status && r.status ? ` • <span style="font-weight:700;">[${escapeHtml(translateValue("statuses", r.status))}]</span>` : '';
+        const progressText = imageExportPrefs.progress && (r.progress !== null) ? ` • <span>%${r.progress}</span>` : '';
+        const pagesText = imageExportPrefs.pages && r.totalPages ? ` • <span>📖 ${r.readPages || 0}/${r.totalPages} s.</span>` : '';
+        const datesText = imageExportPrefs.dates && (r.startDate || r.endDate) ? ` • <span>🗓️ ${[r.startDate, r.endDate].filter(Boolean).join(' - ')}</span>` : '';
+        const tagsText = imageExportPrefs.tags && r.tags && r.tags.length ? `<div style="margin-top:0.3rem; font-size:0.75rem; opacity:0.8;">#${escapeHtml(r.tags.join(' #'))}</div>` : '';
+        const notesText = imageExportPrefs.notes && r.notes ? `<div style="margin-top:0.35rem; font-size:0.8rem; background:rgba(0,0,0,0.04); padding:0.4rem; border-radius:4px;">${escapeHtml(r.notes)}</div>` : '';
+
+        const coverHtml = r.cover ? `<div style="width: 50px; height: 50px; border-radius: 6px; background-image: url('${r.cover}'); background-size: cover; background-position: center; flex-shrink: 0;"></div>` : '';
+
+        return `
+          <div style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.5rem; display: flex; gap: 0.75rem; align-items: flex-start;">
+            ${coverHtml}
+            <div style="flex: 1;">
+              <strong style="color: var(--active-text);">#${i + 1} ${escapeHtml(r.title)}</strong>
+              ${authorText}
+              ${shelfText}
+              ${statusText}
+              ${progressText}
+              ${pagesText}
+              ${datesText}
+              ${tagsText}
+              ${notesText}
+            </div>
+          </div>
+        `;
+      }).join("")}
+    `;
+
+    document.body.appendChild(exportBox);
+    html2canvas(exportBox, { scale: 2, useCORS: true }).then(canvas => {
+      document.body.removeChild(exportBox);
+      const link = document.createElement("a");
+      link.download = `ReaderTracker_${new Date().toISOString().slice(0,10)}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    });
+  }
+
+  function exportToCSV(dataList) {
+    const headers = ["Sıra No", "Metin Adı", "Yazar(lar)", "Tür", "Seri/Raf", "Durum", "Toplam Sayfa", "Okunan Sayfa", "İlerleme (%)", "Etiketler", "Başlangıç Tarihi", "Bitiş Tarihi", "Notlar"];
+    const rows = dataList.map((r, i) => [
+      `"${i + 1}"`, `"${(r.title || '').replace(/"/g, '""')}"`, `"${(r.authors ? r.authors.join(', ') : '').replace(/"/g, '""')}"`,
+      `"${(translateValue('types', r.type) || '').replace(/"/g, '""')}"`, `"${(translateValue('shelves', r.shelf) || '').replace(/"/g, '""')}"`, `"${(translateValue('statuses', r.status) || '').replace(/"/g, '""')}"`,
+      `"${r.totalPages || ''}"`, `"${r.readPages || ''}"`, `"${r.progress ?? ''}"`, `"${(r.tags ? r.tags.join(', ') : '').replace(/"/g, '""')}"`,
+      `"${r.startDate || ''}"`, `"${r.endDate || ''}"`, `"${(r.notes || '').replace(/"/g, '""')}"`
+    ]);
+    const blob = new Blob(["\uFEFF" + [headers.join(";"), ...rows.map(e => e.join(";"))].join("\n")], { type: "text/csv;charset=utf-8;" });
+    downloadBlob(blob, `okuma_listesi_${new Date().toISOString().slice(0,10)}.csv`);
+  }
+
+  function exportToDocx(dataList) {
+    let htmlContent = `
+      <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+      <head><meta charset='utf-8'><title>ReaderTracker</title>
+      <style>
+        body { font-family: Arial, sans-serif; font-size: 11pt; color: #1e293b; }
+        table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+        th, td { border: 1px solid #cbd5e1; padding: 8px; text-align: left; }
+        th { background-color: #f1f5f9; }
+      </style></head><body>
+      <h1>📚 ReaderTracker</h1>
+      <p>Tarih: ${new Date().toLocaleDateString('tr-TR')}</p>
+      <table>
+        <thead><tr><th>#</th><th>Başlık</th><th>Yazar(lar)</th><th>Raf</th><th>Durum</th><th>İlerleme</th></tr></thead>
+        <tbody>
+          ${dataList.map((r, i) => `
+            <tr>
+              <td>${i + 1}</td>
+              <td><strong>${escapeHtml(r.title)}</strong></td>
+              <td>${escapeHtml((r.authors || []).join(", ")) || "-"}</td>
+              <td>${escapeHtml(translateValue("shelves", r.shelf)) || "-"}</td>
+              <td>${escapeHtml(translateValue("statuses", r.status)) || "-"}</td>
+              <td>%${r.progress ?? 0}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table></body></html>`;
+    const blob = new Blob(['\ufeff' + htmlContent], { type: 'application/msword' });
+    downloadBlob(blob, `okuma_listesi_${new Date().toISOString().slice(0,10)}.doc`);
+  }
+
+  function exportToPDF() { window.print(); }
+
+  function exportToClipboard(dataList) {
+    let text = `📚 ReaderTracker (${dataList.length} Metin)\n\n`;
+    dataList.forEach((r, i) => {
+      text += `${i + 1}. ${r.title}`;
+      if (r.authors && r.authors.length) text += ` - ${r.authors.join(", ")}`;
+      if (r.shelf) text += ` [${translateValue("shelves", r.shelf)}]`;
+      if (r.status) text += ` (${translateValue("statuses", r.status)})`;
+      text += `\n`;
+    });
+    navigator.clipboard.writeText(text).then(() => alert("Kopyalandı!"));
+  }
+
+  function downloadBlob(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // ================= STREAK, HEDEFLER & HESAPLAMALAR =================
+  function calculateStreak() {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    let streakCount = parseInt(localStorage.getItem("reader_streak_count") || "1", 10);
+    const lastVisit = localStorage.getItem("reader_last_visit_date");
+
+    if (lastVisit) {
+      const lastDate = new Date(lastVisit);
+      const todayDate = new Date(todayStr);
+      const diffDays = Math.round((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+      if (diffDays === 1) {
+        streakCount++;
+        localStorage.setItem("reader_streak_count", streakCount);
+      } else if (diffDays > 1) {
+        streakCount = 1;
+        localStorage.setItem("reader_streak_count", streakCount);
+      }
+    } else {
+      localStorage.setItem("reader_streak_count", "1");
+      streakCount = 1;
+    }
+    localStorage.setItem("reader_last_visit_date", todayStr);
+    document.getElementById("streak-badge").textContent = `${streakCount} 🔥`;
+  }
+
+  function updateGoalsDisplay() {
+    const displayEl = document.getElementById("goals-display");
+    const now = new Date();
+    const curYear = String(now.getFullYear());
+    const curMonth = String(now.getMonth() + 1).padStart(2, "0");
+
+    let monthReadCount = 0, yearReadCount = 0, monthReadPages = 0, yearReadPages = 0;
+
+    records.forEach(r => {
+      const isFinished = r.status === "Bitti" || r.progress === 100;
+      const dStr = r.endDate || r.startDate;
+      const comp = parseDateComponents(dStr);
+
+      if (isFinished) {
+        if (!comp) {
+          monthReadCount++; yearReadCount++;
+          if (r.readPages) { monthReadPages += r.readPages; yearReadPages += r.readPages; }
+        } else {
+          if (comp.year === curYear) {
+            yearReadCount++;
+            if (r.readPages) yearReadPages += r.readPages;
+            if (comp.month === curMonth) {
+              monthReadCount++;
+              if (r.readPages) monthReadPages += r.readPages;
+            }
+          }
+        }
+      }
+    });
+
+    const goalSegments = [];
+    if (userGoals.mCount) goalSegments.push(`M🎯: ${monthReadCount}/${userGoals.mCount}`);
+    if (userGoals.yCount) goalSegments.push(`Y🎯: ${yearReadCount}/${userGoals.yCount}`);
+    if (userGoals.mPages) goalSegments.push(`S🎯: ${monthReadPages}/${userGoals.mPages}`);
+    if (userGoals.yPages) goalSegments.push(`YS🎯: ${yearReadPages}/${userGoals.yPages}`);
+
+    if (goalSegments.length > 0 && showGoals) {
+      displayEl.style.display = "inline-flex";
+      displayEl.textContent = goalSegments.join(" | ");
+    } else {
+      displayEl.style.display = "none";
+    }
+    document.getElementById("streak-badge").style.display = showStreak ? "inline-flex" : "none";
+  }
+
+  function saveGoals() {
+    userGoals = {
+      mCount: document.getElementById("goal-monthly-count").value,
+      yCount: document.getElementById("goal-yearly-count").value,
+      mPages: document.getElementById("goal-monthly-pages").value,
+      yPages: document.getElementById("goal-yearly-pages").value
+    };
+    localStorage.setItem("reader_user_goals", JSON.stringify(userGoals));
+    updateGoalsDisplay();
+  }
+
+  function updateVisibilitySettings() {
+    showStreak = document.getElementById("setting-show-streak").checked;
+    showGoals = document.getElementById("setting-show-goals").checked;
+    localStorage.setItem("reader_show_streak", showStreak);
+    localStorage.setItem("reader_show_goals", showGoals);
+    updateGoalsDisplay();
+  }
+
+  function calculateProgressFromPages() {
+    const total = parseFloat(document.getElementById("total-pages").value);
+    const read = parseFloat(document.getElementById("read-pages").value);
+    const percentInput = document.getElementById("progress-percent");
+    if (!isNaN(total) && !isNaN(read) && total > 0) {
+      percentInput.value = Math.min(100, Math.max(0, Math.round((read / total) * 100)));
+    }
+  }
+
+  function calculatePagesFromPercent() {
+    const total = parseFloat(document.getElementById("total-pages").value);
+    const percentInput = document.getElementById("progress-percent");
+    const readPagesInput = document.getElementById("read-pages");
+    if (percentInput.value !== "") {
+      let pct = Math.min(100, Math.max(0, Math.round(parseFloat(percentInput.value) || 0)));
+      percentInput.value = pct;
+      if (!isNaN(total) && total > 0) {
+        readPagesInput.value = Math.floor((total * pct) / 100);
+      }
+    }
+  }
+
+  function handleStatusChange(statusVal) {
+    const startInp = document.getElementById("start-date");
+    const endInp = document.getElementById("end-date");
+    const now = new Date();
+    const today = `${String(now.getDate()).padStart(2, "0")}.${String(now.getMonth() + 1).padStart(2, "0")}.${now.getFullYear()}`;
+
+    if (statusVal === "Okunuyor" && !startInp.value.trim()) startInp.value = today;
+    if (statusVal === "Bitti") {
+      if (!endInp.value.trim()) endInp.value = today;
+      if (!startInp.value.trim()) startInp.value = today;
+    }
+  }
+
+  function parseDateComponents(dateStr) {
+    if (!dateStr) return null;
+    const clean = dateStr.trim();
+    const dmy = clean.match(/^(\d{1,2})[\.\/](\d{1,2})[\.\/](\d{4})$/);
+    if (dmy) return { day: dmy[1].padStart(2, '0'), month: dmy[2].padStart(2, '0'), year: dmy[3] };
+    const ymd = clean.match(/^(\d{4})[\.\/-](\d{1,2})[\.\/-](\d{1,2})$/);
+    if (ymd) return { year: ymd[1], month: ymd[2].padStart(2, '0'), day: ymd[3].padStart(2, '0') };
+    return null;
+  }
+
+  // ================= FORM & VERİ KAYIT =================
+  function toggleCustomDropdown(dropdownId) {
+    const dp = document.getElementById(dropdownId);
+    const isShowing = dp.style.display === "block";
+    document.querySelectorAll(".custom-dropdown-panel").forEach(p => p.style.display = "none");
+    dp.style.display = isShowing ? "none" : "block";
+  }
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".custom-select-trigger") && !e.target.closest(".custom-dropdown-panel")) {
+      document.querySelectorAll(".custom-dropdown-panel").forEach(p => p.style.display = "none");
+    }
+  });
+
+  function selectOption(key, val) {
+    const t = translations[currentLang] || translations.tr;
+    document.getElementById(`field-val-${key}`).value = val;
+    let labelText = val ? (key === 'type' ? translateValue('types', val) : (key === 'shelf' ? translateValue('shelves', val) : val)) : t.chooseOrAdd;
+    document.getElementById(`trigger-label-${key}`).textContent = labelText;
+    document.getElementById(`dropdown-${key}`).style.display = "none";
+  }
+
+  function promptAddNewOption(key) {
+    const val = prompt("Yeni değer yazınız:");
+    if (val && val.trim()) {
+      if (key === "shelf") {
+        shelvesList.push({ name: val.trim(), cover: "" });
+        saveShelvesAndRender();
+      }
+      selectOption(key, val.trim());
+      updateCustomDropdowns();
+    }
+  }
+
+  function deleteOptionFromDropdown(key, valToDelete) {
+    if (!confirm(`"${key === 'type' ? translateValue('types', valToDelete) : (key === 'shelf' ? translateValue('shelves', valToDelete) : valToDelete)}" silinsin mi?`)) return;
+
+    if (key === "shelf") {
+      shelvesList = shelvesList.filter(s => s.name !== valToDelete);
+      saveShelvesAndRender();
+    }
+
+    records.forEach(r => {
+      if (key === "author" && r.authors) r.authors = r.authors.filter(a => a !== valToDelete);
+      else if (key === "type" && r.type === valToDelete) r.type = "";
+      else if (key === "shelf" && r.shelf === valToDelete) r.shelf = "";
+      else if (key === "tags" && r.tags) r.tags = r.tags.filter(t => t !== valToDelete);
+    });
+
+    if (document.getElementById(`field-val-${key}`).value === valToDelete) selectOption(key, "");
+    saveAndRender();
+  }
+
+  function updateCustomDropdowns() {
+    const authorsSet = new Set();
+    const typesSet = new Set(canonicalTypes);
+    const shelvesSet = new Set(shelvesList.map(s => s.name));
+    const tagsSet = new Set();
+
+    records.forEach(r => {
+      (r.authors || []).forEach(a => authorsSet.add(a));
+      if (r.type) typesSet.add(r.type);
+      if (r.shelf) shelvesSet.add(r.shelf);
+      (r.tags || []).forEach(t => tagsSet.add(t));
+    });
+
+    renderDropdownItems("author", authorsSet, "authors");
+    renderDropdownItems("type", typesSet, "types");
+    renderDropdownItems("shelf", shelvesSet, "shelves");
+    renderDropdownItems("tags", tagsSet, "tags");
+  }
+
+  function renderDropdownItems(key, setObj, category) {
+    const t = translations[currentLang] || translations.tr;
+    const container = document.getElementById(`items-${key}`);
+    container.innerHTML = `
+      <div class="dropdown-item-row">
+        <span class="dropdown-item-name" style="color: #64748b;" onclick="selectOption('${key}', '')"><em>${t.notSpecified}</em></span>
+      </div>
+    `;
+
+    Array.from(setObj).sort().forEach(val => {
+      const row = document.createElement("div");
+      row.className = "dropdown-item-row";
+      const displayVal = category ? translateValue(category, val) : val;
+      row.innerHTML = `
+        <span class="dropdown-item-name" onclick="selectOption('${key}', '${escapeHtml(val)}')">${escapeHtml(displayVal)}</span>
+        <button class="dropdown-item-del" type="button" onclick="event.stopPropagation(); deleteOptionFromDropdown('${key}', '${escapeHtml(val)}')">✕</button>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  const form = document.getElementById("record-form");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const title = document.getElementById("title").value.trim();
+    if (!title) return;
+
+    const rawAuthor = document.getElementById("field-val-author").value.trim();
+    const authorsArray = rawAuthor ? rawAuthor.split(",").map(a => a.trim()).filter(Boolean) : [];
+    const rawTags = document.getElementById("field-val-tags").value.trim();
+    const tagsArray = rawTags ? rawTags.split(",").map(t => t.trim()).filter(Boolean) : [];
+
+    const totalPages = document.getElementById("total-pages").value ? parseInt(document.getElementById("total-pages").value, 10) : null;
+    const readPages = document.getElementById("read-pages").value ? parseInt(document.getElementById("read-pages").value, 10) : null;
+    let progress = document.getElementById("progress-percent").value ? Math.round(parseFloat(document.getElementById("progress-percent").value)) : null;
+
+    const recordData = {
+      title: title,
+      cover: document.getElementById("cover-url").value.trim(),
+      authors: authorsArray,
+      type: document.getElementById("field-val-type").value.trim(),
+      shelf: document.getElementById("field-val-shelf").value.trim(),
+      status: document.getElementById("status").value,
+      totalPages: totalPages,
+      readPages: readPages,
+      progress: progress,
+      tags: tagsArray,
+      startDate: document.getElementById("start-date").value.trim(),
+      endDate: document.getElementById("end-date").value.trim(),
+      notes: document.getElementById("notes").value.trim()
+    };
+
+    const editId = document.getElementById("edit-id").value;
+    if (editId) {
+      records = records.map(item => item.id == editId ? { ...item, ...recordData } : item);
+    } else {
+      recordData.id = Date.now();
+      records.unshift(recordData);
+    }
+
+    saveAndRender();
+    resetForm();
+    closeFullScreenModal("modal-form");
+  });
+
+  function resetForm() {
+    const t = translations[currentLang] || translations.tr;
+    form.reset();
+    document.getElementById("edit-id").value = "";
+    document.getElementById("cover-url").value = "";
+    document.getElementById("form-heading").textContent = t.newText;
+    document.getElementById("cancel-edit-btn").style.display = "none";
+    ["author", "type", "shelf", "tags"].forEach(k => selectOption(k, ""));
+  }
+
+  function startEdit(id) {
+    const t = translations[currentLang] || translations.tr;
+    const item = records.find(r => r.id == id);
+    if (!item) return;
+
+    document.getElementById("edit-id").value = item.id;
+    document.getElementById("title").value = item.title;
+    document.getElementById("cover-url").value = item.cover || "";
+    selectOption("author", (item.authors || []).join(", "));
+    selectOption("type", item.type || "");
+    selectOption("shelf", item.shelf || "");
+    selectOption("tags", (item.tags || []).join(", "));
+
+    document.getElementById("status").value = item.status || "";
+    document.getElementById("total-pages").value = item.totalPages || "";
+    document.getElementById("read-pages").value = item.readPages || "";
+    document.getElementById("progress-percent").value = item.progress ?? "";
+    document.getElementById("start-date").value = item.startDate || "";
+    document.getElementById("end-date").value = item.endDate || "";
+    document.getElementById("notes").value = item.notes || "";
+
+    document.getElementById("form-heading").textContent = t.editText + item.title;
+    document.getElementById("cancel-edit-btn").style.display = "inline-block";
+    openFullScreenModal("modal-form");
+  }
+
+  function deleteRecord(id) {
+    if (confirm("Bu metin kaydını silmek istediğinize emin misiniz?")) {
+      records = records.filter(r => r.id != id);
+      saveAndRender();
+    }
+  }
+
+  function saveAndRender() {
+    localStorage.setItem("reader_records_v5", JSON.stringify(records));
+    populateFilterDropdowns();
+    updateCustomDropdowns();
+    updateGoalsDisplay();
+    renderShelvesContainer();
+    renderItems();
+  }
+
+  // ================= FİLTRELEME & LİSTELEME =================
+  function toggleClickFilter(type, value) {
+    if (activeClickFilters[type] === value) activeClickFilters[type] = null;
+    else activeClickFilters[type] = value;
+    updateActiveFilterBadge();
+    renderItems();
+  }
+
+  function clearBadgeFilters() {
+    activeClickFilters = { author: null, type: null, shelf: null, tag: null };
+    updateActiveFilterBadge();
+    renderItems();
+  }
+
+  function updateActiveFilterBadge() {
+    const box = document.getElementById("active-tag-filter-display");
+    const txt = document.getElementById("active-filter-text");
+    const list = [];
+    if (activeClickFilters.author) list.push(`Yazar: "${activeClickFilters.author}"`);
+    if (activeClickFilters.type) list.push(`Tür: "${translateValue("types", activeClickFilters.type)}"`);
+    if (activeClickFilters.shelf) list.push(`Raf: "${translateValue("shelves", activeClickFilters.shelf)}"`);
+    if (activeClickFilters.tag) list.push(`Etiket: #${activeClickFilters.tag}`);
+
+    if (list.length > 0) {
+      box.style.display = "flex";
+      txt.textContent = "Aktif Filtre: " + list.join(" | ");
+    } else {
+      box.style.display = "none";
+    }
+  }
+
+  function populateFilterDropdowns() {
+    const t = translations[currentLang] || translations.tr;
+    const filterShelf = document.getElementById("filter-shelf");
+    const filterAuthor = document.getElementById("filter-author");
+    const filterType = document.getElementById("filter-type");
+    const filterTag = document.getElementById("filter-tag");
+
+    const authorsSet = new Set();
+    const typesSet = new Set(canonicalTypes);
+    const shelvesSet = new Set(shelvesList.map(s => s.name));
+    const tagsSet = new Set();
+
+    records.forEach(r => {
+      (r.authors || []).forEach(a => authorsSet.add(a));
+      if (r.type) typesSet.add(r.type);
+      if (r.shelf) shelvesSet.add(r.shelf);
+      (r.tags || []).forEach(t => tagsSet.add(t));
+    });
+
+    populateSelect(filterAuthor, authorsSet, t.allAuthors, false);
+    populateSelect(filterType, typesSet, t.allTypes, "types");
+    populateSelect(filterShelf, shelvesSet, t.allShelves, "shelves");
+    populateSelect(filterTag, tagsSet, t.allTags, false);
+  }
+
+  function populateSelect(elem, setObj, defaultLabel, category) {
+    const curVal = elem.value;
+    elem.innerHTML = `<option value="all">${defaultLabel}</option>`;
+    Array.from(setObj).sort().forEach(val => {
+      const opt = document.createElement("option");
+      opt.value = val;
+      opt.textContent = category ? translateValue(category, val) : val;
+      if (val === curVal) opt.selected = true;
+      elem.appendChild(opt);
+    });
+  }
+
+  function renderItems() {
+    const listContainer = document.getElementById("records-container");
+    const t = translations[currentLang] || translations.tr;
+    listContainer.innerHTML = "";
+    listContainer.className = itemViewMode === "grid" ? "grid-view-container" : "list-view-container";
+
+    const query = document.getElementById("search-input").value.toLowerCase().trim();
+    const selStatus = document.getElementById("filter-status").value;
+    const selAuthor = document.getElementById("filter-author").value;
+    const selType = document.getElementById("filter-type").value;
+    const selShelf = document.getElementById("filter-shelf").value;
+    const selTag = document.getElementById("filter-tag").value;
+    const selYear = document.getElementById("filter-year").value;
+    const selMonth = document.getElementById("filter-month").value;
+
+    let filtered = records.filter(item => {
+      if (query) {
+        const fullContent = `${item.title} ${(item.authors || []).join(' ')} ${translateValue("types", item.type)} ${translateValue("shelves", item.shelf)} ${(item.tags || []).join(' ')} ${item.notes || ''}`.toLowerCase();
+        if (!fullContent.includes(query)) return false;
+      }
+      if (selStatus !== "all" && item.status !== selStatus) return false;
+      if (selAuthor !== "all" && (!item.authors || !item.authors.includes(selAuthor))) return false;
+      if (selType !== "all" && item.type !== selType) return false;
+      if (selShelf !== "all" && item.shelf !== selShelf) return false;
+      if (selTag !== "all" && (!item.tags || !item.tags.includes(selTag))) return false;
+
+      if (activeClickFilters.author && (!item.authors || !item.authors.includes(activeClickFilters.author))) return false;
+      if (activeClickFilters.type && item.type !== activeClickFilters.type) return false;
+      if (activeClickFilters.shelf && item.shelf !== activeClickFilters.shelf) return false;
+      if (activeClickFilters.tag && (!item.tags || !item.tags.includes(activeClickFilters.tag))) return false;
+
+      if (selYear !== "all" || selMonth !== "all") {
+        const sComp = parseDateComponents(item.startDate);
+        const eComp = parseDateComponents(item.endDate);
+        const matchYear = (selYear === "all") || (sComp && sComp.year === selYear) || (eComp && eComp.year === selYear);
+        const matchMonth = (selMonth === "all") || (sComp && sComp.month === selMonth) || (eComp && eComp.month === selMonth);
+        if (!matchYear || !matchMonth) return false;
+      }
+      return true;
+    });
+
+    const order = document.getElementById("sort-order").value;
+    filtered.sort((a, b) => {
+      if (order === "newest") return b.id - a.id;
+      if (order === "oldest") return a.id - b.id;
+      if (order === "title-asc") return (a.title || "").localeCompare(b.title || "", "tr");
+      if (order === "author-asc") return ((a.authors && a.authors[0]) || "").localeCompare(((b.authors && b.authors[0]) || ""), "tr");
+      if (order === "prog-desc") return (b.progress ?? -1) - (a.progress ?? -1);
+      if (order === "prog-asc") return (a.progress ?? 999) - (b.progress ?? 999);
+      if (order === "pages-desc") return (b.totalPages ?? -1) - (a.totalPages ?? -1);
+      if (order === "pages-asc") return (a.totalPages ?? 999999) - (b.totalPages ?? 999999);
+      return 0;
+    });
+
+    document.getElementById("count-display").textContent = `${filtered.length} ${t.countTexts}`;
+
+    if (filtered.length === 0) {
+      listContainer.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--text-muted); background: var(--panel-bg); border-radius: 12px; border: 1px solid var(--border-color);">${t.noRecords}</div>`;
+      return;
+    }
+
+    filtered.forEach((item, index) => {
+      const card = document.createElement("div");
+
+      let metaDetails = [];
+      if (item.authors && item.authors.length) {
+        metaDetails.push(item.authors.map(a => `<span class="clickable-badge" onclick="toggleClickFilter('author', '${escapeHtml(a)}')"><strong>✍️ ${escapeHtml(a)}</strong></span>`).join(", "));
+      }
+      if (item.type) metaDetails.push(`<span class="clickable-badge" onclick="toggleClickFilter('type', '${escapeHtml(item.type)}')">🏷️ ${escapeHtml(translateValue("types", item.type))}</span>`);
+      if (item.shelf) metaDetails.push(`<span class="clickable-badge" onclick="toggleClickFilter('shelf', '${escapeHtml(item.shelf)}')">📁 <em>${escapeHtml(translateValue("shelves", item.shelf))}</em></span>`);
+      if (item.totalPages) metaDetails.push(`<span>📖 ${item.readPages || 0}/${item.totalPages} s.</span>`);
+      if (item.startDate) metaDetails.push(`<span>🗓️ ${escapeHtml(item.startDate)}</span>`);
+      if (item.endDate) metaDetails.push(`<span>🏁 ${escapeHtml(item.endDate)}</span>`);
+
+      let progressHtml = item.progress !== null ? `<span class="progress-badge">%${item.progress} ${item.progress >= 50 ? '🔋' : '🪫'}</span>` : "";
+      let statusHtml = item.status ? `<span class="status-badge status-${item.status.replace(/\s+/g, '-')}">${escapeHtml(translateValue("statuses", item.status))}</span>` : "";
+      let tagsHtml = item.tags && item.tags.length ? `<div class="tags-container">${item.tags.map(t => `<span class="tag-badge clickable-badge" onclick="toggleClickFilter('tag', '${escapeHtml(t)}')">#${escapeHtml(t)}</span>`).join("")}</div>` : "";
+
+      if (itemViewMode === "grid") {
+        card.className = "grid-card";
+        card.innerHTML = `
+          <div class="card-cover-box" style="${item.cover ? `background-image: url('${item.cover}');` : ''}">
+            ${!item.cover ? `<div class="cover-fallback-title">${escapeHtml(item.title)}</div>` : ''}
+          </div>
+          <div class="card-basic-header">
+            <span class="card-basic-title">${escapeHtml(item.title)}</span>
+            <button class="expand-toggle-btn" onclick="toggleDetails(this, 'item-det-${index}')">▼</button>
+          </div>
+          <div class="card-expandable-details" id="item-det-${index}">
+            <div style="margin-bottom: 0.35rem;">${statusHtml} ${progressHtml}</div>
+            ${metaDetails.length ? `<div style="margin-bottom: 0.35rem; color: var(--text-muted);">${metaDetails.join(" • ")}</div>` : ''}
+            ${tagsHtml}
+            ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ''}
+            <div class="card-actions">
+              <button class="icon-btn" onclick="startEdit(${item.id})">✏️ ${t.edit}</button>
+              <button class="icon-btn" onclick="deleteRecord(${item.id})">🗑️ ${t.delete}</button>
+            </div>
+          </div>
+        `;
+      } else {
+        card.className = "list-card";
+        card.innerHTML = `
+          <div class="list-card-main-row">
+            <div class="list-thumb" style="${item.cover ? `background-image: url('${item.cover}');` : ''}">
+              ${!item.cover ? escapeHtml(item.title.slice(0, 6)) : ''}
+            </div>
+            <div class="list-card-title">${escapeHtml(item.title)}</div>
+            <button class="expand-toggle-btn" onclick="toggleDetails(this, 'item-det-${index}')">▼</button>
+          </div>
+          <div class="card-expandable-details" id="item-det-${index}">
+            <div style="margin-bottom: 0.35rem;">${statusHtml} ${progressHtml}</div>
+            ${metaDetails.length ? `<div style="margin-bottom: 0.35rem; color: var(--text-muted);">${metaDetails.join(" • ")}</div>` : ''}
+            ${tagsHtml}
+            ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ''}
+            <div class="card-actions">
+              <button class="icon-btn" onclick="startEdit(${item.id})">✏️ ${t.edit}</button>
+              <button class="icon-btn" onclick="deleteRecord(${item.id})">🗑️ ${t.delete}</button>
+            </div>
+          </div>
+        `;
+      }
+      listContainer.appendChild(card);
+    });
+  }
+
+  // ================= TEMA VE GÖRÜNÜM =================
+  function applyThemeMode() {
+    const btn = document.getElementById("theme-icon-btn");
+    if (isDarkMode) {
+      document.body.classList.add("dark-mode");
+      btn.textContent = "☀️";
+    } else {
+      document.body.classList.remove("dark-mode");
+      btn.textContent = "🌙";
+    }
+    const currentThemeObj = colorPalette.find(c => c.hex === currentColorHex) || colorPalette[11];
+    applyThemeColor(currentThemeObj);
+  }
+
+  function toggleThemeMode() {
+    isDarkMode = !isDarkMode;
+    localStorage.setItem("reader_dark_mode", isDarkMode);
+    applyThemeMode();
+  }
+
+  function applyThemeColor(colObj) {
+    currentColorHex = colObj.hex;
+    localStorage.setItem("reader_custom_color", colObj.hex);
+    document.documentElement.style.setProperty("--active-accent", colObj.hex);
+    document.documentElement.style.setProperty("--active-text", colObj.hex);
+    const splash = document.getElementById("splash-screen");
+    if (splash) splash.style.backgroundColor = colObj.hex;
+
+    if (!localStorage.getItem("reader_custom_bg")) {
+      const bgToApply = isDarkMode ? "#0f172a" : colObj.bg;
+      document.documentElement.style.setProperty("--active-bg-tint", bgToApply);
+      document.body.style.backgroundColor = bgToApply;
+    }
+  }
+
+  const paletteContainer = document.getElementById("palette-container");
+  colorPalette.forEach(col => {
+    const btn = document.createElement("button");
+    btn.className = "color-btn";
+    btn.style.backgroundColor = col.hex;
+    btn.title = col.name;
+    btn.onclick = () => applyThemeColor(col);
+    paletteContainer.appendChild(btn);
+  });
+
+  function handleBgUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      localStorage.setItem("reader_custom_bg", evt.target.result);
+      loadBg(evt.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function loadBg(url) {
+    if (url) {
+      document.body.style.backgroundImage = `url('${url}')`;
+      document.querySelectorAll(".full-page-view").forEach(m => m.style.backgroundImage = `url('${url}')`);
+    } else {
+      document.body.style.backgroundImage = "none";
+      document.querySelectorAll(".full-page-view").forEach(m => m.style.backgroundImage = "none");
+      applyThemeMode();
+    }
+  }
+
+  function clearBg() {
+    localStorage.removeItem("reader_custom_bg");
+    loadBg(null);
+  }
+
+  function updateSplashSettings() {
+    splashEnabled = document.getElementById("setting-splash-enabled").value === "true";
+    splashAnim = document.getElementById("setting-splash-anim").value;
+    localStorage.setItem("reader_splash_enabled", splashEnabled);
+    localStorage.setItem("reader_splash_anim", splashAnim);
+  }
+
+  function updateUsername(name) {
+    currentUsername = name.trim();
+    localStorage.setItem("reader_username", currentUsername);
+    applyTranslations();
+  }
+
+  function escapeHtml(str) {
+    if (!str) return "";
+    return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+  }
+
+  function proceedSplashExit() {
+    const splash = document.getElementById("splash-screen");
+    if (!splashEnabled) {
+      splash.style.display = "none";
+    } else {
+      setTimeout(() => {
+        splash.classList.add(splashAnim === "water" ? "anim-water-out" : "anim-circle-out");
+        setTimeout(() => { splash.style.display = "none"; }, splashAnim === "water" ? 4000 : 2000);
+      }, 1000);
+    }
+  }
+
+  // ================= BAŞLANGIÇ =================
+  window.addEventListener("DOMContentLoaded", () => {
+    calculateStreak();
+    loadBg(localStorage.getItem("reader_custom_bg"));
+    applyThemeMode();
+    applyTranslations();
+
+    document.getElementById("setting-username").value = currentUsername;
+    document.getElementById("goal-monthly-count").value = userGoals.mCount || "";
+    document.getElementById("goal-yearly-count").value = userGoals.yCount || "";
+    document.getElementById("goal-monthly-pages").value = userGoals.mPages || "";
+    document.getElementById("goal-yearly-pages").value = userGoals.yPages || "";
+
+    if (needsInitialLangPrompt) {
+      document.getElementById("splash-lang-box").style.display = "block";
+    } else {
+      proceedSplashExit();
+    }
+
+    populateFilterDropdowns();
+    updateCustomDropdowns();
+    renderItems();
   });
 </script>
 
