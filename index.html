@@ -689,687 +689,6 @@
   <div class="splash-lang-select-box" id="splash-lang-box">
     <div style="font-weight: 700; font-size: 0.95rem;">Select Language / Dil Seçiniz / Seleccionar Idioma</div>
     <div class="splash-lang-btns">
-      <button class="splash-lang-btn" onclick="selectLanguageIni    body.dark-mode {
-      --active-bg-tint: #0f172a;
-      --panel-bg: rgba(30, 41, 59, 0.95);
-      --card-bg: rgba(30, 41, 59, 0.96);
-      --input-bg: #1e293b;
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
-      --border-color: rgba(255, 255, 255, 0.12);
-      --badge-bg: rgba(255, 255, 255, 0.08);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-
-    body {
-      min-height: 100vh;
-      padding: 1.25rem 1rem;
-      background-color: var(--active-bg-tint);
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      background-repeat: no-repeat;
-      color: var(--text-main);
-      transition: background-color 0.3s ease, color 0.3s ease;
-      overflow-x: hidden;
-    }
-
-    /* Karşılama Ekranı (Splash) */
-    #splash-screen {
-      position: fixed;
-      inset: 0;
-      background-color: var(--active-accent);
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 99999;
-      pointer-events: all;
-      text-align: center;
-      padding: 1.5rem;
-    }
-    #splash-screen h1 { font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800; }
-    #splash-screen p { font-size: 1.1rem; opacity: 0.9; }
-
-    .splash-lang-select-box {
-      margin-top: 1.5rem;
-      background: rgba(255, 255, 255, 0.18);
-      padding: 1rem 1.5rem;
-      border-radius: 12px;
-      backdrop-filter: blur(8px);
-      display: none;
-    }
-    .splash-lang-btns {
-      display: flex;
-      gap: 0.75rem;
-      justify-content: center;
-      margin-top: 0.75rem;
-    }
-    .splash-lang-btn {
-      font-size: 1.8rem;
-      background: rgba(255,255,255,0.25);
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 10px;
-      cursor: pointer;
-      padding: 0.3rem 0.6rem;
-      transition: transform 0.15s;
-    }
-    .splash-lang-btn:active { transform: scale(0.9); }
-
-    .anim-circle-out { animation: circleShrink 2s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
-    @keyframes circleShrink {
-      0% { clip-path: circle(150% at 50% 50%); opacity: 1; }
-      100% { clip-path: circle(0% at 50% 50%); opacity: 0; visibility: hidden; }
-    }
-
-    .anim-water-out { animation: waterDrain 4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-    @keyframes waterDrain {
-      0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; }
-      25% { clip-path: polygon(0 25%, 100% 18%, 100% 100%, 0 100%); }
-      50% { clip-path: polygon(0 50%, 100% 58%, 100% 100%, 0 100%); }
-      75% { clip-path: polygon(0 80%, 100% 72%, 100% 100%, 0 100%); }
-      100% { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); opacity: 0; visibility: hidden; }
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    /* Üst Başlık & Hamburger */
-    .top-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.6rem;
-    }
-
-    .top-header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .hamburger-btn {
-      background: var(--panel-bg);
-      border: 1px solid var(--border-color);
-      color: var(--active-text);
-      font-size: 1.35rem;
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    }
-    .hamburger-btn:active { transform: scale(0.95); }
-    .app-title { font-size: 1.45rem; font-weight: 800; }
-
-    /* Streak & Hedef Şeridi */
-    .status-strip {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 0.85rem;
-    }
-
-    .streak-badge {
-      background: var(--panel-bg);
-      border: 1px solid var(--border-color);
-      color: #ea580c;
-      font-weight: 800;
-      font-size: 0.95rem;
-      padding: 0.35rem 0.65rem;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      user-select: none;
-    }
-
-    .goals-display {
-      background: var(--panel-bg);
-      border: 1px solid var(--border-color);
-      color: var(--active-text);
-      font-weight: 700;
-      font-size: 0.9rem;
-      padding: 0.35rem 0.75rem;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    /* Kontroller ve Sayım Şeridi */
-    .controls-strip {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-      padding: 0 0.2rem;
-    }
-
-    .view-toggle-btn {
-      background: var(--panel-bg);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 0.35rem 0.65rem;
-      border-radius: 6px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    /* Hızlı Emoji Butonları */
-    .quick-actions-row {
-      display: flex;
-      gap: 0.6rem;
-      margin-bottom: 1rem;
-      padding: 0 0.2rem;
-    }
-
-    .quick-icon-btn {
-      background: var(--panel-bg);
-      border: 1px solid var(--border-color);
-      color: var(--active-text);
-      font-size: 1.25rem;
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-      transition: transform 0.1s, background 0.15s;
-    }
-    .quick-icon-btn:active { transform: scale(0.92); }
-    .quick-icon-btn:hover { background: var(--card-bg); }
-
-    /* Çekmece Menü (Drawer) */
-    .drawer-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(2px);
-      z-index: 9998;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.25s ease, visibility 0.25s ease;
-    }
-    .drawer-overlay.open { opacity: 1; visibility: visible; }
-
-    .side-drawer {
-      position: fixed;
-      top: 0; bottom: 0; left: 0;
-      width: 280px;
-      max-width: 80%;
-      background: var(--card-bg);
-      border-right: 1px solid var(--border-color);
-      box-shadow: 4px 0 16px rgba(0,0,0,0.15);
-      z-index: 9999;
-      transform: translateX(-100%);
-      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      padding: 1.5rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .side-drawer.open { transform: translateX(0); }
-
-    .drawer-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.25rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .drawer-item-btn {
-      background: var(--panel-bg);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      text-align: left;
-      transition: background 0.15s;
-    }
-    .drawer-item-btn:hover { background: rgba(0,0,0,0.04); color: var(--active-accent); }
-
-    .drawer-lang-row {
-      margin-top: auto;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-    }
-
-    .lang-flag-btn {
-      background: none;
-      border: none;
-      font-size: 1.6rem;
-      cursor: pointer;
-      padding: 0.3rem;
-      border-radius: 6px;
-      transition: transform 0.15s, background 0.15s;
-      line-height: 1;
-    }
-    .lang-flag-btn:hover { background: var(--badge-bg); transform: scale(1.15); }
-    .lang-flag-btn.active {
-      background: var(--badge-bg);
-      outline: 2px solid var(--active-accent);
-    }
-
-    /* TAM EKRAN MODAL */
-    .full-page-view {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: var(--active-bg-tint);
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      z-index: 10000;
-      overflow-y: auto;
-      padding: 1.5rem 1rem;
-      animation: modalFadeIn 0.2s ease-out;
-    }
-
-    @keyframes modalFadeIn {
-      from { opacity: 0; transform: scale(0.98); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .modal-content-container {
-      max-width: 850px;
-      margin: 0 auto;
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 1.5rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-
-    .modal-top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.25rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .modal-close-btn {
-      background: var(--badge-bg);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.15s;
-    }
-    .modal-close-btn:hover { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      position: relative;
-    }
-
-    .form-group label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--active-text);
-    }
-    .form-group.full-width { grid-column: 1 / -1; }
-
-    input, textarea, select {
-      width: 100%;
-      padding: 0.65rem 0.85rem;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 0.9rem;
-      background: var(--input-bg);
-      color: var(--text-main);
-      outline: none;
-    }
-    input:focus, textarea:focus, select:focus {
-      border-color: var(--active-accent);
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-    }
-    textarea { resize: vertical; min-height: 70px; }
-
-    .custom-select-trigger {
-      width: 100%;
-      padding: 0.65rem 0.85rem;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 0.9rem;
-      background: var(--input-bg);
-      color: var(--text-main);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .custom-dropdown-panel {
-      display: none;
-      position: absolute;
-      top: 100%; left: 0; right: 0;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-      z-index: 1000;
-      max-height: 220px;
-      overflow-y: auto;
-      margin-top: 4px;
-    }
-
-    .dropdown-item-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.65rem 0.85rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .dropdown-item-row:hover { background: rgba(0,0,0,0.04); }
-    .dropdown-item-name { cursor: pointer; flex: 1; font-size: 0.9rem; }
-    .dropdown-item-del {
-      background: none; border: none; color: #ef4444;
-      font-size: 1.1rem; font-weight: bold; cursor: pointer; padding: 0 0.35rem;
-    }
-
-    .dropdown-add-new-btn {
-      padding: 0.65rem 0.85rem;
-      color: var(--active-accent);
-      font-weight: 700;
-      font-size: 0.88rem;
-      cursor: pointer;
-    }
-
-    /* 2'li Kare Izgara */
-    .grid-view-container {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.85rem;
-    }
-
-    .grid-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      position: relative;
-    }
-
-    .card-cover-box {
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background-color: var(--panel-bg);
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.85rem;
-      text-align: center;
-      position: relative;
-    }
-
-    .cover-fallback-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--active-text);
-      line-height: 1.3;
-      word-break: break-word;
-    }
-
-    .card-basic-header {
-      padding: 0.65rem 0.75rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--card-bg);
-    }
-
-    .card-basic-title {
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: var(--text-main);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      flex: 1;
-    }
-
-    .expand-toggle-btn {
-      background: none;
-      border: none;
-      color: var(--active-text);
-      cursor: pointer;
-      font-size: 0.95rem;
-      padding: 0.2rem;
-      transition: transform 0.2s ease;
-    }
-    .expand-toggle-btn.expanded { transform: rotate(180deg); }
-
-    .card-expandable-details {
-      display: none;
-      padding: 0.75rem;
-      border-top: 1px solid var(--border-color);
-      font-size: 0.82rem;
-      background: var(--panel-bg);
-    }
-
-    /* Sıralı Görünüm */
-    .list-view-container {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .list-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 0.75rem 1rem;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-    }
-
-    .list-card-main-row {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .list-thumb {
-      width: 48px;
-      height: 48px;
-      border-radius: 6px;
-      background-size: cover;
-      background-position: center;
-      background-color: var(--badge-bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.65rem;
-      font-weight: 700;
-      color: var(--active-text);
-      text-align: center;
-      flex-shrink: 0;
-      padding: 2px;
-      overflow: hidden;
-    }
-
-    .list-card-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text-main);
-      flex: 1;
-    }
-
-    .clickable-badge { cursor: pointer; display: inline-block; }
-    .clickable-badge:hover { opacity: 0.8; }
-    .clickable-badge.active-filter { outline: 2px solid var(--active-accent); }
-
-    .tags-container { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.4rem; }
-    .tag-badge {
-      background: var(--badge-bg); color: var(--active-text); font-size: 0.75rem;
-      font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 4px; border: 1px solid var(--border-color);
-    }
-
-    .status-badge { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px; margin-right: 0.4rem; }
-    .status-Okunuyor { background: #dbeafe; color: #1d4ed8; }
-    .status-Bitti { background: #dcfce7; color: #15803d; }
-    .status-Yarım-Kaldı { background: #fef9c3; color: #854d0e; }
-    .status-Yarıda-Bırakıldı { background: #fee2e2; color: #991b1b; }
-    .status-Okumak-İstenilenlerde { background: #e0e7ff; color: #3730a3; }
-    .progress-badge { display: inline-flex; align-items: center; gap: 0.3rem; background: var(--badge-bg); border: 1px solid var(--border-color); padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.8rem; font-weight: 700; }
-    .item-notes { margin-top: 0.5rem; padding: 0.5rem; background: rgba(0,0,0,0.04); border-radius: 6px; font-size: 0.85rem; white-space: pre-wrap; }
-    .card-actions { display: flex; gap: 0.4rem; margin-top: 0.5rem; }
-    .icon-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.4rem 0.65rem; font-size: 1rem; border-radius: 6px; cursor: pointer; }
-
-    /* Raf Menüsü */
-    .shelf-menu-btn {
-      position: absolute;
-      top: 0.4rem; right: 0.4rem; z-index: 3;
-      background: rgba(0,0,0,0.5); color: #ffffff;
-      border: none; width: 26px; height: 26px;
-      border-radius: 6px; font-size: 1rem; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .shelf-popover-menu {
-      display: none;
-      position: absolute;
-      top: 2rem; right: 0.4rem;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 10;
-      min-width: 120px;
-    }
-    .shelf-popover-menu button {
-      width: 100%; text-align: left; padding: 0.5rem 0.75rem;
-      background: none; border: none; font-size: 0.82rem; color: var(--text-main); cursor: pointer;
-    }
-    .shelf-popover-menu button:hover { background: rgba(0,0,0,0.06); }
-    .shelf-popover-menu button.delete { color: #ef4444; }
-
-    /* Renk Paleti Izgarası */
-    .palette-grid {
-      display: grid !important;
-      grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)) !important;
-      gap: 8px !important;
-      width: 100% !important;
-      margin-top: 0.6rem !important;
-    }
-
-    .color-btn {
-      width: 100% !important;
-      min-height: 38px !important;
-      height: 38px !important;
-      border-radius: 8px !important;
-      border: 2px solid transparent !important;
-      cursor: pointer !important;
-      transition: transform 0.15s, border-color 0.15s !important;
-      outline: none !important;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-    }
-    .color-btn:hover { transform: scale(1.1); }
-    .color-btn.selected {
-      border-color: #ffffff !important;
-      box-shadow: 0 0 0 3px var(--text-main) !important;
-    }
-
-    .settings-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-      padding-bottom: 0.75rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-    .settings-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-
-    .image-export-options-box {
-      background: var(--panel-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 0.85rem;
-      margin-top: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .image-export-options-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .image-export-options-grid label {
-      font-size: 0.82rem;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      cursor: pointer;
-    }
-
-    .themed-text { color: var(--active-text) !important; }
-    .btn-action { background-color: var(--active-accent) !important; color: #ffffff; border: none; padding: 0.65rem 1.4rem; border-radius: 8px; cursor: pointer; font-weight: 600; }
-  </style>
-</head>
-<body>
-
-<div id="splash-screen">
-  <h1 id="splash-title">Hoş geldin!</h1>
-  <p id="splash-subtitle">Okuma listen ve metin arşivin yükleniyor...</p>
-  
-  <div class="splash-lang-select-box" id="splash-lang-box">
-    <div style="font-weight: 700; font-size: 0.95rem;">Select Language / Dil Seçiniz / Seleccionar Idioma</div>
-    <div class="splash-lang-btns">
       <button class="splash-lang-btn" onclick="selectLanguageInitial('tr')">🇹🇷</button>
       <button class="splash-lang-btn" onclick="selectLanguageInitial('en')">🇬🇧</button>
       <button class="splash-lang-btn" onclick="selectLanguageInitial('es')">🇪🇸</button>
@@ -1377,10 +696,8 @@
   </div>
 </div>
 
-<!-- Çekmece Menü Karartması -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
 
-<!-- Sol Çekmece Menü -->
 <div class="side-drawer" id="side-drawer">
   <div class="drawer-header">
     <span class="themed-text" id="lbl-menu-header" style="font-weight: 800; font-size: 1.15rem;">Menü</span>
@@ -1388,6 +705,7 @@
   </div>
   <button class="drawer-item-btn" id="btn-menu-shelves" onclick="openFullScreenModal('modal-shelves')">📁 Kitaplık Rafları</button>
   <button class="drawer-item-btn" id="btn-menu-goals" onclick="openFullScreenModal('modal-goals')">🎯 Okuma Hedefleri</button>
+  <button class="drawer-item-btn" id="btn-menu-reminders" onclick="openFullScreenModal('modal-reminders')">🔔 Hatırlatıcı & Bildirimler</button>
   <button class="drawer-item-btn" id="btn-menu-export" onclick="openFullScreenModal('modal-export')">📤 Dışa Aktar & Paylaş</button>
   <button class="drawer-item-btn" id="btn-menu-settings" onclick="openFullScreenModal('modal-settings')">⚙️ Ayarlar & Görünüm</button>
 
@@ -1647,7 +965,59 @@
   </div>
 </div>
 
-<!-- 6. DIŞA AKTAR & PAYLAŞ MODALI -->
+<!-- 6. HATIRLATICI VE BİLDİRİMLER MODALI -->
+<div class="full-page-view" id="modal-reminders">
+  <div class="modal-content-container">
+    <div class="modal-top-bar">
+      <h2 class="themed-text" id="lbl-reminders-modal-title" style="font-size: 1.3rem;">🔔 Hatırlatıcı & Bildirimler</h2>
+      <button class="modal-close-btn" onclick="closeFullScreenModal('modal-reminders')">✕</button>
+    </div>
+    
+    <div class="settings-row">
+      <div>
+        <div style="font-weight: 600;" class="themed-text" id="lbl-notif-enabled">Günlük Hatırlatıcı Bildirimler:</div>
+        <small style="color: var(--text-muted);" id="lbl-notif-enabled-desc">Belirttiğiniz saatlerde motivasyon bildirimleri alın.</small>
+      </div>
+      <input type="checkbox" id="reminder-enabled" onchange="saveReminderSettings()" checked style="width: 22px; height: 22px;">
+    </div>
+
+    <div class="settings-row">
+      <div>
+        <div style="font-weight: 600;" class="themed-text" id="lbl-notif-freq">Günlük Bildirim Sıklığı:</div>
+        <small style="color: var(--text-muted);" id="lbl-notif-freq-desc">Günde kaç kez hatırlatma gelsin?</small>
+      </div>
+      <select id="reminder-frequency" onchange="updateReminderTimeInputs(); saveReminderSettings();" style="width: auto;">
+        <option value="1">Günde 1 Kez</option>
+        <option value="2">Günde 2 Kez</option>
+        <option value="3">Günde 3 Kez</option>
+      </select>
+    </div>
+
+    <div class="settings-row" id="time-inputs-container">
+      <div>
+        <div style="font-weight: 600;" class="themed-text" id="lbl-notif-times">Bildirim Saatleri:</div>
+        <small style="color: var(--text-muted);" id="lbl-notif-times-desc">Hatırlatmanın yapılacağı saatleri belirleyin.</small>
+      </div>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <input type="time" id="reminder-time-1" value="09:00" onchange="saveReminderSettings()" style="width: auto;">
+        <input type="time" id="reminder-time-2" value="14:00" onchange="saveReminderSettings()" style="width: auto; display: none;">
+        <input type="time" id="reminder-time-3" value="20:00" onchange="saveReminderSettings()" style="width: auto; display: none;">
+      </div>
+    </div>
+
+    <div class="form-group full-width" style="margin-top: 1rem;">
+      <label id="lbl-notif-msg">Özel Motivasyon / Hatırlatma Mesajı:</label>
+      <textarea id="reminder-message" oninput="saveReminderSettings()" placeholder="Örn: Bugün okuma hedefine bir adım daha yaklaşmaya ne dersin? 📚"></textarea>
+    </div>
+
+    <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+      <button class="btn-action" id="btn-test-notification" type="button" onclick="sendTestNotification()">🔔 Şimdi Test Bildirimi Gönder</button>
+      <button class="btn-action" id="btn-save-reminders" type="button" onclick="closeFullScreenModal('modal-reminders')">Kaydet ve Dön</button>
+    </div>
+  </div>
+</div>
+
+<!-- 7. DIŞA AKTAR & PAYLAŞ MODALI -->
 <div class="full-page-view" id="modal-export">
   <div class="modal-content-container">
     <div class="modal-top-bar">
@@ -1703,7 +1073,7 @@
   </div>
 </div>
 
-<!-- 7. AYARLAR MODALI -->
+<!-- 8. AYARLAR MODALI -->
 <div class="full-page-view" id="modal-settings">
   <div class="modal-content-container">
     <div class="modal-top-bar">
@@ -1787,7 +1157,6 @@
     <button class="view-toggle-btn" id="item-view-toggle-btn" onclick="toggleItemViewMode()">⊞ Izgara Görünümü</button>
   </div>
 
-  <!-- Sıralı Görünümün Altındaki Hızlı Emoji Butonları -->
   <div class="quick-actions-row">
     <button class="quick-icon-btn" onclick="openNewRecordModal()" title="Yeni Metin Ekle">➕</button>
     <button class="quick-icon-btn" onclick="openFullScreenModal('modal-filter')" title="Filtrele & Ara">🔍</button>
@@ -1798,7 +1167,6 @@
 </div>
 
 <script>
-  // ================= ÇOK DİLLİ SÖZLÜK VE SABİTLER =================
   const canonicalStatuses = ["Okunuyor", "Bitti", "Yarım Kaldı", "Yarıda Bırakıldı", "Okumak İstenilenlerde"];
   const canonicalTypes = ["Kitap", "Makale", "Rapor", "Karar", "Tez"];
   const canonicalShelves = ["Macera", "Aşk", "Bilim Kurgu", "Klasikler", "Felsefe"];
@@ -1810,6 +1178,7 @@
       menuHeader: "Menü",
       menuShelves: "📁 Kitaplık Rafları",
       menuGoals: "🎯 Okuma Hedefleri",
+      menuReminders: "🔔 Hatırlatıcı & Bildirimler",
       menuExport: "📤 Dışa Aktar & Paylaş",
       menuSettings: "⚙️ Ayarlar & Görünüm",
       newText: "Yeni Metin Ekle",
@@ -1851,6 +1220,16 @@
       mPages: "Aylık Hedef (Sayfa Sayısı):",
       yPages: "Yıllık Hedef (Sayfa Sayısı):",
       saveGoals: "Kaydet ve Dön",
+      remindersModalTitle: "🔔 Hatırlatıcı & Bildirimler",
+      notifEnabled: "Günlük Hatırlatıcı Bildirimler:",
+      notifEnabledDesc: "Belirttiğiniz saatlerde motivasyon bildirimleri alın.",
+      notifFreq: "Günlük Bildirim Sıklığı:",
+      notifFreqDesc: "Günde kaç kez hatırlatma gelsin?",
+      notifTimes: "Bildirim Saatleri:",
+      notifTimesDesc: "Hatırlatmanın yapılacağı saatleri belirleyin.",
+      notifMsg: "Özel Motivasyon / Hatırlatma Mesajı:",
+      testNotif: "🔔 Şimdi Test Bildirimi Gönder",
+      saveReminders: "Kaydet ve Dön",
       exportModalTitle: "📤 Dışa Aktar & Paylaş",
       exportFilterHeading: "🎯 Paylaşılacak Metinleri Filtrele (İsteğe Bağlı)",
       byStatus: "Duruma Göre:",
@@ -1929,6 +1308,7 @@
       menuHeader: "Menu",
       menuShelves: "📁 Bookshelves",
       menuGoals: "🎯 Reading Goals",
+      menuReminders: "🔔 Reminders & Notifications",
       menuExport: "📤 Export & Share",
       menuSettings: "⚙️ Settings & Appearance",
       newText: "Add New Item",
@@ -1970,6 +1350,16 @@
       mPages: "Monthly Goal (Pages):",
       yPages: "Yearly Goal (Pages):",
       saveGoals: "Save & Return",
+      remindersModalTitle: "🔔 Reminders & Notifications",
+      notifEnabled: "Daily Reading Reminders:",
+      notifEnabledDesc: "Get motivational reminders at set times.",
+      notifFreq: "Daily Frequency:",
+      notifFreqDesc: "How many times per day?",
+      notifTimes: "Reminder Times:",
+      notifTimesDesc: "Set your reminder times.",
+      notifMsg: "Custom Message:",
+      testNotif: "🔔 Send Test Notification Now",
+      saveReminders: "Save & Return",
       exportModalTitle: "📤 Export & Share",
       exportFilterHeading: "🎯 Filter Items to Export (Optional)",
       byStatus: "By Status:",
@@ -2048,6 +1438,7 @@
       menuHeader: "Menú",
       menuShelves: "📁 Estanterías",
       menuGoals: "🎯 Metas de Lectura",
+      menuReminders: "🔔 Recordatorios y Notificaciones",
       menuExport: "📤 Exportar y Compartir",
       menuSettings: "⚙️ Ajustes y Apariencia",
       newText: "Añadir Nuevo Texto",
@@ -2089,6 +1480,16 @@
       mPages: "Meta Mensual (Páginas):",
       yPages: "Meta Anual (Páginas):",
       saveGoals: "Guardar y Volver",
+      remindersModalTitle: "🔔 Recordatorios y Notificaciones",
+      notifEnabled: "Recordatorios Diarios:",
+      notifEnabledDesc: "Recibe recordatorios motivacionales a horas fijas.",
+      notifFreq: "Frecuencia Diaria:",
+      notifFreqDesc: "¿Cuántas veces al día?",
+      notifTimes: "Horas de Notificación:",
+      notifTimesDesc: "Define las horas de recordatorio.",
+      notifMsg: "Mensaje Personalizado:",
+      testNotif: "🔔 Enviar Notificación de Prueba Ahora",
+      saveReminders: "Guardar y Volver",
       exportModalTitle: "📤 Exportar y Compartir",
       exportFilterHeading: "🎯 Filtrar Textos a Exportar (Opcional)",
       byStatus: "Por Estado:",
@@ -2214,6 +1615,13 @@
   let showGoals = localStorage.getItem("reader_show_goals") !== "false";
   let userGoals = JSON.parse(localStorage.getItem("reader_user_goals")) || { mCount: "", yCount: "", mPages: "", yPages: "" };
 
+  let reminderConfig = JSON.parse(localStorage.getItem("reader_reminder_config")) || {
+    enabled: true,
+    frequency: "1",
+    times: ["09:00", "14:00", "20:00"],
+    message: "Bugün okuma hedefine bir adım daha yaklaşmaya ne dersin? 📚"
+  };
+
   let itemViewMode = localStorage.getItem("reader_item_view_mode") || "list";
   let shelfViewMode = localStorage.getItem("reader_shelf_view_mode") || "grid";
   let activeClickFilters = { author: null, type: null, shelf: null, tag: null };
@@ -2268,6 +1676,7 @@
     document.getElementById("lbl-menu-header").textContent = t.menuHeader;
     document.getElementById("btn-menu-shelves").textContent = t.menuShelves;
     document.getElementById("btn-menu-goals").textContent = t.menuGoals;
+    document.getElementById("btn-menu-reminders").textContent = t.menuReminders;
     document.getElementById("btn-menu-export").textContent = t.menuExport;
     document.getElementById("btn-menu-settings").textContent = t.menuSettings;
 
@@ -2318,6 +1727,17 @@
     document.getElementById("lbl-m-pages").textContent = t.mPages;
     document.getElementById("lbl-y-pages").textContent = t.yPages;
     document.getElementById("btn-save-goals").textContent = t.saveGoals;
+
+    document.getElementById("lbl-reminders-modal-title").textContent = t.remindersModalTitle;
+    document.getElementById("lbl-notif-enabled").textContent = t.notifEnabled;
+    document.getElementById("lbl-notif-enabled-desc").textContent = t.notifEnabledDesc;
+    document.getElementById("lbl-notif-freq").textContent = t.notifFreq;
+    document.getElementById("lbl-notif-freq-desc").textContent = t.notifFreqDesc;
+    document.getElementById("lbl-notif-times").textContent = t.notifTimes;
+    document.getElementById("lbl-notif-times-desc").textContent = t.notifTimesDesc;
+    document.getElementById("lbl-notif-msg").textContent = t.notifMsg;
+    document.getElementById("btn-test-notification").textContent = t.testNotif;
+    document.getElementById("btn-save-reminders").textContent = t.saveReminders;
 
     document.getElementById("lbl-export-modal-title").textContent = t.exportModalTitle;
     document.getElementById("lbl-export-filter-heading").textContent = t.exportFilterHeading;
@@ -2400,7 +1820,6 @@
     updateGoalsDisplay();
   }
 
-  // ================= MODALLAR =================
   function openFullScreenModal(modalId) {
     closeDrawer();
     document.querySelectorAll(".full-page-view").forEach(m => m.style.display = "none");
@@ -2409,10 +1828,10 @@
       m.style.display = "block";
       if (modalId === "modal-shelves") renderShelvesContainer();
       if (modalId === "modal-export") populateExportFilterOptions();
+      if (modalId === "modal-reminders") loadReminderSettingsToUI();
     }
   }
 
-  // YENİ METİN EKLEME EKRANINI SIFIRLAYARAK AÇMA (Düzenleme çakışmasını çözer)
   function openNewRecordModal() {
     resetForm();
     openFullScreenModal('modal-form');
@@ -2435,7 +1854,6 @@
     document.getElementById("drawer-overlay").classList.remove("open");
   }
 
-  // ================= GÖRSEL DOSYASI YÜKLEME =================
   function handleCoverFileUpload(e, targetInputId) {
     const file = e.target.files[0];
     if (!file) return;
@@ -2460,7 +1878,6 @@
     renderShelvesContainer();
   }
 
-  // ================= RAFLAR YÖNETİMİ =================
   function renderShelvesContainer() {
     const container = document.getElementById("shelves-container");
     const t = translations[currentLang] || translations.tr;
@@ -2575,7 +1992,6 @@
     btn.classList.toggle("expanded", !isShowing);
   }
 
-  // ================= GÖRSEL PAYLAŞIM AYARLARI =================
   function loadImageExportPrefs() {
     document.getElementById("img-opt-shelf").checked = !!imageExportPrefs.shelf;
     document.getElementById("img-opt-status").checked = !!imageExportPrefs.status;
@@ -2599,7 +2015,6 @@
     localStorage.setItem("reader_image_export_prefs", JSON.stringify(imageExportPrefs));
   }
 
-  // ================= DIŞA AKTARMA VE PAYLAŞIM =================
   function populateExportFilterOptions() {
     const t = translations[currentLang] || translations.tr;
     const shelfSel = document.getElementById("export-filter-shelf");
@@ -2769,6 +2184,97 @@
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  }
+
+  // ================= BİLDİRİM VE HATIRLATICI MOTORU =================
+  function requestNotificationPermission() {
+    if ("Notification" in window && Notification.permission !== "granted" && Notification.permission !== "denied") {
+      Notification.requestPermission();
+    }
+  }
+
+  function loadReminderSettingsToUI() {
+    document.getElementById("reminder-enabled").checked = reminderConfig.enabled !== false;
+    document.getElementById("reminder-frequency").value = reminderConfig.frequency || "1";
+    document.getElementById("reminder-time-1").value = (reminderConfig.times && reminderConfig.times[0]) || "09:00";
+    document.getElementById("reminder-time-2").value = (reminderConfig.times && reminderConfig.times[1]) || "14:00";
+    document.getElementById("reminder-time-3").value = (reminderConfig.times && reminderConfig.times[2]) || "20:00";
+    document.getElementById("reminder-message").value = reminderConfig.message || "Bugün okuma hedefine bir adım daha yaklaşmaya ne dersin? 📚";
+    updateReminderTimeInputs();
+  }
+
+  function updateReminderTimeInputs() {
+    const freq = parseInt(document.getElementById("reminder-frequency").value, 10);
+    document.getElementById("reminder-time-1").style.display = freq >= 1 ? "inline-block" : "none";
+    document.getElementById("reminder-time-2").style.display = freq >= 2 ? "inline-block" : "none";
+    document.getElementById("reminder-time-3").style.display = freq >= 3 ? "inline-block" : "none";
+  }
+
+  function saveReminderSettings() {
+    reminderConfig = {
+      enabled: document.getElementById("reminder-enabled").checked,
+      frequency: document.getElementById("reminder-frequency").value,
+      times: [
+        document.getElementById("reminder-time-1").value,
+        document.getElementById("reminder-time-2").value,
+        document.getElementById("reminder-time-3").value
+      ],
+      message: document.getElementById("reminder-message").value.trim() || "Bugün okuma hedefine bir adım daha yaklaşmaya ne dersin? 📚"
+    };
+    localStorage.setItem("reader_reminder_config", JSON.stringify(reminderConfig));
+    if (reminderConfig.enabled) {
+      requestNotificationPermission();
+    }
+  }
+
+  function sendTestNotification() {
+    if (!("Notification" in window)) {
+      alert("Tarayıcınız bildirim desteği sunmuyor.");
+      return;
+    }
+
+    if (Notification.permission === "granted") {
+      triggerNotificationDirect();
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          triggerNotificationDirect();
+        } else {
+          alert("Bildirim izni verilmedi.");
+        }
+      });
+    } else {
+      alert("Bildirimler tarayıcı ayarlarınızdan engellenmiş. Lütfen izin verin.");
+    }
+  }
+
+  function triggerNotificationDirect() {
+    const msg = reminderConfig.message || "Bugün okuma hedefine bir adım daha yaklaşmaya ne dersin? 📚";
+    new Notification("ReaderTracker 📚", {
+      body: msg,
+      icon: "https://cdn-icons-png.flaticon.com/512/3389/3389081.png"
+    });
+  }
+
+  function startNotificationScheduler() {
+    setInterval(() => {
+      if (!reminderConfig.enabled || Notification.permission !== "granted") return;
+
+      const now = new Date();
+      const currentHourMinute = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const todayDateStr = now.toISOString().slice(0, 10);
+      const freq = parseInt(reminderConfig.frequency, 10);
+
+      const activeTimes = reminderConfig.times.slice(0, freq);
+
+      activeTimes.forEach((scheduledTime, idx) => {
+        const checkKey = `notif_sent_${todayDateStr}_${idx}_${scheduledTime}`;
+        if (currentHourMinute === scheduledTime && !localStorage.getItem(checkKey)) {
+          triggerNotificationDirect();
+          localStorage.setItem(checkKey, "true");
+        }
+      });
+    }, 30000);
   }
 
   // ================= STREAK, HEDEFLER & HESAPLAMALAR =================
@@ -3094,7 +2600,6 @@
     renderItems();
   }
 
-  // ================= FİLTRELEME & LİSTELEME =================
   function toggleClickFilter(type, value) {
     if (activeClickFilters[type] === value) activeClickFilters[type] = null;
     else activeClickFilters[type] = value;
@@ -3401,6 +2906,11 @@
     document.getElementById("goal-yearly-count").value = userGoals.yCount || "";
     document.getElementById("goal-monthly-pages").value = userGoals.mPages || "";
     document.getElementById("goal-yearly-pages").value = userGoals.yPages || "";
+
+    if (reminderConfig.enabled) {
+      requestNotificationPermission();
+    }
+    startNotificationScheduler();
 
     if (needsInitialLangPrompt) {
       document.getElementById("splash-lang-box").style.display = "block";
